@@ -319,25 +319,25 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
     <div 
       className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm transition-all duration-200"
       style={{
-        backgroundColor: isVisible ? 'rgba(0, 0, 0, 0.4)' : 'rgba(0, 0, 0, 0)',
+        backgroundColor: isVisible ? 'rgba(0, 0, 0, 0.7)' : 'rgba(0, 0, 0, 0)',
         opacity: isVisible ? 1 : 0
       }}
     >
       <div 
-        className="bg-white w-[500px] rounded-lg shadow-2xl overflow-hidden flex flex-col transition-all duration-200 ease-out"
+        className="bg-surface w-[500px] rounded-lg shadow-2xl overflow-hidden flex flex-col transition-all duration-200 ease-out"
         style={{
           transform: isVisible ? 'translateY(0) scale(1)' : 'translateY(20px) scale(0.95)',
           opacity: isVisible ? 1 : 0
         }}
       >
-        <div className="bg-[#ececec] px-4 py-2 border-b border-[#dcdcdc] flex justify-between items-center select-none">
+        <div className="bg-paper-dark px-4 py-2 border-b border-surface-border flex justify-between items-center select-none">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-stone-600">{t('settings')}</span>
-            <span className="text-[10px] text-stone-400 font-mono">{appVersion ? `v${appVersion}` : ''}</span>
+            <span className="text-xs font-bold text-ink-black">{t('settings')}</span>
+            <span className="text-[10px] text-text-secondary font-mono">{appVersion ? `v${appVersion}` : ''}</span>
           </div>
           <button 
             onClick={onClose} 
-            className="text-stone-400 hover:text-stone-600 transition-colors"
+            className="text-text-secondary hover:text-ink-black transition-colors"
             title="Close"
           >
             <X size={16} />
@@ -345,13 +345,13 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
         </div>
 
         {/* Tabs */}
-        <div className="flex border-b border-stone-200 bg-stone-50">
+        <div className="flex border-b border-surface-border bg-paper-dark">
           <button
             onClick={() => setActiveTab('general')}
             className={`flex items-center gap-2 px-6 py-3 text-sm font-medium transition-all ${
               activeTab === 'general'
-                ? 'text-stone-800 border-b-2 border-stone-800 bg-white'
-                : 'text-stone-500 hover:text-stone-700 hover:bg-stone-100'
+                ? 'text-ink-black border-b-2 border-ink-black bg-surface'
+                : 'text-text-secondary hover:text-ink-black hover:bg-surface-hover'
             }`}
           >
             <Globe size={16} />
@@ -361,8 +361,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
             onClick={() => setActiveTab('security')}
             className={`flex items-center gap-2 px-6 py-3 text-sm font-medium transition-all ${
               activeTab === 'security'
-                ? 'text-stone-800 border-b-2 border-stone-800 bg-white'
-                : 'text-stone-500 hover:text-stone-700 hover:bg-stone-100'
+                ? 'text-ink-black border-b-2 border-ink-black bg-surface'
+                : 'text-text-secondary hover:text-ink-black hover:bg-surface-hover'
             }`}
           >
             <Lock size={16} />
@@ -372,8 +372,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
             onClick={() => setActiveTab('cloud')}
             className={`flex items-center gap-2 px-6 py-3 text-sm font-medium transition-all ${
               activeTab === 'cloud'
-                ? 'text-stone-800 border-b-2 border-stone-800 bg-white'
-                : 'text-stone-500 hover:text-stone-700 hover:bg-stone-100'
+                ? 'text-ink-black border-b-2 border-ink-black bg-surface'
+                : 'text-text-secondary hover:text-ink-black hover:bg-surface-hover'
             }`}
           >
             <Cloud size={16} />
@@ -386,31 +386,31 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
               <>
             {/* Data Section */}
             <section>
-                <h3 className="text-sm font-bold text-stone-700 mb-3 flex items-center gap-2">
+                <h3 className="text-sm font-bold text-ink-black mb-3 flex items-center gap-2">
                     <HardDrive size={16} /> {t('storageData')}
                 </h3>
-                <div className="bg-stone-50 p-4 rounded-md border border-stone-200 space-y-4">
+                <div className="bg-paper-dark p-4 rounded-md border border-surface-border space-y-4">
                     <div>
-                        <label className="block text-xs font-medium text-stone-500 mb-1">{t('dataLocation')}</label>
+                        <label className="block text-xs font-medium text-text-secondary mb-1">{t('dataLocation')}</label>
                         <div className="flex gap-2">
                             <input 
                                 type="text" 
                                 value={dataPath}
                                 disabled 
                                 title="Data location"
-                                className="flex-1 bg-white border border-stone-300 rounded px-2 py-1.5 text-xs text-stone-500 font-mono select-none"
+                                className="flex-1 bg-input-bg border border-surface-border rounded px-2 py-1.5 text-xs text-text-secondary font-mono select-none"
                             />
                             {isElectron && (
                                 <button 
                                     onClick={handleOpenFolder}
-                                    className="bg-white border border-stone-300 text-stone-600 px-3 py-1 rounded hover:bg-stone-100 transition-colors"
+                                    className="bg-input-bg border border-surface-border text-ink-black px-3 py-1 rounded hover:bg-surface-hover transition-colors"
                                     title="Open folder"
                                 >
                                     <Folder size={14} />
                                 </button>
                             )}
                         </div>
-                        <p className="text-[10px] text-stone-400 mt-1">
+                        <p className="text-[10px] text-text-secondary mt-1">
                             {isElectron ? 'Files: paperplan_data.json, paperplan_plans.json' : 'Data stored in browser LocalStorage'}
                         </p>
                     </div>
@@ -418,14 +418,14 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
                     <div className="grid grid-cols-2 gap-3">
                          <button 
                             onClick={onExport}
-                            className="flex flex-col items-center justify-center gap-2 bg-white border border-stone-200 p-3 rounded hover:border-stone-400 hover:bg-stone-50 transition-all"
+                            className="flex flex-col items-center justify-center gap-2 bg-paper-dark border border-surface-border p-3 rounded hover:border-text-secondary hover:bg-surface-hover transition-all"
                         >
-                            <Download size={20} className="text-stone-600" />
-                            <span className="text-xs font-medium text-stone-700">{t('exportBackup')}</span>
+                            <Download size={20} className="text-ink-black" />
+                            <span className="text-xs font-medium text-ink-black">{t('exportBackup')}</span>
                          </button>
-                         <label className="flex flex-col items-center justify-center gap-2 bg-white border border-stone-200 p-3 rounded hover:border-stone-400 hover:bg-stone-50 transition-all cursor-pointer">
-                            <Upload size={20} className="text-stone-600" />
-                            <span className="text-xs font-medium text-stone-700">{t('importBackup')}</span>
+                         <label className="flex flex-col items-center justify-center gap-2 bg-paper-dark border border-surface-border p-3 rounded hover:border-text-secondary hover:bg-surface-hover transition-all cursor-pointer">
+                            <Upload size={20} className="text-ink-black" />
+                            <span className="text-xs font-medium text-ink-black">{t('importBackup')}</span>
                             <input type="file" onChange={onImport} className="hidden" accept=".json" />
                          </label>
                     </div>
@@ -434,7 +434,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
 
             {/* Language Section */}
             <section>
-                <h3 className="text-sm font-bold text-stone-700 mb-3 flex items-center gap-2">
+                <h3 className="text-sm font-bold text-ink-black mb-3 flex items-center gap-2">
                     <Globe size={16} /> {t('language')}
                 </h3>
                 <div className="grid grid-cols-2 gap-2">
@@ -444,8 +444,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
                             onClick={() => handleLanguageChange(lang)}
                             className={`py-2 px-3 rounded text-sm transition-all ${
                                 selectedLanguage === lang
-                                    ? 'bg-stone-800 text-white font-medium'
-                                    : 'bg-stone-50 text-stone-700 hover:bg-stone-100 border border-stone-200'
+                                    ? 'bg-ink-black text-paper font-medium'
+                                    : 'bg-paper-dark text-ink-black hover:bg-surface-hover border border-surface-border'
                             }`}
                         >
                             {languageNames[lang]}
@@ -461,14 +461,14 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
               <>
             {/* Security Section */}
             <section>
-                <h3 className="text-sm font-bold text-stone-700 mb-3 flex items-center gap-2">
+                <h3 className="text-sm font-bold text-ink-black mb-3 flex items-center gap-2">
                     <Lock size={16} /> {t('securityEnableTitle')}
                 </h3>
-                <div className="bg-stone-50 p-4 rounded-md border border-stone-200 space-y-4">
+                <div className="bg-paper-dark p-4 rounded-md border border-surface-border space-y-4">
                     <div className="flex items-center justify-between">
                         <div>
-                            <p className="text-sm font-medium text-stone-700">{t('securityEnableLabel')}</p>
-                            <p className="text-xs text-stone-500 mt-0.5">{t('securityEnableDesc')}</p>
+                            <p className="text-sm font-medium text-ink-black">{t('securityEnableLabel')}</p>
+                            <p className="text-xs text-text-secondary mt-0.5">{t('securityEnableDesc')}</p>
                         </div>
                         <label className="relative inline-flex items-center cursor-pointer">
                             <input
@@ -478,35 +478,16 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
                                 className="sr-only peer"
                                 aria-label={t('securityEnableLabel')}
                             />
-                            <div className="w-11 h-6 bg-stone-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-stone-400 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-stone-800"></div>
+                            <div className="w-11 h-6 bg-stone-600 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-stone-500 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-stone-600 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-ink-black"></div>
                         </label>
                     </div>
 
                     {securityEnabled && (
                         <>
-                        <div className="pt-4 border-t border-stone-200 space-y-3">
-                            <p className="text-xs font-medium text-stone-600">{t('securityMethodConfig')}</p>
+                        <div className="pt-4 border-t border-surface-border space-y-3">
+                            <p className="text-xs font-medium text-text-secondary">{t('securityMethodConfig')}</p>
                             <div className="grid grid-cols-2 gap-3">
-                                <button
-                                    onClick={() => setSecurityType('pin')}
-                                    className={`relative flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all ${
-                                        securityType === 'pin'
-                                            ? 'border-stone-800 bg-stone-100'
-                                            : 'border-stone-200 bg-white hover:border-stone-300'
-                                    }`}
-                                >
-                                    {savedPin && (
-                                        <div className="absolute top-2 right-2 text-green-600" title="已配置">
-                                            <Check size={16} />
-                                        </div>
-                                    )}
-                                    <KeyRound size={24} className={securityType === 'pin' ? 'text-stone-800' : 'text-stone-500'} />
-                                    <span className="text-sm font-medium">{t('pinMethod')}</span>
-                                    <span className="text-xs text-stone-500 text-center">
-                                        {savedPin ? t('pinStatusSet') : t('pinStatusNotSet')}
-                                    </span>
-                                </button>
-                                <button
+<button
                                     onClick={() => {
                                         setSecurityType('totp');
                                         if (!totpSecret) {
@@ -515,18 +496,18 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
                                     }}
                                     className={`relative flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all ${
                                         securityType === 'totp'
-                                            ? 'border-stone-800 bg-stone-100'
-                                            : 'border-stone-200 bg-white hover:border-stone-300'
+                                            ? 'border-ink-black bg-surface-hover'
+                                            : 'border-surface-border bg-paper-dark hover:border-text-secondary'
                                     }`}
                                 >
                                     {savedTotp && (
-                                        <div className="absolute top-2 right-2 text-green-600" title="已配置">
+                                        <div className="absolute top-2 right-2 text-green-500" title="已配置">
                                             <Check size={16} />
                                         </div>
                                     )}
-                                    <Smartphone size={24} className={securityType === 'totp' ? 'text-stone-800' : 'text-stone-500'} />
-                                    <span className="text-sm font-medium">{t('totpMethod')}</span>
-                                    <span className="text-xs text-stone-500 text-center">
+                                    <Smartphone size={24} className={securityType === 'totp' ? 'text-ink-black' : 'text-text-secondary'} />
+                                    <span className="text-sm font-medium text-ink-black">{t('totpMethod')}</span>
+                                    <span className="text-xs text-text-secondary text-center">
                                         {savedTotp ? t('pinStatusSet') : t('pinStatusNotSet')}
                                     </span>
                                 </button>
@@ -534,12 +515,12 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
                         </div>
 
                         {securityType === 'pin' && (
-                            <div className="pt-4 border-t border-stone-200 space-y-3">
+                            <div className="pt-4 border-t border-surface-border space-y-3">
                                 {savedPin && pinCode && pinCode === confirmPin ? (
-                                    <div className="bg-green-50 border border-green-200 rounded-md p-3">
+                                    <div className="bg-green-950 border border-green-800 rounded-md p-3">
                                         <div className="flex items-center gap-2 mb-2">
-                                            <Check size={16} className="text-green-600" />
-                                            <p className="text-sm font-medium text-green-700">{t('pinSetSuccess')}</p>
+                                            <Check size={16} className="text-green-500" />
+                                            <p className="text-sm font-medium text-green-400">{t('pinSetSuccess')}</p>
                                         </div>
                                         <button
                                             onClick={() => {
@@ -547,7 +528,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
                                                 setConfirmPin('');
                                                 setSavedPin(false);
                                             }}
-                                            className="text-xs text-red-600 hover:text-red-700 underline"
+                                            className="text-xs text-red-400 hover:text-red-300 underline"
                                         >
                                             {t('pinCancel')}
                                         </button>
@@ -555,7 +536,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
                                 ) : (
                                     <>
                                         <div>
-                                            <label className="block text-xs font-medium text-stone-600 mb-1.5">{savedPin ? t('pinLabelEdit') : t('pinLabelSet')}</label>
+                                            <label className="block text-xs font-medium text-text-secondary mb-1.5">{savedPin ? t('pinLabelEdit') : t('pinLabelSet')}</label>
                                             <input
                                                 type="password"
                                                 inputMode="numeric"
@@ -567,11 +548,11 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
                                                     setPinError('');
                                                 }}
                                                 placeholder={t('pinPlaceholder')}
-                                                className="w-full px-3 py-2 border border-stone-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-stone-400"
+                                                className="w-full px-3 py-2 border border-surface-border bg-input-bg rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-stone-500 text-ink-black placeholder-stone-500"
                                             />
                                         </div>
                                         <div>
-                                            <label className="block text-xs font-medium text-stone-600 mb-1.5">{t('pinConfirmLabel')}</label>
+                                            <label className="block text-xs font-medium text-text-secondary mb-1.5">{t('pinConfirmLabel')}</label>
                                             <input
                                                 type="password"
                                                 inputMode="numeric"
@@ -583,7 +564,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
                                                     setPinError('');
                                                 }}
                                                 placeholder={t('pinConfirmPlaceholder')}
-                                                className="w-full px-3 py-2 border border-stone-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-stone-400"
+                                                className="w-full px-3 py-2 border border-surface-border bg-input-bg rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-stone-500 text-ink-black placeholder-stone-500"
                                             />
                                         </div>
                                     </>
@@ -597,14 +578,14 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
                         )}
 
                         {securityType === 'totp' && (
-                            <div className="pt-4 border-t border-stone-200 space-y-3">
+                            <div className="pt-4 border-t border-surface-border space-y-3">
                                 {savedTotp && isTotpVerified ? (
-                                    <div className="bg-green-50 border border-green-200 rounded-md p-3">
+                                    <div className="bg-green-950 border border-green-800 rounded-md p-3">
                                         <div className="flex items-center gap-2 mb-2">
-                                            <Check size={16} className="text-green-600" />
-                                            <p className="text-sm font-medium text-green-700">{t('totpConfigured')}</p>
+                                            <Check size={16} className="text-green-500" />
+                                            <p className="text-sm font-medium text-green-400">{t('totpConfigured')}</p>
                                         </div>
-                                        <p className="text-xs text-stone-500 mb-3">{t('totpConfiguredDesc')}</p>
+                                        <p className="text-xs text-text-secondary mb-3">{t('totpConfiguredDesc')}</p>
                                         <button
                                             onClick={() => {
                                                 setTotpSecret('');
@@ -613,21 +594,21 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
                                                 setIsTotpVerified(false);
                                                 setSavedTotp(false);
                                             }}
-                                            className="text-xs text-red-600 hover:text-red-700 underline"
+                                            className="text-xs text-red-400 hover:text-red-300 underline"
                                         >
                                             {t('totpCancel')}
                                         </button>
                                     </div>
                                 ) : !totpSecret ? (
                                     <>
-                                        <button
-                                            onClick={generateTOTPSecret}
-                                            className="w-full py-2 px-4 bg-stone-800 text-white rounded-md hover:bg-stone-900 transition-colors text-sm font-medium"
-                                        >
+<button
+                                        onClick={generateTOTPSecret}
+                                        className="w-full py-2 px-4 bg-ink-black text-paper rounded-md hover:bg-ink-black/80 transition-colors text-sm font-medium"
+                                    >
                                             {t('totpGenerateSecret')}
                                         </button>
                                         {!savedPin && (
-                                            <p className="text-xs text-amber-600 flex items-center gap-1 mt-2">
+                                            <p className="text-xs text-amber-400 flex items-center gap-1 mt-2">
                                                 <span>💡</span> {t('securityAtLeastOne')}
                                             </p>
                                         )}
@@ -635,37 +616,37 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
                                 ) : (
                                     <>
                                         <div className="text-center">
-                                            <p className="text-xs font-medium text-stone-600 mb-2">{t('totpScanQr')}</p>
+                                            <p className="text-xs font-medium text-text-secondary mb-2">{t('totpScanQr')}</p>
                                             {qrCodeUrl && (
-                                                <div className="inline-block p-3 bg-white rounded-lg border-2 border-stone-200">
+                                                <div className="inline-block p-3 bg-paper-dark rounded-lg border-2 border-surface-border">
                                                     <img src={qrCodeUrl} alt="TOTP QR Code" className="w-48 h-48" />
                                                 </div>
                                             )}
-                                            <p className="text-xs text-stone-500 mt-2">{t('totpScanDesc')}</p>
+                                            <p className="text-xs text-text-secondary mt-2">{t('totpScanDesc')}</p>
                                         </div>
 
-                                        <div className="bg-stone-50 p-3 rounded-md border border-stone-200">
-                                            <p className="text-xs font-medium text-stone-600 mb-1">{t('totpManualInput')}</p>
+                                        <div className="bg-paper-dark p-3 rounded-md border border-surface-border">
+                                            <p className="text-xs font-medium text-text-secondary mb-1">{t('totpManualInput')}</p>
                                             <div className="flex items-center gap-2">
-                                                <code className="flex-1 text-xs bg-white px-2 py-1.5 rounded border border-stone-300 font-mono break-all">
+                                                <code className="flex-1 text-xs bg-input-bg px-2 py-1.5 rounded border border-surface-border font-mono break-all text-ink-black">
                                                     {totpSecret}
                                                 </code>
                                                 <button
                                                     onClick={copyToClipboard}
-                                                    className="p-1.5 hover:bg-stone-200 rounded transition-colors"
+                                                    className="p-1.5 hover:bg-surface-hover rounded transition-colors"
                                                     title={t('totpCopySecret')}
                                                 >
                                                     {secretCopied ? (
-                                                        <Check size={16} className="text-green-600" />
+                                                        <Check size={16} className="text-green-500" />
                                                     ) : (
-                                                        <Copy size={16} className="text-stone-600" />
+                                                        <Copy size={16} className="text-ink-black" />
                                                     )}
                                                 </button>
                                             </div>
                                         </div>
 
                                         <div>
-                                            <label className="block text-xs font-medium text-stone-600 mb-1.5">{t('totpEnterCodeConfirm')}</label>
+                                            <label className="block text-xs font-medium text-text-secondary mb-1.5">{t('totpEnterCodeConfirm')}</label>
                                             <div className="flex items-center gap-2">
                                                 <input
                                                     type="text"
@@ -678,7 +659,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
                                                         setPinError('');
                                                     }}
                                                     placeholder={t('totpCodePlaceholder')}
-                                                    className="flex-1 px-3 py-2 border border-stone-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-stone-400 text-center tracking-wider font-mono"
+                                                    className="flex-1 px-3 py-2 border border-surface-border bg-input-bg rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-stone-500 text-center tracking-wider font-mono text-ink-black placeholder-stone-500"
                                                 />
                                                 <button
                                                     onClick={() => {
@@ -689,8 +670,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
                                                     disabled={verifyCode.length !== 6}
                                                     className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                                                         isTotpVerified
-                                                            ? 'bg-green-600 text-white cursor-default'
-                                                            : 'bg-stone-800 hover:bg-stone-900 text-white disabled:bg-stone-300 disabled:cursor-not-allowed'
+                                                            ? 'bg-green-700 text-white cursor-default'
+                                                            : 'bg-ink-black hover:bg-ink-black/80 text-paper disabled:bg-stone-600 disabled:cursor-not-allowed'
                                                     }`}
                                                 >
                                                     {isTotpVerified ? (
@@ -700,17 +681,17 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
                                                     )}
                                                 </button>
                                             </div>
-                                            <p className="text-xs text-stone-500 mt-1">{t('totpGetCodeHint')}</p>
+                                            <p className="text-xs text-text-secondary mt-1">{t('totpGetCodeHint')}</p>
                                         </div>
 
                                         {pinError && (
-                                            <p className="text-xs text-red-500 flex items-center gap-1">
+<p className="text-xs text-red-400 flex items-center gap-1">
                                                 <span>⚠</span> {pinError}
                                             </p>
                                         )}
                                         
                                         {isTotpVerified && !pinError && (
-                                            <p className="text-xs text-green-600 flex items-center gap-1">
+                                            <p className="text-xs text-green-500 flex items-center gap-1">
                                                 <Check size={14} /> {t('totpVerifiedSaveReady')}
                                             </p>
                                         )}
@@ -729,15 +710,15 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
               <>
             {/* WebDAV Configuration Section */}
             <section>
-                <h3 className="text-sm font-bold text-stone-700 mb-3 flex items-center gap-2">
+                <h3 className="text-sm font-bold text-ink-black mb-3 flex items-center gap-2">
                     <Cloud size={16} /> {t('webdavConfig')}
                 </h3>
-                <div className="bg-stone-50 p-4 rounded-md border border-stone-200 space-y-4">
-                    <p className="text-xs text-stone-500">{t('webdavConfigDesc')}</p>
+                <div className="bg-paper-dark p-4 rounded-md border border-surface-border space-y-4">
+                    <p className="text-xs text-text-secondary">{t('webdavConfigDesc')}</p>
                     
                     {/* Server URL */}
                     <div>
-                        <label className="block text-xs font-medium text-stone-600 mb-1.5">{t('webdavServerUrl')}</label>
+                        <label className="block text-xs font-medium text-text-secondary mb-1.5">{t('webdavServerUrl')}</label>
                         <input
                             type="text"
                             value={webdavUrl}
@@ -746,13 +727,13 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
                                 setWebdavTestResult(null);
                             }}
                             placeholder="https://your-server.com/webdav"
-                            className="w-full px-3 py-2 border border-stone-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-stone-400"
+                            className="w-full px-3 py-2 border border-surface-border bg-input-bg rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-stone-500 text-ink-black placeholder-stone-500"
                         />
                     </div>
 
                     {/* Root Path */}
                     <div>
-                        <label className="block text-xs font-medium text-stone-600 mb-1.5">{t('webdavRootPath')}</label>
+                        <label className="block text-xs font-medium text-text-secondary mb-1.5">{t('webdavRootPath')}</label>
                         <input
                             type="text"
                             value={webdavPath}
@@ -761,14 +742,14 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
                                 setWebdavTestResult(null);
                             }}
                             placeholder="/calendar-diary"
-                            className="w-full px-3 py-2 border border-stone-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-stone-400"
+                            className="w-full px-3 py-2 border border-surface-border bg-input-bg rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-stone-500 text-ink-black placeholder-stone-500"
                         />
-                        <p className="text-[10px] text-stone-400 mt-1">{t('webdavRootPathHint')}</p>
+                        <p className="text-[10px] text-text-secondary mt-1">{t('webdavRootPathHint')}</p>
                     </div>
 
                     {/* Username */}
                     <div>
-                        <label className="block text-xs font-medium text-stone-600 mb-1.5">{t('webdavUsername')}</label>
+                        <label className="block text-xs font-medium text-text-secondary mb-1.5">{t('webdavUsername')}</label>
                         <input
                             type="text"
                             value={webdavUsername}
@@ -777,13 +758,13 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
                                 setWebdavTestResult(null);
                             }}
                             placeholder={t('webdavUsernamePlaceholder')}
-                            className="w-full px-3 py-2 border border-stone-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-stone-400"
+                            className="w-full px-3 py-2 border border-surface-border bg-input-bg rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-stone-500 text-ink-black placeholder-stone-500"
                         />
                     </div>
 
                     {/* Password */}
                     <div>
-                        <label className="block text-xs font-medium text-stone-600 mb-1.5">{t('webdavPassword')}</label>
+                        <label className="block text-xs font-medium text-text-secondary mb-1.5">{t('webdavPassword')}</label>
                         <div className="relative">
                             <input
                                 type={showPassword ? 'text' : 'password'}
@@ -793,12 +774,12 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
                                     setWebdavTestResult(null);
                                 }}
                                 placeholder={t('webdavPasswordPlaceholder')}
-                                className="w-full px-3 py-2 pr-10 border border-stone-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-stone-400"
+                                className="w-full px-3 py-2 pr-10 border border-surface-border bg-input-bg rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-stone-500 text-ink-black placeholder-stone-500"
                             />
                             <button
                                 type="button"
                                 onClick={() => setShowPassword(!showPassword)}
-                                className="absolute right-2 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600"
+                                className="absolute right-2 top-1/2 -translate-y-1/2 text-text-secondary hover:text-ink-black"
                             >
                                 {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                             </button>
@@ -806,11 +787,11 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
                     </div>
 
                     {/* Test Connection Button */}
-                    <div className="pt-2 border-t border-stone-200">
+                    <div className="pt-2 border-t border-surface-border">
                         <button
                             onClick={handleTestWebdav}
                             disabled={webdavTesting || !webdavUrl}
-                            className="flex items-center justify-center gap-2 w-full py-2 px-4 bg-white border border-stone-300 rounded-md text-sm font-medium hover:bg-stone-50 disabled:bg-stone-100 disabled:text-stone-400 disabled:cursor-not-allowed transition-colors"
+                            className="flex items-center justify-center gap-2 w-full py-2 px-4 bg-paper-dark border border-surface-border rounded-md text-sm font-medium hover:bg-surface-hover disabled:bg-paper-dark disabled:text-stone-600 disabled:cursor-not-allowed transition-colors text-ink-black"
                         >
                             <RefreshCw size={14} className={webdavTesting ? 'animate-spin' : ''} />
                             {webdavTesting ? t('webdavTesting') : t('webdavTestConnection')}
@@ -819,8 +800,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
                         {webdavTestResult && (
                             <div className={`mt-2 p-2 rounded text-xs ${
                                 webdavTestResult === 'success' 
-                                    ? 'bg-green-50 text-green-700 border border-green-200' 
-                                    : 'bg-red-50 text-red-700 border border-red-200'
+                                    ? 'bg-green-950 text-green-400 border border-green-800' 
+                                    : 'bg-red-950 text-red-400 border border-red-800'
                             }`}>
                                 {webdavTestResult === 'success' ? '✓' : '✗'} {webdavTestMessage}
                             </div>
@@ -832,10 +813,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
             )}
         </div>
 
-        <div className="bg-stone-100 px-6 py-3 border-t border-stone-200 flex justify-end gap-2">
+        <div className="bg-paper-dark px-6 py-3 border-t border-surface-border flex justify-end gap-2">
            <button 
              onClick={onClose}
-             className="bg-white border border-stone-300 hover:bg-stone-50 text-stone-700 px-6 py-1.5 rounded text-sm font-medium transition-colors"
+             className="bg-paper-dark border border-surface-border hover:bg-surface-hover text-ink-black px-6 py-1.5 rounded text-sm font-medium transition-colors"
            >
              {t('cancel')}
            </button>
@@ -849,7 +830,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
                  onClose();
                }
              }}
-             className="bg-stone-800 hover:bg-stone-900 text-white px-6 py-1.5 rounded text-sm font-medium transition-colors shadow-sm"
+             className="bg-ink-black hover:bg-ink-black/80 text-paper px-6 py-1.5 rounded text-sm font-medium transition-colors shadow-sm"
            >
              {t('saveChanges')}
            </button>

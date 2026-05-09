@@ -191,7 +191,7 @@ const App: React.FC = () => {
   const handleDateSelect = useCallback((date: Date) => setCurrentDate(date), []);
 
   return (
-    <div className="w-full h-full min-h-0 bg-white flex flex-col overflow-hidden relative">
+    <div className="w-full h-full min-h-0 bg-paper flex flex-col overflow-hidden relative">
       
       {/* Authentication Modal */}
       {needsAuth && !isAuthenticated && (() => {
@@ -219,88 +219,88 @@ const App: React.FC = () => {
       })()}
       
       {/* Custom Title Bar */}
-      <div className="h-10 bg-gradient-to-b from-stone-50 to-stone-100 flex justify-between items-center px-4 border-b border-stone-300 select-none shrink-0 draggable">
-        <div className="flex items-center gap-3 text-sm font-semibold text-stone-700">
+      <div className="h-10 bg-surface flex justify-between items-center px-4 border-b border-surface-border select-none shrink-0 draggable">
+        <div className="flex items-center gap-3 text-sm font-semibold text-ink-black">
           <span className="w-3 h-3 rounded-full bg-ink-red shadow-sm"></span>
           <span>{t('appTitle')}</span>
         </div>
         <div className="flex items-center gap-2 non-draggable">
-           <button 
-             onClick={() => {
-               const config = WebDAVService.getStoredConfig();
-               if (config) {
-                 setShowCloudSync(true);
-               } else {
-                 // 未配置 WebDAV，先弹出提示再打开设置
-                 alert(t('cloudSyncNotConfigured'));
-                 setSettingsDefaultTab('webdav');
-                 setShowSettings(true);
-               }
-             }} 
-             className="p-1.5 text-stone-500 hover:bg-stone-200 hover:text-stone-700 rounded-md transition-all"
-             title={t('cloudSync')}
-           >
-             <Cloud size={16} />
-           </button>
-           <button 
-             onClick={() => setShowUpdate(true)} 
-             className="p-1.5 text-stone-500 hover:bg-stone-200 hover:text-stone-700 rounded-md transition-all"
-             title={t('checkUpdate')}
-           >
-             <RefreshCw size={16} />
-           </button>
-           <button 
-             onClick={() => setShowSearch(true)} 
-             className="p-1.5 text-stone-500 hover:bg-stone-200 hover:text-stone-700 rounded-md transition-all"
-             title={`${t('searchDiary')} (${navigator.platform.includes('Mac') ? '⌘F' : 'Ctrl+F'})`}
-           >
-             <Search size={16} />
-           </button>
-           <button 
-             onClick={() => setShowAbout(true)} 
-             className="p-1.5 text-stone-500 hover:bg-stone-200 hover:text-stone-700 rounded-md transition-all"
-             title={t('about')}
-           >
-             <Github size={16} />
-           </button>
-           <button 
-             onClick={() => {
-               setSettingsDefaultTab('general');
-               setShowSettings(true);
-             }} 
-             className="p-1.5 text-stone-500 hover:bg-stone-200 hover:text-stone-700 rounded-md transition-all"
-             title={t('settings')}
-           >
-             <Settings size={16} />
-           </button>
-           <div className="flex gap-1 ml-2">
-             <button 
-               onClick={() => window.electronAPI?.window.minimize()} 
-               className="p-1.5 text-stone-500 hover:bg-yellow-100 hover:text-yellow-700 rounded-md transition-all"
-               title={t('minimize')}
-             >
-               <Minus size={16} />
-             </button>
-             <button 
-               onClick={() => window.electronAPI?.window.maximize()} 
-               className="p-1.5 text-stone-500 hover:bg-green-100 hover:text-green-700 rounded-md transition-all"
-               title={t('maximize')}
-             >
-               <Square size={14} />
-             </button>
-             <button 
-               onClick={() => window.electronAPI?.window.close()} 
-               className="p-1.5 text-stone-500 hover:bg-red-100 hover:text-red-600 rounded-md transition-all"
-               title={t('close')}
-             >
-               <X size={16} />
-             </button>
-           </div>
+<button 
+              onClick={() => {
+                const config = WebDAVService.getStoredConfig();
+                if (config) {
+                  setShowCloudSync(true);
+                } else {
+                  // 未配置 WebDAV，先弹出提示再打开设置
+                  alert(t('cloudSyncNotConfigured'));
+                  setSettingsDefaultTab('webdav');
+                  setShowSettings(true);
+                }
+              }} 
+              className="p-1.5 text-text-secondary hover:bg-surface-hover hover:text-ink-black rounded-md transition-all"
+              title={t('cloudSync')}
+            >
+              <Cloud size={16} />
+            </button>
+            <button 
+              onClick={() => setShowUpdate(true)} 
+              className="p-1.5 text-text-secondary hover:bg-surface-hover hover:text-ink-black rounded-md transition-all"
+              title={t('checkUpdate')}
+            >
+              <RefreshCw size={16} />
+            </button>
+            <button 
+              onClick={() => setShowSearch(true)} 
+              className="p-1.5 text-text-secondary hover:bg-surface-hover hover:text-ink-black rounded-md transition-all"
+              title={`${t('searchDiary')} (${navigator.platform.includes('Mac') ? '⌘F' : 'Ctrl+F'})`}
+            >
+              <Search size={16} />
+            </button>
+            <button 
+              onClick={() => setShowAbout(true)} 
+              className="p-1.5 text-text-secondary hover:bg-surface-hover hover:text-ink-black rounded-md transition-all"
+              title={t('about')}
+            >
+              <Github size={16} />
+            </button>
+            <button 
+              onClick={() => {
+                setSettingsDefaultTab('general');
+                setShowSettings(true);
+              }} 
+              className="p-1.5 text-text-secondary hover:bg-surface-hover hover:text-ink-black rounded-md transition-all"
+              title={t('settings')}
+            >
+              <Settings size={16} />
+            </button>
+            <div className="flex gap-1 ml-2">
+              <button 
+                onClick={() => window.electronAPI?.window.minimize()} 
+                className="p-1.5 text-text-secondary hover:bg-surface-hover hover:text-yellow-500 rounded-md transition-all"
+                title={t('minimize')}
+              >
+                <Minus size={16} />
+              </button>
+              <button 
+                onClick={() => window.electronAPI?.window.maximize()} 
+                className="p-1.5 text-text-secondary hover:bg-surface-hover hover:text-green-500 rounded-md transition-all"
+                title={t('maximize')}
+              >
+                <Square size={14} />
+              </button>
+              <button 
+                onClick={() => window.electronAPI?.window.close()} 
+                className="p-1.5 text-text-secondary hover:bg-surface-hover hover:text-red-500 rounded-md transition-all"
+                title={t('close')}
+              >
+                <X size={16} />
+              </button>
+            </div>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 min-h-0 flex flex-col bg-paper relative">
+      <div className="flex-1 min-h-0 flex flex-col bg-paper-dark relative">
         
         <div className="relative z-10 flex flex-col h-full min-h-0">
             <CalendarHeader 

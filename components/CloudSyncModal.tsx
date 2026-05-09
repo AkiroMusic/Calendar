@@ -370,26 +370,26 @@ export const CloudSyncModal: React.FC<CloudSyncModalProps> = ({
     <div 
       className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm transition-all duration-200"
       style={{
-        backgroundColor: isVisible ? 'rgba(0, 0, 0, 0.4)' : 'rgba(0, 0, 0, 0)',
+        backgroundColor: isVisible ? 'rgba(0, 0, 0, 0.7)' : 'rgba(0, 0, 0, 0)',
         opacity: isVisible ? 1 : 0
       }}
     >
       <div 
-        className="bg-white w-[700px] max-w-[95vw] max-h-[85vh] rounded-lg shadow-2xl overflow-hidden flex flex-col transition-all duration-200 ease-out"
+        className="bg-surface w-[700px] max-w-[95vw] max-h-[85vh] rounded-lg shadow-2xl overflow-hidden flex flex-col transition-all duration-200 ease-out"
         style={{
           transform: isVisible ? 'translateY(0) scale(1)' : 'translateY(20px) scale(0.95)',
           opacity: isVisible ? 1 : 0
         }}
       >
         {/* Header */}
-        <div className="bg-[#ececec] px-4 py-3 border-b border-[#dcdcdc] flex justify-between items-center select-none shrink-0">
+        <div className="bg-paper-dark px-4 py-3 border-b border-surface-border flex justify-between items-center select-none shrink-0">
           <div className="flex items-center gap-2">
-            <Cloud size={18} className="text-blue-500" />
-            <span className="text-sm font-bold text-stone-700">{t('cloudSync')}</span>
+            <Cloud size={18} className="text-blue-400" />
+            <span className="text-sm font-bold text-ink-black">{t('cloudSync')}</span>
           </div>
           <button 
             onClick={onClose} 
-            className="text-stone-400 hover:text-stone-600 transition-colors"
+            className="text-text-secondary hover:text-ink-black transition-colors"
             title={t('close')}
           >
             <X size={18} />
@@ -397,7 +397,7 @@ export const CloudSyncModal: React.FC<CloudSyncModalProps> = ({
         </div>
 
         {/* Status Area */}
-        <div className="px-4 py-3 bg-stone-50 border-b border-stone-200 space-y-2 shrink-0">
+        <div className="px-4 py-3 bg-paper-dark border-b border-surface-border space-y-2 shrink-0">
           {/* Connection Status */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -410,16 +410,16 @@ export const CloudSyncModal: React.FC<CloudSyncModalProps> = ({
               {connectionStatus === 'error' && (
                 <AlertCircle size={14} className="text-red-500" />
               )}
-              <span className="text-xs text-stone-600">
+              <span className="text-xs text-text-secondary">
                 {connectionStatus === 'checking' && t('cloudSyncConnecting')}
                 {connectionStatus === 'connected' && `${t('cloudSyncConnectedTo')}: ${getServerDisplay()}`}
                 {connectionStatus === 'error' && connectionError}
               </span>
             </div>
-            {connectionStatus === 'error' && (
+{connectionStatus === 'error' && (
               <button
                 onClick={onOpenWebDAVSettings}
-                className="text-xs text-blue-500 hover:text-blue-700 flex items-center gap-1"
+                className="text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1"
               >
                 <Settings size={12} />
                 {t('cloudSyncOpenSettings')}
@@ -429,7 +429,7 @@ export const CloudSyncModal: React.FC<CloudSyncModalProps> = ({
           
           {/* Sync Times */}
           {connectionStatus === 'connected' && (
-            <div className="flex gap-6 text-xs text-stone-500">
+            <div className="flex gap-6 text-xs text-text-secondary">
               <span>
                 {t('cloudSyncLastSync')}: {lastSyncTime ? WebDAVService.formatDateTime(lastSyncTime) : t('cloudSyncNever')}
               </span>
@@ -440,15 +440,15 @@ export const CloudSyncModal: React.FC<CloudSyncModalProps> = ({
           )}
         </div>
 
-        {/* Action Buttons */}
-        <div className="px-4 py-3 border-b border-stone-200 flex gap-2 shrink-0">
+{/* Action Buttons */}
+        <div className="px-4 py-3 border-b border-surface-border flex gap-2 shrink-0">
           <button
             onClick={handleSync}
             disabled={connectionStatus !== 'connected' || isSyncing}
             className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${
               connectionStatus !== 'connected' || isSyncing
-                ? 'bg-stone-100 text-stone-400 cursor-not-allowed'
-                : 'bg-blue-500 text-white hover:bg-blue-600'
+                ? 'bg-paper-dark text-stone-500 cursor-not-allowed'
+                : 'bg-blue-600 text-white hover:bg-blue-500'
             }`}
           >
             {isSyncing ? (
@@ -464,8 +464,8 @@ export const CloudSyncModal: React.FC<CloudSyncModalProps> = ({
             disabled={connectionStatus !== 'connected' || isBackingUp}
             className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${
               connectionStatus !== 'connected' || isBackingUp
-                ? 'bg-stone-100 text-stone-400 cursor-not-allowed'
-                : 'bg-green-500 text-white hover:bg-green-600'
+                ? 'bg-paper-dark text-stone-500 cursor-not-allowed'
+                : 'bg-green-600 text-white hover:bg-green-500'
             }`}
           >
             {isBackingUp ? (
@@ -481,8 +481,8 @@ export const CloudSyncModal: React.FC<CloudSyncModalProps> = ({
             disabled={connectionStatus !== 'connected' || isLoadingBackups}
             className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${
               connectionStatus !== 'connected' || isLoadingBackups
-                ? 'bg-stone-100 text-stone-400 cursor-not-allowed'
-                : 'bg-stone-200 text-stone-700 hover:bg-stone-300'
+                ? 'bg-paper-dark text-stone-500 cursor-not-allowed'
+                : 'bg-surface-hover text-ink-black hover:bg-surface-hover'
             }`}
           >
             {isLoadingBackups ? (
@@ -495,8 +495,8 @@ export const CloudSyncModal: React.FC<CloudSyncModalProps> = ({
         </div>
 
         {/* Logs Area */}
-        <div className="px-4 py-2 border-b border-stone-200 shrink-0">
-          <div className="text-xs font-bold text-stone-500 mb-1">{t('cloudSyncLogs')}</div>
+        <div className="px-4 py-2 border-b border-surface-border shrink-0">
+          <div className="text-xs font-bold text-text-secondary mb-1">{t('cloudSyncLogs')}</div>
           <div className="h-24 overflow-y-auto bg-stone-900 rounded p-2 font-mono text-xs">
             {logs.map((log) => (
               <div
@@ -516,10 +516,10 @@ export const CloudSyncModal: React.FC<CloudSyncModalProps> = ({
 
         {/* Backups List */}
         <div className="flex-1 overflow-y-auto px-4 py-3">
-          <div className="text-xs font-bold text-stone-500 mb-2">{t('cloudBackupsList')}</div>
+          <div className="text-xs font-bold text-text-secondary mb-2">{t('cloudBackupsList')}</div>
           
           {backups.length === 0 ? (
-            <div className="text-center py-8 text-stone-400">
+            <div className="text-center py-8 text-text-secondary">
               <Cloud size={32} className="mx-auto mb-2 opacity-50" />
               <p className="text-sm">{t('cloudNoBackups')}</p>
             </div>
@@ -528,11 +528,11 @@ export const CloudSyncModal: React.FC<CloudSyncModalProps> = ({
               {backups.map((backup) => (
                 <div
                   key={backup.filename}
-                  className="flex items-center justify-between py-2 px-3 bg-stone-50 rounded-md hover:bg-stone-100 transition-colors"
+                  className="flex items-center justify-between py-2 px-3 bg-paper-dark rounded-md hover:bg-surface-hover transition-colors"
                 >
                   <div className="flex-1 min-w-0">
-                    <div className="text-sm font-medium text-stone-700 truncate">{backup.filename}</div>
-                    <div className="text-xs text-stone-500">
+                    <div className="text-sm font-medium text-ink-black truncate">{backup.filename}</div>
+                    <div className="text-xs text-text-secondary">
                       {WebDAVService.formatDateTime(backup.lastModified)} · {WebDAVService.formatFileSize(backup.size)}
                     </div>
                   </div>
@@ -542,8 +542,8 @@ export const CloudSyncModal: React.FC<CloudSyncModalProps> = ({
                       disabled={restoringFile === backup.filename}
                       className={`flex items-center gap-1 px-3 py-1.5 rounded text-xs font-medium transition-all ${
                         restoringFile === backup.filename
-                          ? 'bg-stone-100 text-stone-400 cursor-not-allowed'
-                          : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
+                          ? 'bg-paper-dark text-stone-500 cursor-not-allowed'
+                          : 'bg-blue-900/50 text-blue-300 hover:bg-blue-800/50'
                       }`}
                     >
                       {restoringFile === backup.filename ? (
@@ -558,8 +558,8 @@ export const CloudSyncModal: React.FC<CloudSyncModalProps> = ({
                       disabled={deletingFile === backup.filename}
                       className={`flex items-center gap-1 px-3 py-1.5 rounded text-xs font-medium transition-all ${
                         deletingFile === backup.filename
-                          ? 'bg-stone-100 text-stone-400 cursor-not-allowed'
-                          : 'bg-red-100 text-red-700 hover:bg-red-200'
+                          ? 'bg-paper-dark text-stone-500 cursor-not-allowed'
+                          : 'bg-red-900/50 text-red-300 hover:bg-red-800/50'
                       }`}
                     >
                       {deletingFile === backup.filename ? (
@@ -577,41 +577,39 @@ export const CloudSyncModal: React.FC<CloudSyncModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="px-4 py-3 bg-stone-50 border-t border-stone-200 flex justify-end shrink-0">
+        <div className="px-4 py-3 bg-paper-dark border-t border-surface-border flex justify-end shrink-0">
           <button
             onClick={onClose}
-            className="px-4 py-2 rounded-md text-sm font-medium bg-stone-200 text-stone-700 hover:bg-stone-300 transition-all"
+            className="px-4 py-2 rounded-md text-sm font-medium bg-surface-hover text-ink-black hover:bg-surface-hover transition-all"
           >
             {t('close')}
           </button>
         </div>
       </div>
-
-      {/* Conflict Dialog */}
       {showConflictDialog && (
-        <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/50">
-          <div className="bg-white rounded-lg shadow-xl p-6 w-[400px] max-w-[90vw]">
+        <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/70">
+          <div className="bg-surface rounded-lg shadow-xl p-6 w-[400px] max-w-[90vw]">
             <div className="flex items-center gap-2 mb-4">
-              <AlertCircle size={20} className="text-amber-500" />
-              <h3 className="font-bold text-lg">{t('cloudSyncConflictTitle')}</h3>
+              <AlertCircle size={20} className="text-amber-400" />
+              <h3 className="font-bold text-lg text-ink-black">{t('cloudSyncConflictTitle')}</h3>
             </div>
-            <p className="text-sm text-stone-600 mb-4">{t('cloudSyncConflictMessage')}</p>
+            <p className="text-sm text-text-secondary mb-4">{t('cloudSyncConflictMessage')}</p>
             <div className="space-y-2">
               <button
                 onClick={() => { setShowConflictDialog(false); conflictResolver?.('remote'); }}
-                className="w-full py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 text-sm font-medium"
+                className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-500 text-sm font-medium"
               >
                 {t('cloudSyncUseRemote')}
               </button>
               <button
                 onClick={() => { setShowConflictDialog(false); conflictResolver?.('local'); }}
-                className="w-full py-2 px-4 bg-stone-200 text-stone-700 rounded-md hover:bg-stone-300 text-sm font-medium"
+                className="w-full py-2 px-4 bg-surface-hover text-ink-black rounded-md hover:bg-surface-hover text-sm font-medium"
               >
                 {t('cloudSyncUseLocal')}
               </button>
               <button
                 onClick={() => { setShowConflictDialog(false); conflictResolver?.('cancel'); }}
-                className="w-full py-2 px-4 text-stone-500 hover:text-stone-700 text-sm"
+                className="w-full py-2 px-4 text-text-secondary hover:text-ink-black text-sm"
               >
                 {t('cancel')}
               </button>
@@ -622,30 +620,30 @@ export const CloudSyncModal: React.FC<CloudSyncModalProps> = ({
 
       {/* Restore Dialog */}
       {showRestoreDialog && restoreTarget && (
-        <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/50">
-          <div className="bg-white rounded-lg shadow-xl p-6 w-[420px] max-w-[90vw]">
+        <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/70">
+          <div className="bg-surface rounded-lg shadow-xl p-6 w-[420px] max-w-[90vw]">
             <div className="flex items-center gap-2 mb-4">
-              <RotateCcw size={20} className="text-blue-500" />
-              <h3 className="font-bold text-lg">{t('cloudRestoreConfirmTitle')}</h3>
+              <RotateCcw size={20} className="text-blue-400" />
+              <h3 className="font-bold text-lg text-ink-black">{t('cloudRestoreConfirmTitle')}</h3>
             </div>
-            <p className="text-sm text-stone-600 mb-2">{t('cloudRestoreConfirmMessage')}</p>
-            <p className="text-xs text-stone-400 mb-4">{t('cloudRestoreConfirmHint')}</p>
+            <p className="text-sm text-text-secondary mb-2">{t('cloudRestoreConfirmMessage')}</p>
+            <p className="text-xs text-text-secondary mb-4">{t('cloudRestoreConfirmHint')}</p>
             <div className="space-y-2">
               <button
                 onClick={() => { setShowRestoreDialog(false); restoreResolver?.('backup-restore'); }}
-                className="w-full py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 text-sm font-medium"
+                className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-500 text-sm font-medium"
               >
                 {t('cloudRestoreBackupFirst')}
               </button>
               <button
                 onClick={() => { setShowRestoreDialog(false); restoreResolver?.('direct-restore'); }}
-                className="w-full py-2 px-4 bg-amber-500 text-white rounded-md hover:bg-amber-600 text-sm font-medium"
+                className="w-full py-2 px-4 bg-amber-600 text-white rounded-md hover:bg-amber-500 text-sm font-medium"
               >
                 {t('cloudRestoreDirect')}
               </button>
               <button
                 onClick={() => { setShowRestoreDialog(false); restoreResolver?.('cancel'); }}
-                className="w-full py-2 px-4 text-stone-500 hover:text-stone-700 text-sm"
+                className="w-full py-2 px-4 text-text-secondary hover:text-ink-black text-sm"
               >
                 {t('cancel')}
               </button>
@@ -656,24 +654,24 @@ export const CloudSyncModal: React.FC<CloudSyncModalProps> = ({
 
       {/* Delete Dialog */}
       {showDeleteDialog && deleteTarget && (
-        <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/50">
-          <div className="bg-white rounded-lg shadow-xl p-6 w-[400px] max-w-[90vw]">
+        <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/70">
+          <div className="bg-surface rounded-lg shadow-xl p-6 w-[400px] max-w-[90vw]">
             <div className="flex items-center gap-2 mb-4">
-              <Trash2 size={20} className="text-red-500" />
-              <h3 className="font-bold text-lg">{t('cloudDeleteConfirmTitle')}</h3>
+              <Trash2 size={20} className="text-red-400" />
+              <h3 className="font-bold text-lg text-ink-black">{t('cloudDeleteConfirmTitle')}</h3>
             </div>
-            <p className="text-sm text-stone-600 mb-4">{t('cloudDeleteConfirmMessage')}</p>
-            <p className="text-xs text-stone-500 mb-4 font-mono bg-stone-100 p-2 rounded">{deleteTarget.filename}</p>
+            <p className="text-sm text-text-secondary mb-4">{t('cloudDeleteConfirmMessage')}</p>
+            <p className="text-xs text-text-secondary mb-4 font-mono bg-paper-dark p-2 rounded">{deleteTarget.filename}</p>
             <div className="flex gap-2 justify-end">
               <button
                 onClick={() => { setShowDeleteDialog(false); setDeleteTarget(null); }}
-                className="py-2 px-4 text-stone-500 hover:text-stone-700 text-sm"
+                className="py-2 px-4 text-text-secondary hover:text-ink-black text-sm"
               >
                 {t('cancel')}
               </button>
               <button
                 onClick={confirmDelete}
-                className="py-2 px-4 bg-red-500 text-white rounded-md hover:bg-red-600 text-sm font-medium"
+                className="py-2 px-4 bg-red-600 text-white rounded-md hover:bg-red-500 text-sm font-medium"
               >
                 {t('cloudDeleteConfirm')}
               </button>

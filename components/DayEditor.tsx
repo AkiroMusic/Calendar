@@ -109,16 +109,16 @@ export const DayEditor: React.FC<DayEditorProps> = ({ date, initialData, onClose
       style={backdropStyle}
     >
       <div 
-        className="bg-white w-[480px] rounded-lg shadow-2xl overflow-hidden flex flex-col max-h-[80vh] transition-all duration-200 ease-out"
+        className="bg-surface w-[480px] rounded-lg shadow-2xl overflow-hidden flex flex-col max-h-[80vh] transition-all duration-200 ease-out"
         style={modalStyle}
       >
         {/* Header */}
-        <div className="bg-stone-100 px-4 py-3 border-b border-stone-200 flex justify-between items-center">
+        <div className="bg-paper-dark px-4 py-3 border-b border-surface-border flex justify-between items-center">
           <div>
              <h2 className="font-serif font-bold text-xl text-ink-black">{dateFormatted}</h2>
-             <p className="text-xs text-stone-500 uppercase tracking-wide">{lunarDate}</p>
+             <p className="text-xs text-text-secondary uppercase tracking-wide">{lunarDate}</p>
           </div>
-          <button onClick={onClose} className="text-stone-400 hover:text-stone-600 transition-colors" title="Close">
+          <button onClick={onClose} className="text-text-secondary hover:text-ink-black transition-colors" title="Close">
             <X size={20} />
           </button>
         </div>
@@ -128,13 +128,13 @@ export const DayEditor: React.FC<DayEditorProps> = ({ date, initialData, onClose
           {/* Events Section */}
           <div className="mb-6">
             <div className="flex justify-between items-center mb-2">
-               <label className="text-xs font-bold text-stone-500 uppercase">{t('todoEvents')}</label>
+               <label className="text-xs font-bold text-text-secondary uppercase">{t('todoEvents')}</label>
             </div>
             
             <div className="space-y-2">
               {events.map((event, index) => (
                 <div key={event.id} className="flex items-start gap-2 group">
-                  <span className="text-stone-400 font-mono text-xs w-4 pt-1.5">{index + 1}.</span>
+                  <span className="text-text-secondary font-mono text-xs w-4 pt-1.5">{index + 1}.</span>
                   <textarea
                     ref={(el) => {
                       // 初始渲染时自动调整高度
@@ -145,7 +145,7 @@ export const DayEditor: React.FC<DayEditorProps> = ({ date, initialData, onClose
                     value={event.rawText}
                     onChange={(e) => handleEventChange(event.id, e.target.value)}
                     placeholder={t('writeTask')}
-                    className="flex-1 bg-stone-50 border border-transparent focus:border-stone-300 focus:bg-white rounded px-2 py-1.5 text-sm outline-none transition-all resize-none min-h-[36px] max-h-[150px] overflow-hidden leading-relaxed"
+                    className="flex-1 bg-input-bg border border-transparent focus:border-surface-border focus:bg-surface-hover rounded px-2 py-1.5 text-sm outline-none transition-all resize-none min-h-[36px] max-h-[150px] overflow-hidden leading-relaxed text-ink-black placeholder-stone-500"
                     autoFocus={index === events.length - 1 && event.rawText === ''}
                     rows={1}
                     onInput={(e) => {
@@ -155,7 +155,7 @@ export const DayEditor: React.FC<DayEditorProps> = ({ date, initialData, onClose
                   <div className="relative">
                     <button
                       onClick={(e) => handleEmojiButtonClick(event.id, e)}
-                      className="w-6 text-center text-lg pt-0.5 hover:scale-110 transition-transform cursor-pointer hover:bg-stone-100 rounded"
+                      className="w-6 text-center text-lg pt-0.5 hover:scale-110 transition-transform cursor-pointer hover:bg-surface-hover rounded"
                       title="点击选择表情"
                     >
                       {event.emoji}
@@ -163,7 +163,7 @@ export const DayEditor: React.FC<DayEditorProps> = ({ date, initialData, onClose
                   </div>
                   <button 
                     onClick={() => handleDeleteEvent(event.id)}
-                    className="opacity-0 group-hover:opacity-100 text-stone-300 hover:text-red-400 transition-opacity pt-1"
+                    className="opacity-0 group-hover:opacity-100 text-stone-600 hover:text-red-400 transition-opacity pt-1"
                     title="Delete"
                   >
                     <Trash2 size={14} />
@@ -174,7 +174,7 @@ export const DayEditor: React.FC<DayEditorProps> = ({ date, initialData, onClose
             
             <button 
               onClick={handleAddEvent}
-              className="mt-3 flex items-center gap-1 text-stone-400 hover:text-stone-600 text-xs font-medium transition-colors"
+              className="mt-3 flex items-center gap-1 text-text-secondary hover:text-ink-black text-xs font-medium transition-colors"
             >
               <Plus size={14} /> {t('addItem')}
             </button>
@@ -182,15 +182,15 @@ export const DayEditor: React.FC<DayEditorProps> = ({ date, initialData, onClose
 
           {/* Stickers Section */}
           <div>
-            <label className="text-xs font-bold text-stone-500 uppercase mb-2 block">{t('moodStickers')}</label>
-            <div className="flex flex-wrap gap-2 bg-stone-50 p-3 rounded-lg border border-stone-100">
+            <label className="text-xs font-bold text-text-secondary uppercase mb-2 block">{t('moodStickers')}</label>
+            <div className="flex flex-wrap gap-2 bg-input-bg p-3 rounded-lg border border-surface-border">
               {STICKERS.map(s => (
                 <button
                   key={s.id}
                   onClick={() => toggleSticker(s.emoji)}
                   className={`
                     text-2xl p-1.5 rounded transition-all hover:scale-110
-                    ${stickers.includes(s.emoji) ? 'bg-white shadow-sm ring-1 ring-stone-200' : 'opacity-60 hover:opacity-100'}
+                    ${stickers.includes(s.emoji) ? 'bg-paper-dark shadow-sm ring-1 ring-surface-border' : 'opacity-60 hover:opacity-100'}
                   `}
                   title={s.label}
                 >
@@ -202,16 +202,16 @@ export const DayEditor: React.FC<DayEditorProps> = ({ date, initialData, onClose
         </div>
 
         {/* Footer */}
-        <div className="bg-stone-50 px-4 py-3 border-t border-stone-200 flex justify-end gap-2">
+        <div className="bg-paper-dark px-4 py-3 border-t border-surface-border flex justify-end gap-2">
           <button 
             onClick={onClose}
-            className="px-4 py-1.5 rounded text-sm font-medium text-stone-500 hover:bg-stone-200 transition-colors"
+            className="px-4 py-1.5 rounded text-sm font-medium text-text-secondary hover:bg-surface-hover transition-colors"
           >
             {t('cancel')}
           </button>
           <button 
             onClick={handleSave}
-            className="flex items-center gap-2 px-4 py-1.5 rounded text-sm font-medium bg-ink-black text-white hover:bg-stone-700 transition-colors shadow-sm"
+            className="flex items-center gap-2 px-4 py-1.5 rounded text-sm font-medium bg-ink-black text-paper hover:bg-ink-black/80 transition-colors shadow-sm"
           >
             <Save size={14} /> {t('saveChanges')}
           </button>
@@ -226,7 +226,7 @@ export const DayEditor: React.FC<DayEditorProps> = ({ date, initialData, onClose
             onClick={closeEmojiPicker}
           />
           <div 
-            className="fixed z-50 bg-white rounded-lg shadow-2xl border border-stone-200 p-2 w-[200px]"
+            className="fixed z-50 bg-surface rounded-lg shadow-2xl border border-surface-border p-2 w-[200px]"
             style={{
               top: `${emojiPickerPosition.top}px`,
               left: `${emojiPickerPosition.left}px`
@@ -237,7 +237,7 @@ export const DayEditor: React.FC<DayEditorProps> = ({ date, initialData, onClose
                 <button
                   key={index}
                   onClick={() => handleSelectEmoji(emojiPickerOpen, emoji)}
-                  className="text-xl hover:bg-stone-100 rounded p-1 transition-colors hover:scale-110"
+                  className="text-xl hover:bg-surface-hover rounded p-1 transition-colors hover:scale-110"
                   title={emoji}
                 >
                   {emoji}

@@ -125,15 +125,15 @@ export const UpdateModal: React.FC<UpdateModalProps> = ({ onClose }) => {
       onClick={handleBackdropClick}
     >
       <div 
-        className="bg-white w-[400px] rounded-lg shadow-2xl overflow-hidden flex flex-col transition-all duration-200 ease-out"
+        className="bg-surface w-[400px] rounded-lg shadow-2xl overflow-hidden flex flex-col transition-all duration-200 ease-out"
         style={modalStyle}
       >
         {/* Header */}
-        <div className="bg-[#ececec] px-4 py-2 border-b border-[#dcdcdc] flex justify-between items-center select-none">
-          <span className="text-xs font-bold text-stone-600">{t('checkUpdate')}</span>
+        <div className="bg-paper-dark px-4 py-2 border-b border-surface-border flex justify-between items-center select-none">
+          <span className="text-xs font-bold text-ink-black">{t('checkUpdate')}</span>
           <button 
             onClick={handleClose} 
-            className="text-stone-400 hover:text-stone-600 transition-colors"
+            className="text-text-secondary hover:text-ink-black transition-colors"
             title="Close"
           >
             <X size={16} />
@@ -143,16 +143,16 @@ export const UpdateModal: React.FC<UpdateModalProps> = ({ onClose }) => {
         {/* Content */}
         <div className="p-6 flex flex-col gap-4">
           {/* 版本信息 */}
-          <div className="bg-stone-50 p-4 rounded-lg border border-stone-200 space-y-3">
+          <div className="bg-paper-dark p-4 rounded-lg border border-surface-border space-y-3">
             <div className="flex justify-between items-center">
-              <span className="text-sm text-stone-600">{t('currentVersion')}</span>
-              <span className="text-sm font-mono font-medium text-stone-800">
+              <span className="text-sm text-text-secondary">{t('currentVersion')}</span>
+              <span className="text-sm font-mono font-medium text-ink-black">
                 {currentVersion || '...'}
               </span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-sm text-stone-600">{t('latestVersion')}</span>
-              <span className="text-sm font-mono font-medium text-stone-800">
+              <span className="text-sm text-text-secondary">{t('latestVersion')}</span>
+              <span className="text-sm font-mono font-medium text-ink-black">
                 {latestVersion || t('unknown')}
               </span>
             </div>
@@ -160,30 +160,30 @@ export const UpdateModal: React.FC<UpdateModalProps> = ({ onClose }) => {
 
           {/* 状态显示 */}
           {status === 'checking' && (
-            <div className="flex items-center justify-center gap-2 py-3 text-stone-600">
+            <div className="flex items-center justify-center gap-2 py-3 text-text-secondary">
               <RefreshCw size={16} className="animate-spin" />
               <span className="text-sm">{t('checkingUpdate')}</span>
             </div>
           )}
 
           {status === 'latest' && (
-            <div className="flex items-center justify-center gap-2 py-3 text-green-600 bg-green-50 rounded-lg border border-green-200">
+            <div className="flex items-center justify-center gap-2 py-3 text-green-400 bg-green-950 rounded-lg border border-green-800">
               <CheckCircle size={18} />
               <span className="text-sm font-medium">{t('alreadyLatest')}</span>
             </div>
           )}
 
           {status === 'available' && (
-            <div className="flex flex-col gap-3 py-3 px-4 bg-blue-50 rounded-lg border border-blue-200">
-              <div className="flex items-center gap-2 text-blue-600">
+            <div className="flex flex-col gap-3 py-3 px-4 bg-blue-950 rounded-lg border border-blue-800">
+              <div className="flex items-center gap-2 text-blue-400">
                 <Info size={18} />
                 <span className="text-sm font-medium">{t('newVersionAvailable')}</span>
               </div>
               {releaseInfo && (
-                <div className="text-xs text-stone-600">
+                <div className="text-xs text-ink-black">
                   <p className="font-medium">{releaseInfo.name}</p>
                   {releaseInfo.published_at && (
-                    <p className="text-stone-500 mt-1">
+                    <p className="text-text-secondary mt-1">
                       {t('publishedAt')}: {new Date(releaseInfo.published_at).toLocaleDateString()}
                     </p>
                   )}
@@ -191,7 +191,7 @@ export const UpdateModal: React.FC<UpdateModalProps> = ({ onClose }) => {
               )}
               <button
                 onClick={openGitHubRelease}
-                className="flex items-center justify-center gap-2 w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-medium transition-colors"
+                className="flex items-center justify-center gap-2 w-full py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-md text-sm font-medium transition-colors"
               >
                 <ExternalLink size={14} />
                 {t('viewRelease')}
@@ -200,7 +200,7 @@ export const UpdateModal: React.FC<UpdateModalProps> = ({ onClose }) => {
           )}
 
           {status === 'error' && (
-            <div className="flex items-center justify-center gap-2 py-3 text-red-600 bg-red-50 rounded-lg border border-red-200">
+            <div className="flex items-center justify-center gap-2 py-3 text-red-400 bg-red-950 rounded-lg border border-red-800">
               <AlertCircle size={18} />
               <span className="text-sm">{t('updateCheckFailed')}: {errorMessage}</span>
             </div>
@@ -210,19 +210,19 @@ export const UpdateModal: React.FC<UpdateModalProps> = ({ onClose }) => {
           <button
             onClick={checkForUpdates}
             disabled={status === 'checking'}
-            className="flex items-center justify-center gap-2 w-full py-2.5 bg-stone-800 hover:bg-stone-900 disabled:bg-stone-400 text-white rounded-md text-sm font-medium transition-colors"
+            className="flex items-center justify-center gap-2 w-full py-2.5 bg-ink-black hover:bg-ink-black/80 disabled:bg-stone-600 text-paper rounded-md text-sm font-medium transition-colors"
           >
             <RefreshCw size={14} className={status === 'checking' ? 'animate-spin' : ''} />
             {t('checkLatestVersion')}
           </button>
 
           {/* 分隔线 */}
-          <div className="border-t border-stone-200"></div>
+          <div className="border-t border-surface-border"></div>
 
           {/* 发布页链接 */}
           <button
             onClick={openReleasePage}
-            className="flex items-center justify-center gap-2 w-full py-2.5 bg-white hover:bg-stone-50 border border-stone-300 text-stone-700 rounded-md text-sm font-medium transition-colors"
+            className="flex items-center justify-center gap-2 w-full py-2.5 bg-paper-dark hover:bg-surface-hover border border-surface-border text-ink-black rounded-md text-sm font-medium transition-colors"
           >
             <ExternalLink size={14} />
             {t('openReleasePage')}

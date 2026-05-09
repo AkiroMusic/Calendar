@@ -119,12 +119,12 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onSuccess, onClose, defaul
     <div 
       className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md transition-all duration-300"
       style={{
-        backgroundColor: isVisible ? 'rgba(0, 0, 0, 0.7)' : 'rgba(0, 0, 0, 0)',
+        backgroundColor: isVisible ? 'rgba(0, 0, 0, 0.85)' : 'rgba(0, 0, 0, 0)',
         opacity: isVisible ? 1 : 0
       }}
     >
       <div 
-        className="bg-white w-[400px] rounded-2xl shadow-2xl overflow-hidden flex flex-col transition-all duration-300 ease-out"
+        className="bg-surface w-[400px] rounded-2xl shadow-2xl overflow-hidden flex flex-col transition-all duration-300 ease-out"
         style={{
           transform: isVisible ? 'translateY(0) scale(1)' : 'translateY(20px) scale(0.95)',
           opacity: isVisible ? 1 : 0
@@ -137,8 +137,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onSuccess, onClose, defaul
               onClick={() => handleMethodChange('pin')}
               className={`flex-1 py-3 text-sm font-medium transition-all ${
                 activeMethod === 'pin'
-                  ? 'bg-stone-800 text-white shadow-sm'
-                  : 'bg-white text-stone-600 hover:bg-stone-50 hover:text-stone-800'
+                  ? 'bg-ink-black text-paper shadow-sm'
+                  : 'bg-surface text-text-secondary hover:bg-surface-hover hover:text-ink-black'
               }`}
             >
               PIN 码
@@ -147,8 +147,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onSuccess, onClose, defaul
               onClick={() => handleMethodChange('totp')}
               className={`flex-1 py-3 text-sm font-medium transition-all ${
                 activeMethod === 'totp'
-                  ? 'bg-stone-800 text-white shadow-sm'
-                  : 'bg-white text-stone-600 hover:bg-stone-50 hover:text-stone-800'
+                  ? 'bg-ink-black text-paper shadow-sm'
+                  : 'bg-surface text-text-secondary hover:bg-surface-hover hover:text-ink-black'
               }`}
             >
               验证器
@@ -156,7 +156,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onSuccess, onClose, defaul
           </div>
         )}
 
-        <div className="bg-gradient-to-r from-stone-800 to-stone-600 px-6 py-8 text-center">
+        <div className="bg-gradient-to-r from-stone-900 to-stone-700 px-6 py-8 text-center">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-white/10 rounded-full mb-4">
             {activeMethod === 'pin' ? (
               <KeyRound size={32} className="text-white" />
@@ -188,7 +188,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onSuccess, onClose, defaul
                 onKeyPress={handleKeyPress}
                 placeholder={activeMethod === 'pin' ? '输入 PIN 码' : '输入验证码'}
                 disabled={attempts >= 5}
-                className="w-full px-4 py-3 text-center text-2xl tracking-[0.5em] border-2 border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-stone-400 disabled:bg-stone-100 font-mono"
+                className="w-full px-4 py-3 text-center text-2xl tracking-[0.5em] border-2 border-surface-border bg-input-bg rounded-lg focus:outline-none focus:ring-2 focus:ring-stone-500 disabled:bg-paper-dark font-mono text-ink-black placeholder-stone-500"
                 autoFocus
               />
             </div>
@@ -200,24 +200,24 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onSuccess, onClose, defaul
                   key={i}
                   className={`w-3 h-3 rounded-full transition-all ${
                     i < pinInput.length
-                      ? 'bg-stone-800 scale-110'
-                      : 'bg-stone-200'
+                      ? 'bg-ink-black scale-110'
+                      : 'bg-stone-600'
                   }`}
                 />
               ))}
             </div>
 
             {error && (
-              <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-lg">
-                <AlertCircle size={16} className="text-red-500 flex-shrink-0" />
-                <p className="text-sm text-red-700">{error}</p>
+              <div className="flex items-center gap-2 p-3 bg-red-950 border border-red-800 rounded-lg">
+                <AlertCircle size={16} className="text-red-400 flex-shrink-0" />
+                <p className="text-sm text-red-400">{error}</p>
               </div>
             )}
 
             <button
               onClick={activeMethod === 'pin' ? handlePinSubmit : handleTOTPSubmit}
               disabled={(activeMethod === 'pin' && pinInput.length < 4) || (activeMethod === 'totp' && pinInput.length !== 6) || attempts >= 5}
-              className="w-full py-3 bg-stone-800 hover:bg-stone-900 disabled:bg-stone-300 text-white rounded-lg font-medium transition-colors disabled:cursor-not-allowed"
+              className="w-full py-3 bg-ink-black hover:bg-ink-black/80 disabled:bg-stone-600 text-paper rounded-lg font-medium transition-colors disabled:cursor-not-allowed"
             >
               解锁
             </button>
@@ -225,7 +225,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onSuccess, onClose, defaul
             {onClose && (
               <button
                 onClick={onClose}
-                className="w-full py-1 text-stone-500 hover:text-stone-700 text-sm font-medium transition-colors"
+                className="w-full py-1 text-text-secondary hover:text-ink-black text-sm font-medium transition-colors"
               >
                 退出应用
               </button>

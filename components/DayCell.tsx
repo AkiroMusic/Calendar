@@ -64,10 +64,10 @@ const DayCellComponent: React.FC<DayCellProps> = ({ day, currentDate, data, onCl
   return (
     <div 
       className={`
-        relative flex flex-col border-r border-b border-stone-200 select-none
-        ${!isCurrentMonth ? 'bg-stone-50/50 text-stone-300 cursor-default' : 'bg-white text-stone-800 cursor-pointer hover:bg-stone-50'}
-        ${isToday ? 'ring-2 ring-inset ring-yellow-200 bg-yellow-50/30' : ''}
-        ${highlight ? 'ring-4 ring-blue-400 bg-blue-50 animate-pulse' : ''}
+        relative flex flex-col border-r border-b border-surface-border select-none
+        ${!isCurrentMonth ? 'bg-paper text-stone-600 cursor-default' : 'bg-surface text-ink-black cursor-pointer hover:bg-surface-hover'}
+        ${isToday ? 'ring-2 ring-inset ring-yellow-600 bg-yellow-900/20' : ''}
+        ${highlight ? 'ring-4 ring-blue-600 bg-blue-900/20 animate-pulse' : ''}
         transition-all duration-200 group overflow-hidden h-full min-h-0
       `}
       style={{
@@ -84,19 +84,19 @@ const DayCellComponent: React.FC<DayCellProps> = ({ day, currentDate, data, onCl
             <span className={`
             text-base font-sans font-bold 
             ${isWeekend && isCurrentMonth ? 'text-ink-red' : ''}
-            ${!isCurrentMonth ? 'text-stone-300' : ''}
+            ${!isCurrentMonth ? 'text-stone-600' : ''}
             `}>
             {getDate(day)}
             </span>
             <div className="flex items-center gap-1 mt-0.5 w-full overflow-hidden">
               <div className="flex items-center gap-1 min-w-0 flex-1 overflow-hidden">
-                <span className="text-[8px] text-stone-400 font-serif transform scale-90 origin-left truncate">{lunar}</span>
+                <span className="text-[8px] text-text-secondary font-serif transform scale-90 origin-left truncate">{lunar}</span>
                 {holiday && (
                   <span className="text-[8px] text-ink-red font-medium truncate">{holiday}</span>
                 )}
               </div>
               {events.length > maxEllipsisCount && (
-                <span className="text-[8px] text-stone-400 whitespace-nowrap shrink-0">
+                <span className="text-[8px] text-text-secondary whitespace-nowrap shrink-0">
                   {t('entriesCount').replace('{count}', String(events.length))}
                 </span>
               )}
@@ -122,7 +122,7 @@ const DayCellComponent: React.FC<DayCellProps> = ({ day, currentDate, data, onCl
             ref={index === 0 ? firstItemRef : undefined}
             className="flex items-baseline gap-1 text-[9px] leading-[1.5] text-stone-600 truncate"
           >
-            <span className="text-stone-400 font-mono text-[8px] shrink-0">{index + 1}.</span>
+            <span className="text-text-secondary font-mono text-[8px] shrink-0">{index + 1}.</span>
             <span className="shrink-0">{event.emoji}</span>
             <span className="truncate">{event.summary || event.rawText}</span>
           </div>
