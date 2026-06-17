@@ -1,25 +1,30 @@
 
 import React, { useState, useEffect } from 'react';
-import { X, Folder, Download, Upload, HardDrive, Globe, Lock, KeyRound, Smartphone, Copy, Check, Cloud, Eye, EyeOff, RefreshCw } from 'lucide-react';
+import { X, Folder, Download, Upload, HardDrive, Globe, Lock, KeyRound, Smartphone, Copy, Check, CalendarDays, Plus, Trash2 } from 'lucide-react';
+import { ScheduleConfig, Teacher, Course, TEACHER_COLORS } from '../types';
 import { t, setLanguage, getCurrentLanguage, languageNames, type Language } from '../utils/i18n';
 import * as OTPAuth from 'otpauth';
 import QRCode from 'qrcode';
 import { getAppVersion } from '../utils/version';
-import { webdavService, type WebDAVConfig } from '../services/webdavService';
 
 interface SettingsModalProps {
   onClose: () => void;
   onExport: () => void;
   onImport: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onDisplaySettingsChange?: (mode: 'ellipsis' | 'scroll') => void;
+  scheduleConfig: ScheduleConfig;
+  onScheduleConfigChange: (config: ScheduleConfig) => void;
 }
 
-type TabType = 'general' | 'security' | 'cloud';
+type TabType = 'general' | 'security' | 'schedule';
 
-export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport, onImport, onDisplaySettingsChange }) => {
+export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport, onImport, onDisplaySettingsChange, scheduleConfig, onScheduleConfigChange }) => {
   const [dataPath, setDataPath] = useState('LocalStorage (Browser)');
   const [isElectron, setIsElectron] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState<Language>(getCurrentLanguage());
+  const [fontSize, setFontSize] = useState(() => {
+    return localStorage.getItem('calendar-diary-font-size') || 'medium';
+  });
   const [isVisible, setIsVisible] = useState(false);
   const [activeTab, setActiveTab] = useState<TabType>('general');
   const [appVersion, setAppVersion] = useState<string>('');
@@ -39,15 +44,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
   const [savedPin, setSavedPin] = useState(false);
   const [savedTotp, setSavedTotp] = useState(false);
 
-  // WebDAV settings
-  const [webdavUrl, setWebdavUrl] = useState('');
-  const [webdavPath, setWebdavPath] = useState('/calendar-diary');
-  const [webdavUsername, setWebdavUsername] = useState('');
-  const [webdavPassword, setWebdavPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [webdavTesting, setWebdavTesting] = useState(false);
-  const [webdavTestResult, setWebdavTestResult] = useState<'success' | 'error' | null>(null);
-  const [webdavTestMessage, setWebdavTestMessage] = useState('');
+  // Schedule settings
+  const [newTeacherName, setNewTeacherName] = useState('');
+  const [newTeacherColor, setNewTeacherColor] = useState(TEACHER_COLORS[0]);
+  const [newCourseName, setNewCourseName] = useState('');
 
   const generateQRCode = async (secret: string) => {
     try {
@@ -155,20 +155,6 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
         console.error('Failed to load security settings:', error);
       }
     }
-
-    // 加载 WebDAV 设置
-    const savedWebdav = localStorage.getItem('calendar-diary-webdav');
-    if (savedWebdav) {
-      try {
-        const webdav = JSON.parse(savedWebdav) as WebDAVConfig;
-        setWebdavUrl(webdav.serverUrl || '');
-        setWebdavPath(webdav.rootPath || '/calendar-diary');
-        setWebdavUsername(webdav.username || '');
-        setWebdavPassword(webdav.password || '');
-      } catch (error) {
-        console.error('Failed to load WebDAV settings:', error);
-      }
-    }
   }, []);
 
   const handleLanguageChange = (lang: Language) => {
@@ -176,6 +162,12 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
     setLanguage(lang);
     // Force re-render by closing and reopening
     window.location.reload();
+  };
+
+  const handleFontSizeChange = (size: string) => {
+    setFontSize(size);
+    localStorage.setItem('calendar-diary-font-size', size);
+    document.documentElement.setAttribute('data-font-size', size);
   };
 
   const handleOpenFolder = async () => {
@@ -188,55 +180,48 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
     }
   };
 
-  const handleTestWebdav = async () => {
-    if (!webdavUrl) {
-      setWebdavTestResult('error');
-      setWebdavTestMessage(t('webdavUrlRequired'));
-      return;
-    }
-
-    setWebdavTesting(true);
-    setWebdavTestResult(null);
-    setWebdavTestMessage('');
-
-    try {
-      const config: WebDAVConfig = {
-        serverUrl: webdavUrl,
-        rootPath: webdavPath || '/calendar-diary',
-        username: webdavUsername,
-        password: webdavPassword
-      };
-
-      webdavService.connect(config);
-      const result = await webdavService.testConnection();
-      
-      if (result.success) {
-        setWebdavTestResult('success');
-        setWebdavTestMessage(t('webdavTestSuccess'));
-      } else {
-        setWebdavTestResult('error');
-        setWebdavTestMessage(result.error || t('webdavTestFailed'));
-      }
-    } catch (error) {
-      setWebdavTestResult('error');
-      setWebdavTestMessage(error instanceof Error ? error.message : t('webdavTestFailed'));
-    } finally {
-      setWebdavTesting(false);
-    }
-  };
-
-  const handleSaveWebdav = () => {
-    const config: WebDAVConfig = {
-      serverUrl: webdavUrl,
-      rootPath: webdavPath || '/calendar-diary',
-      username: webdavUsername,
-      password: webdavPassword
+  const handleAddTeacher = () => {
+    const name = newTeacherName.trim();
+    if (!name) return;
+    const newTeacher: Teacher = {
+      id: Date.now().toString(),
+      name,
+      color: newTeacherColor,
     };
-    localStorage.setItem('calendar-diary-webdav', JSON.stringify(config));
-    webdavService.connect(config);
-    onClose();
+    onScheduleConfigChange({
+      ...scheduleConfig,
+      teachers: [...scheduleConfig.teachers, newTeacher],
+    });
+    setNewTeacherName('');
   };
 
+  const handleDeleteTeacher = (id: string) => {
+    onScheduleConfigChange({
+      ...scheduleConfig,
+      teachers: scheduleConfig.teachers.filter(t => t.id !== id),
+    });
+  };
+
+  const handleAddCourse = () => {
+    const name = newCourseName.trim();
+    if (!name) return;
+    const newCourse: Course = {
+      id: Date.now().toString(),
+      name,
+    };
+    onScheduleConfigChange({
+      ...scheduleConfig,
+      courses: [...scheduleConfig.courses, newCourse],
+    });
+    setNewCourseName('');
+  };
+
+  const handleDeleteCourse = (id: string) => {
+    onScheduleConfigChange({
+      ...scheduleConfig,
+      courses: scheduleConfig.courses.filter(c => c.id !== id),
+    });
+  };
 
   const handleSaveSecurity = () => {
     // 当前选中的验证方式的验证
@@ -358,6 +343,17 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
             {t('generalSettings')}
           </button>
           <button
+            onClick={() => setActiveTab('schedule')}
+            className={`flex items-center gap-2 px-6 py-3 text-sm font-medium transition-all ${
+              activeTab === 'schedule'
+                ? 'text-ink-black border-b-2 border-ink-black bg-surface'
+                : 'text-text-secondary hover:text-ink-black hover:bg-surface-hover'
+            }`}
+          >
+            <CalendarDays size={16} />
+            排课管理
+          </button>
+          <button
             onClick={() => setActiveTab('security')}
             className={`flex items-center gap-2 px-6 py-3 text-sm font-medium transition-all ${
               activeTab === 'security'
@@ -367,17 +363,6 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
           >
             <Lock size={16} />
             {t('securityPrivacy')}
-          </button>
-          <button
-            onClick={() => setActiveTab('cloud')}
-            className={`flex items-center gap-2 px-6 py-3 text-sm font-medium transition-all ${
-              activeTab === 'cloud'
-                ? 'text-ink-black border-b-2 border-ink-black bg-surface'
-                : 'text-text-secondary hover:text-ink-black hover:bg-surface-hover'
-            }`}
-          >
-            <Cloud size={16} />
-            {t('cloudSync')}
           </button>
         </div>
 
@@ -411,7 +396,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
                             )}
                         </div>
                         <p className="text-[10px] text-text-secondary mt-1">
-                            {isElectron ? 'Files: paperplan_data.json, paperplan_plans.json' : 'Data stored in browser LocalStorage'}
+                            {isElectron ? 'Files: calendar-diary_data.json, calendar-diary_plans.json' : 'Data stored in browser LocalStorage'}
                         </p>
                     </div>
                     
@@ -449,6 +434,32 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
                             }`}
                         >
                             {languageNames[lang]}
+                        </button>
+                    ))}
+                </div>
+            </section>
+
+            {/* Font Size Section */}
+            <section>
+                <h3 className="text-sm font-bold text-ink-black mb-3 flex items-center gap-2">
+                    <span className="text-base">Aa</span> 字体大小
+                </h3>
+                <div className="grid grid-cols-3 gap-2">
+                    {[
+                        { key: 'small', label: '小' },
+                        { key: 'medium', label: '中' },
+                        { key: 'large', label: '大' },
+                    ].map(({ key, label }) => (
+                        <button
+                            key={key}
+                            onClick={() => handleFontSizeChange(key)}
+                            className={`py-2 px-3 rounded text-sm transition-all ${
+                                fontSize === key
+                                    ? 'bg-ink-black text-paper font-medium'
+                                    : 'bg-paper-dark text-ink-black hover:bg-surface-hover border border-surface-border'
+                            }`}
+                        >
+                            {label}
                         </button>
                     ))}
                 </div>
@@ -706,109 +717,111 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
               </>
             )}
 
-            {activeTab === 'cloud' && (
+            {activeTab === 'schedule' && (
               <>
-            {/* WebDAV Configuration Section */}
-            <section>
-                <h3 className="text-sm font-bold text-ink-black mb-3 flex items-center gap-2">
-                    <Cloud size={16} /> {t('webdavConfig')}
-                </h3>
-                <div className="bg-paper-dark p-4 rounded-md border border-surface-border space-y-4">
-                    <p className="text-xs text-text-secondary">{t('webdavConfigDesc')}</p>
-                    
-                    {/* Server URL */}
-                    <div>
-                        <label className="block text-xs font-medium text-text-secondary mb-1.5">{t('webdavServerUrl')}</label>
-                        <input
-                            type="text"
-                            value={webdavUrl}
-                            onChange={(e) => {
-                                setWebdavUrl(e.target.value);
-                                setWebdavTestResult(null);
-                            }}
-                            placeholder="https://your-server.com/webdav"
-                            className="w-full px-3 py-2 border border-surface-border bg-input-bg rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-stone-500 text-ink-black placeholder-stone-500"
+                {/* Teachers Section */}
+                <section>
+                  <h3 className="text-sm font-bold text-ink-black mb-3 flex items-center gap-2">
+                    <CalendarDays size={16} /> 教师管理
+                  </h3>
+                  <div className="bg-paper-dark p-4 rounded-md border border-surface-border space-y-3">
+                    {scheduleConfig.teachers.length === 0 && (
+                      <p className="text-xs text-text-secondary text-center py-2">暂无教师，请在下方添加</p>
+                    )}
+                    {scheduleConfig.teachers.map(teacher => (
+                      <div key={teacher.id} className="flex items-center gap-2 bg-paper-dark border border-surface-border rounded px-3 py-2">
+                        <span
+                          className="w-4 h-4 rounded-full shrink-0"
+                          style={{ backgroundColor: teacher.color }}
                         />
-                    </div>
-
-                    {/* Root Path */}
-                    <div>
-                        <label className="block text-xs font-medium text-text-secondary mb-1.5">{t('webdavRootPath')}</label>
-                        <input
-                            type="text"
-                            value={webdavPath}
-                            onChange={(e) => {
-                                setWebdavPath(e.target.value);
-                                setWebdavTestResult(null);
-                            }}
-                            placeholder="/calendar-diary"
-                            className="w-full px-3 py-2 border border-surface-border bg-input-bg rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-stone-500 text-ink-black placeholder-stone-500"
-                        />
-                        <p className="text-[10px] text-text-secondary mt-1">{t('webdavRootPathHint')}</p>
-                    </div>
-
-                    {/* Username */}
-                    <div>
-                        <label className="block text-xs font-medium text-text-secondary mb-1.5">{t('webdavUsername')}</label>
-                        <input
-                            type="text"
-                            value={webdavUsername}
-                            onChange={(e) => {
-                                setWebdavUsername(e.target.value);
-                                setWebdavTestResult(null);
-                            }}
-                            placeholder={t('webdavUsernamePlaceholder')}
-                            className="w-full px-3 py-2 border border-surface-border bg-input-bg rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-stone-500 text-ink-black placeholder-stone-500"
-                        />
-                    </div>
-
-                    {/* Password */}
-                    <div>
-                        <label className="block text-xs font-medium text-text-secondary mb-1.5">{t('webdavPassword')}</label>
-                        <div className="relative">
-                            <input
-                                type={showPassword ? 'text' : 'password'}
-                                value={webdavPassword}
-                                onChange={(e) => {
-                                    setWebdavPassword(e.target.value);
-                                    setWebdavTestResult(null);
-                                }}
-                                placeholder={t('webdavPasswordPlaceholder')}
-                                className="w-full px-3 py-2 pr-10 border border-surface-border bg-input-bg rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-stone-500 text-ink-black placeholder-stone-500"
-                            />
-                            <button
-                                type="button"
-                                onClick={() => setShowPassword(!showPassword)}
-                                className="absolute right-2 top-1/2 -translate-y-1/2 text-text-secondary hover:text-ink-black"
-                            >
-                                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* Test Connection Button */}
-                    <div className="pt-2 border-t border-surface-border">
+                        <span className="flex-1 text-sm text-ink-black">{teacher.name}</span>
                         <button
-                            onClick={handleTestWebdav}
-                            disabled={webdavTesting || !webdavUrl}
-                            className="flex items-center justify-center gap-2 w-full py-2 px-4 bg-paper-dark border border-surface-border rounded-md text-sm font-medium hover:bg-surface-hover disabled:bg-paper-dark disabled:text-stone-600 disabled:cursor-not-allowed transition-colors text-ink-black"
+                          onClick={() => handleDeleteTeacher(teacher.id)}
+                          className="text-text-secondary hover:text-red-400 transition-colors"
+                          title="删除教师"
                         >
-                            <RefreshCw size={14} className={webdavTesting ? 'animate-spin' : ''} />
-                            {webdavTesting ? t('webdavTesting') : t('webdavTestConnection')}
+                          <Trash2 size={14} />
                         </button>
-                        
-                        {webdavTestResult && (
-                            <div className={`mt-2 p-2 rounded text-xs ${
-                                webdavTestResult === 'success' 
-                                    ? 'bg-green-950 text-green-400 border border-green-800' 
-                                    : 'bg-red-950 text-red-400 border border-red-800'
-                            }`}>
-                                {webdavTestResult === 'success' ? '✓' : '✗'} {webdavTestMessage}
-                            </div>
-                        )}
+                      </div>
+                    ))}
+                    <div className="pt-2 border-t border-surface-border space-y-2">
+                      <p className="text-xs font-medium text-text-secondary">添加教师</p>
+                      <input
+                        type="text"
+                        value={newTeacherName}
+                        onChange={e => setNewTeacherName(e.target.value)}
+                        onKeyDown={e => e.key === 'Enter' && handleAddTeacher()}
+                        placeholder="输入姓名，如：张老师"
+                        className="w-full px-3 py-1.5 border border-surface-border rounded text-sm bg-input-bg focus:outline-none focus:ring-2 focus:ring-stone-500 text-ink-black placeholder-stone-500"
+                      />
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs text-text-secondary shrink-0">颜色：</span>
+                        <div className="flex gap-1.5 flex-wrap">
+                          {TEACHER_COLORS.map(color => (
+                            <button
+                              key={color}
+                              onClick={() => setNewTeacherColor(color)}
+                              className={`w-5 h-5 rounded-full transition-all ${newTeacherColor === color ? 'ring-2 ring-offset-1 ring-stone-500 scale-110' : 'hover:scale-110'}`}
+                              style={{ backgroundColor: color }}
+                              title={color}
+                            />
+                          ))}
+                        </div>
+                        <button
+                          onClick={handleAddTeacher}
+                          disabled={!newTeacherName.trim()}
+                          className="ml-auto flex items-center gap-1 px-3 py-1 bg-ink-black text-paper text-xs rounded hover:bg-ink-black/80 disabled:bg-stone-600 disabled:cursor-not-allowed transition-colors"
+                        >
+                          <Plus size={12} /> 添加
+                        </button>
+                      </div>
                     </div>
-                </div>
-            </section>
+                  </div>
+                </section>
+
+                {/* Courses Section */}
+                <section>
+                  <h3 className="text-sm font-bold text-ink-black mb-3 flex items-center gap-2">
+                    <HardDrive size={16} /> 课程管理
+                  </h3>
+                  <div className="bg-paper-dark p-4 rounded-md border border-surface-border space-y-3">
+                    {scheduleConfig.courses.length === 0 && (
+                      <p className="text-xs text-text-secondary text-center py-2">暂无课程，请在下方添加</p>
+                    )}
+                    {scheduleConfig.courses.map(course => (
+                      <div key={course.id} className="flex items-center gap-2 bg-paper-dark border border-surface-border rounded px-3 py-2">
+                        <span className="flex-1 text-sm text-ink-black">{course.name}</span>
+                        <button
+                          onClick={() => handleDeleteCourse(course.id)}
+                          className="text-text-secondary hover:text-red-400 transition-colors"
+                          title="删除课程"
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                    ))}
+                    <div className="pt-2 border-t border-surface-border space-y-2">
+                      <p className="text-xs font-medium text-text-secondary">添加课程</p>
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          value={newCourseName}
+                          onChange={e => setNewCourseName(e.target.value)}
+                          onKeyDown={e => e.key === 'Enter' && handleAddCourse()}
+                          placeholder="输入课程名，如：第3课 音阶练习"
+                          className="flex-1 px-3 py-1.5 border border-surface-border rounded text-sm bg-input-bg focus:outline-none focus:ring-2 focus:ring-stone-500 text-ink-black placeholder-stone-500"
+                        />
+                        <button
+                          onClick={handleAddCourse}
+                          disabled={!newCourseName.trim()}
+                          className="flex items-center gap-1 px-3 py-1.5 bg-ink-black text-paper text-xs rounded hover:bg-ink-black/80 disabled:bg-stone-600 disabled:cursor-not-allowed transition-colors"
+                        >
+                          <Plus size={12} /> 添加
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </section>
               </>
             )}
         </div>
@@ -820,16 +833,14 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
            >
              {t('cancel')}
            </button>
-           <button 
-             onClick={() => {
-               if (activeTab === 'security') {
-                 handleSaveSecurity();
-               } else if (activeTab === 'cloud') {
-                 handleSaveWebdav();
-               } else if (activeTab === 'general') {
-                 onClose();
-               }
-             }}
+            <button 
+                onClick={() => {
+                  if (activeTab === 'security') {
+                    handleSaveSecurity();
+                  } else {
+                    onClose();
+                  }
+                }}
              className="bg-ink-black hover:bg-ink-black/80 text-paper px-6 py-1.5 rounded text-sm font-medium transition-colors shadow-sm"
            >
              {t('saveChanges')}

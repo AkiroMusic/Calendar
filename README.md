@@ -1,18 +1,18 @@
 <div align="center">
 
-**简体中文** | [English](README_EN.md) | [繁體中文](README_TW.md) | [日本語](README_JA.md) | [한국어](README_KO.md) | [Русский](README_RU.md)
+**简体中文** | [English](README_EN.md)
 
-# 📅 CalendarDiary - 日历日记
+# 📅 Akiro Calendar - 日历日程
 
 <p align="center">
-  <img src="logo.png" alt="CalendarDiary Logo" width="120" height="120">
+  <img src="logo.png" alt="Akiro Calendar Logo" width="120" height="120">
 </p>
 
-**一款简洁优雅的日历日记应用，帮助你记录每天的点滴生活**
+**一款简洁优雅的日历日程应用，支持排课管理和每日记录**
 
-[![Version](https://img.shields.io/badge/version-0.2.0--beta-blue.svg)](https://github.com/trustdev-org/calendar-diary/releases)
+[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)]()
 [![License](https://img.shields.io/badge/license-CC--BY--NC--4.0-green.svg)](LICENSE)
-[![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)](https://github.com/trustdev-org/calendar-diary/releases)
+[![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)]()
 
 [📥 下载应用](#-下载安装) • [✨ 使用方法](#-使用方法) • [🚀 开发指南](#-开发指南) • [📝 更新日志](CHANGELOG.md)
 
@@ -22,36 +22,19 @@
 
 ## 📖 软件介绍
 
-CalendarDiary 是一款跨平台的桌面日历日记应用，采用现代化设计理念，为用户提供简洁直观的记录体验。
-
-### 软件界面展示
-
-<img src="./img-preview-1.png"/>
-
-<img src="./img-preview-2.png"/>
-
-### 如何写入内容
-
-<img src="./img-how-to-use-1.gif"/>
-
-### 如何切换月份
-
-<img src="./img-how-to-use-2.gif"/>
+Akiro Calendar 是一款跨平台的桌面日历日程应用，采用现代化设计理念，为用户提供简洁直观的记录与排课管理体验。
 
 ### ✨ 核心特色
 
 - **🎯 简洁设计** - 极简界面，专注于内容本身
-- **📝 灵活记录** - 支持多行文本，记录待办事项与日记
-- **🎨 心情贴纸** - 丰富的表情符号，记录每日心情
+- **📚 排课管理** - 支持教师管理（姓名+颜色标识）、课程管理，结构化录入课程安排
+- **🎨 彩色标签** - 日历格内用教师专属颜色显示彩色课程标签，一目了然
+- **🎭 心情贴纸** - 丰富的表情符号，记录每日心情
 - **📊 月度视图** - 清晰的月历布局，一览全月安排
-- **☁️ 云端同步** - 支持 WebDAV 云同步，多设备数据同步
 - **🔒 隐私保护** - 支持 PIN 码和 TOTP 验证保护
 - **💾 本地存储** - 数据完全本地化，保护隐私安全
-- **🌍 多语言支持** - 支持简中、繁中、英语、日语、韩语、俄语
-
-## ⭐️ Stars 
-
-[![Star History Chart](https://api.star-history.com/svg?repos=trustdev-org/calendar-diary&type=date&legend=top-left)](https://www.star-history.com/#trustdev-org/calendar-diary&type=date&legend=top-left)
+- **🌍 多语言支持** - 支持简体中文、English
+- **📦 数据导入导出** - 完整数据迁移，包含排课配置
 
 ## 🛠️ 技术栈
 
@@ -63,14 +46,14 @@ CalendarDiary 是一款跨平台的桌面日历日记应用，采用现代化设
 | **Vite** | 6.4.1 | 构建工具 |
 | **Tailwind CSS** | 4.1.8 | 样式框架 |
 | **date-fns** | 4.1.0 | 日期处理 |
-| **Lucide React** | 0.469.0 | 图标库 |
-| **webdav** | 5.8.0 | WebDAV 客户端 |
+| **lunar-javascript** | 1.7.7 | 农历日期计算 |
+| **Lucide React** | 0.554.0 | 图标库 |
 
 ## 📥 下载安装
 
-### 最新版本：v0.2.0-beta
+### 最新版本：v1.0.0
 
-前往 [Releases](https://github.com/trustdev-org/calendar-diary/releases) 页面下载适合你系统的安装包：
+下载适合你系统的安装包：
 
 | 平台 | 文件类型 | 说明 |
 |------|----------|------|
@@ -80,56 +63,36 @@ CalendarDiary 是一款跨平台的桌面日历日记应用，采用现代化设
 | 🐧 **Linux** | `.AppImage` | 通用 Linux 应用格式 |
 | 🐧 **Linux** | `.deb` | Debian/Ubuntu 系统 |
 
-### 安装说明
-
-#### Windows
-1. 下载 `CalendarDiary-Setup-0.2.0-beta.exe`
-2. 双击运行安装程序
-3. 按照向导完成安装
-
-#### macOS
-1. 下载 `CalendarDiary-0.2.0-beta-arm64.dmg`
-2. 打开 DMG 文件
-3. 将应用拖入 Applications 文件夹
-4. 首次运行可能需要在"系统设置 > 隐私与安全性"中允许
-
-#### Linux
-```bash
-# AppImage 方式
-chmod +x CalendarDiary-0.2.0-beta-arm64.AppImage
-./CalendarDiary-0.2.0-beta-arm64.AppImage
-
-# Debian/Ubuntu 方式
-sudo dpkg -i calendar-diary_0.2.0-beta_amd64.deb
-```
-
 ## 📖 使用方法
 
 ### 基本操作
 
-#### 1️⃣ 查看日历
-- 启动应用后，默认显示当月日历
-- 点击左右箭头切换月份
-- 点击日期数字快速跳转到指定日期
+#### 1️⃣ 排课管理
+1. 点击右上角设置图标 ⚙️
+2. 切换到「排课管理」标签页
+3. **添加教师**：输入姓名，选择颜色，点击添加
+4. **添加课程**：输入课程名称，点击添加
+5. 教师和课程添加后，即可在日期编辑器中录入课程安排
 
-#### 2️⃣ 记录日记/待办
+#### 2️⃣ 录入课程安排
 1. 点击任意日期格子
-2. 在弹出的编辑器中输入内容
-3. 每条记录可以：
-   - 📝 输入多行文本
-   - 😊 选择表情符号标记
-   - 🗑️ 点击删除图标移除
-4. 点击"保存更改"完成记录
+2. 在弹出的编辑器中，选择教师和课程
+3. 可选填写备注信息
+4. 点击「添加课程记录」可添加多条
+5. 点击「保存更改」完成记录
 
-#### 3️⃣ 添加心情贴纸
+#### 3️⃣ 查看排课
+- 日历格内会显示带教师颜色的课程标签
+- 颜色与教师设置的颜色一致
+- 显示格式：「教师名 · 课程名」
+
+#### 4️⃣ 记录心情贴纸
 - 在日期编辑器底部选择心情贴纸
 - 支持多个贴纸同时添加
-- 再次点击可取消选择
 
-#### 4️⃣ 月度计划
+#### 5️⃣ 月度计划
 - 在日历顶部区域记录本月目标
 - 支持 3 条独立的计划条目
-- 计划会自动保存
 
 ### 高级功能
 
@@ -137,41 +100,27 @@ sudo dpkg -i calendar-diary_0.2.0-beta_amd64.deb
 
 **导出备份：**
 1. 点击右上角设置图标 ⚙️
-2. 选择"导出备份"
-3. 选择保存位置，文件名格式：`paperplan_backup_YYYY-MM-DD.json`
+2. 选择「导出备份」
+3. 选择保存位置，文件名格式：`schedule_backup_YYYY-MM-DD.json`
 
 **导入备份：**
 1. 点击右上角设置图标 ⚙️
-2. 选择"导入备份"
+2. 选择「导入备份」
 3. 选择之前导出的 JSON 文件
-4. 确认导入后数据将恢复
+4. 数据将完整恢复（包括排课配置）
+
+#### 🔍 搜索功能
+- 快捷键 `Ctrl+F`（Windows/Linux）或 `⌘F`（macOS）
+- 支持全文搜索所有课程备注和记录
 
 #### 🌍 切换语言
 1. 点击设置图标 ⚙️
-2. 在"语言"下拉菜单中选择
-3. 语言会立即切换，无需重启
+2. 在「语言」区域选择
+3. 语言会立即切换
 
-#### 📂 查看数据位置
-1. 点击设置图标 ⚙️
-2. 在"数据位置"区域点击"打开文件夹"
-3. 系统会打开数据存储目录
-
-**数据存储路径：**
-- Windows: `%APPDATA%\CalendarDiary\`
-- macOS: `~/Library/Application Support/CalendarDiary/`
-- Linux: `~/.config/CalendarDiary/`
-
-#### 🔄 软件更新
-- 点击工具栏「检查更新」按钮
-- 如有新版本，会显示版本信息和发布页链接
-- 点击链接前往下载页下载最新版本
-
-#### ☁️ 云同步设置
-1. 点击设置图标 ⚙️
-2. 选择「云同步」标签页
-3. 配置 WebDAV 服务器地址、路径、用户名和密码
-4. 点击「测试连接」验证配置
-5. 点击工具栏云图标打开同步管理界面
+#### 🔒 安全保护
+- 支持 PIN 码和 TOTP 验证器双重认证
+- 应用启动时验证身份
 
 ## 🚀 开发指南
 
@@ -179,14 +128,6 @@ sudo dpkg -i calendar-diary_0.2.0-beta_amd64.deb
 
 - **Node.js**: 18.x 或更高版本
 - **npm**: Node.js 自带的包管理器
-- **操作系统**: Windows 10+, macOS 10.13+, Linux
-
-### 克隆项目
-
-```bash
-git clone https://github.com/trustdev-org/calendar-diary.git
-cd calendar-diary
-```
 
 ### 安装依赖
 
@@ -200,22 +141,14 @@ npm install
 npm run dev
 ```
 
-这将：
-1. 启动 Vite 开发服务器（端口 5173）
-2. 自动启动 Electron 应用
-3. 支持热重载（HMR）
+这将启动 Vite 开发服务器并自动启动 Electron 应用，支持热重载。
 
 ### 构建打包
 
-#### 构建所有平台
-
 ```bash
+# 构建所有平台
 npm run electron:build
-```
 
-#### 构建特定平台
-
-```bash
 # macOS
 npm run electron:build:mac
 
@@ -228,40 +161,22 @@ npm run electron:build:linux
 
 构建产物输出到 `release/` 目录。
 
+### 数据存储
 
-### 技术架构
-
-#### Electron 架构
-- **主进程** (`electron/main.ts`): 管理应用窗口、文件系统、自动更新
-- **渲染进程** (React App): 用户界面和交互逻辑
-- **预加载脚本** (`electron/preload.ts`): 安全的 IPC 通信桥接
-
-#### 数据存储
-所有数据保存在本地文件系统：
-- **calendar-data.json**: 日记和待办事项数据
-- **monthly-plans.json**: 月度计划数据
+| 数据 | 文件 | 说明 |
+|------|------|------|
+| 日历数据 | `calendar_data.json` | 所有课程记录和贴纸 |
+| 月度计划 | `calendar_plans.json` | 月度目标计划 |
+| 排课配置 | `schedule_config.json` | 教师和课程列表 |
 
 存储位置：
 - **Windows**: `%APPDATA%\CalendarDiary\`
 - **macOS**: `~/Library/Application Support/CalendarDiary/`
 - **Linux**: `~/.config/CalendarDiary/`
 
+## 📝 更新日志
 
-## 🤝 贡献指南
-
-欢迎贡献代码、报告问题或提出建议！
-
-### 提交 Issue
-- 使用清晰的标题描述问题
-- 提供详细的复现步骤
-- 附上系统信息和错误日志
-
-### 提交 Pull Request
-1. Fork 本仓库
-2. 创建特性分支：`git checkout -b feature/AmazingFeature`
-3. 提交更改：`git commit -m 'Add some AmazingFeature'`
-4. 推送到分支：`git push origin feature/AmazingFeature`
-5. 开启 Pull Request
+详见 [CHANGELOG.md](CHANGELOG.md)
 
 ## 📄 许可证
 
@@ -272,20 +187,8 @@ npm run electron:build:linux
 - ✅ 修改 - 重新混合、转换和基于此构建
 
 **条件：**
-- 📝 署名 - 必须给出适当的署名
+- 📝 署名 - 必须给出适当的署名（Akiro）
 - 🚫 非商业性使用 - 不得用于商业目的
-
-## 🙏 致谢
-
-- 图标库：[Lucide Icons](https://lucide.dev/)
-- UI 框架：[React](https://react.dev/)
-- 桌面框架：[Electron](https://www.electronjs.org/)
-- 日期处理：[date-fns](https://date-fns.org/)
-
-## 📮 联系方式
-
-- **问题反馈**: [GitHub Issues](https://github.com/trustdev-org/calendar-diary/issues)
-- **项目主页**: [GitHub Repository](https://github.com/trustdev-org/calendar-diary)
 
 ---
 
@@ -293,6 +196,6 @@ npm run electron:build:linux
 
 **如果这个项目对你有帮助，请给个 ⭐ Star！**
 
-Made with ❤️ by TrustDev
+Made with ❤️ by Akiro
 
 </div>

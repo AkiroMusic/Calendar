@@ -8,12 +8,9 @@ const SettingsModal = React.lazy(() => import('./components/SettingsModal').then
 const AboutModal = React.lazy(() => import('./components/AboutModal').then(m => ({ default: m.AboutModal })));
 const AuthModal = React.lazy(() => import('./components/AuthModal').then(m => ({ default: m.AuthModal })));
 const SearchModal = React.lazy(() => import('./components/SearchModal').then(m => ({ default: m.SearchModal })));
-const CloudSyncModal = React.lazy(() => import('./components/CloudSyncModal').then(m => ({ default: m.CloudSyncModal })));
-const UpdateModal = React.lazy(() => import('./components/UpdateModal').then(m => ({ default: m.UpdateModal })));
-import { DayData, WEEK_DAYS, DayEvent } from './types';
+import { DayData, WEEK_DAYS, ScheduleEntry, ScheduleConfig } from './types';
 import { StorageService } from './services/storageService';
-import { WebDAVService } from './services/webdavService';
-import { Settings, Minus, Square, X, Github, Search, Cloud, RefreshCw } from 'lucide-react';
+import { Settings, Minus, Square, X, Search, Info, Sun, Moon } from 'lucide-react';
 import { t, getWeekDay } from './utils/i18n';
 
 const App: React.FC = () => {
@@ -21,15 +18,17 @@ const App: React.FC = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [data, setData] = useState<Record<string, DayData>>({});
   const [monthlyPlans, setMonthlyPlans] = useState<Record<string, string[]>>({});
+  const [scheduleConfig, setScheduleConfig] = useState<ScheduleConfig>({ teachers: [], courses: [] });
   
   // UI State
   const [selectedDay, setSelectedDay] = useState<Date | null>(null);
   const [showSettings, setShowSettings] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
-  const [showCloudSync, setShowCloudSync] = useState(false);
-  const [showUpdate, setShowUpdate] = useState(false);
-  const [settingsDefaultTab, setSettingsDefaultTab] = useState<'general' | 'security' | 'webdav'>('general');
+  const [darkMode, setDarkMode] = useState(() => {
+    return document.documentElement.getAttribute('data-theme') !== 'light';
+  });
+  const [settingsDefaultTab, setSettingsDefaultTab] = useState<'general' | 'security'>('general');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [needsAuth, setNeedsAuth] = useState(false);
   const [highlightDate, setHighlightDate] = useState<string | null>(null);
@@ -55,14 +54,22 @@ const App: React.FC = () => {
     const loadData = async () => {
       const savedData = await StorageService.getData();
       const savedPlans = await StorageService.getPlans();
+      const savedConfig = await StorageService.getScheduleConfig();
       
       if (savedData) setData(savedData);
       if (savedPlans) setMonthlyPlans(savedPlans);
+      if (savedConfig) setScheduleConfig(savedConfig);
     };
     
     loadData();
     
   }, [isAuthenticated]);
+
+  // 主题初始化（确保 data-theme 与状态同步）
+  useEffect(() => {
+    const theme = darkMode ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [darkMode]);
 
   // 快捷键监听
   useEffect(() => {
@@ -93,7 +100,7 @@ const App: React.FC = () => {
     localStorage.setItem('calendar-diary-data-updated-at', new Date().toISOString());
   }, []);
 
-  const handleDaySave = useCallback((dateKey: string, events: DayEvent[], stickers: string[]) => {
+  const handleDaySave = useCallback((dateKey: string, events: ScheduleEntry[], stickers: string[]) => {
     setData(prevData => {
       const newData = {
         ...prevData,
@@ -103,6 +110,11 @@ const App: React.FC = () => {
       localStorage.setItem('calendar-diary-data-updated-at', new Date().toISOString());
       return newData;
     });
+  }, []);
+
+  const handleScheduleConfigUpdate = useCallback(async (config: ScheduleConfig) => {
+    setScheduleConfig(config);
+    await StorageService.setScheduleConfig(config);
   }, []);
 
   const handlePlanUpdate = useCallback((index: number, value: string) => {
@@ -136,15 +148,16 @@ const App: React.FC = () => {
 
   const handleExport = () => {
     const exportData = {
-      version: 2,
+      version: 3,
       data,
-      monthlyPlans
+      monthlyPlans,
+      scheduleConfig
     };
     const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `paperplan_backup_${format(new Date(), 'yyyy-MM-dd')}.json`;
+    a.download = `schedule_backup_${format(new Date(), 'yyyy-MM-dd')}.json`;
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -159,6 +172,10 @@ const App: React.FC = () => {
         const parsed = JSON.parse(event.target?.result as string);
         if (parsed.data) saveData(parsed.data);
         if (parsed.monthlyPlans) savePlans(parsed.monthlyPlans);
+        if (parsed.scheduleConfig) {
+          setScheduleConfig(parsed.scheduleConfig);
+          StorageService.setScheduleConfig(parsed.scheduleConfig);
+        }
         alert(t('importSuccess'));
         setShowSettings(false);
       } catch (err) {
@@ -225,29 +242,18 @@ const App: React.FC = () => {
           <span>{t('appTitle')}</span>
         </div>
         <div className="flex items-center gap-2 non-draggable">
-<button 
+            <button 
               onClick={() => {
-                const config = WebDAVService.getStoredConfig();
-                if (config) {
-                  setShowCloudSync(true);
-                } else {
-                  // 未配置 WebDAV，先弹出提示再打开设置
-                  alert(t('cloudSyncNotConfigured'));
-                  setSettingsDefaultTab('webdav');
-                  setShowSettings(true);
-                }
+                const next = !darkMode;
+                const theme = next ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem('calendar-diary-theme', theme);
+                setDarkMode(next);
               }} 
               className="p-1.5 text-text-secondary hover:bg-surface-hover hover:text-ink-black rounded-md transition-all"
-              title={t('cloudSync')}
+              title={darkMode ? t('lightMode') : t('darkMode')}
             >
-              <Cloud size={16} />
-            </button>
-            <button 
-              onClick={() => setShowUpdate(true)} 
-              className="p-1.5 text-text-secondary hover:bg-surface-hover hover:text-ink-black rounded-md transition-all"
-              title={t('checkUpdate')}
-            >
-              <RefreshCw size={16} />
+              {darkMode ? <Sun size={16} /> : <Moon size={16} />}
             </button>
             <button 
               onClick={() => setShowSearch(true)} 
@@ -261,7 +267,7 @@ const App: React.FC = () => {
               className="p-1.5 text-text-secondary hover:bg-surface-hover hover:text-ink-black rounded-md transition-all"
               title={t('about')}
             >
-              <Github size={16} />
+              <Info size={16} />
             </button>
             <button 
               onClick={() => {
@@ -337,6 +343,7 @@ const App: React.FC = () => {
                               onClick={() => setSelectedDay(day)}
                               highlight={shouldHighlight}
                               onContextMenu={openPreview}
+                              scheduleConfig={scheduleConfig}
                             />
                         );
                     })}
@@ -352,6 +359,7 @@ const App: React.FC = () => {
           initialData={data[format(selectedDay, 'yyyy-MM-dd')]}
           onClose={() => setSelectedDay(null)}
           onSave={handleDaySave}
+          scheduleConfig={scheduleConfig}
         />
       )}
 
@@ -362,6 +370,8 @@ const App: React.FC = () => {
               onExport={handleExport}
               onImport={handleImport}
               defaultTab={settingsDefaultTab}
+              scheduleConfig={scheduleConfig}
+              onScheduleConfigChange={handleScheduleConfigUpdate}
           />
         </Suspense>
       )}
@@ -391,33 +401,6 @@ const App: React.FC = () => {
         </Suspense>
       )}
 
-      {showCloudSync && (
-        <Suspense fallback={null}>
-          <CloudSyncModal 
-            onClose={() => setShowCloudSync(false)}
-            onOpenWebDAVSettings={() => {
-              setShowCloudSync(false);
-              setSettingsDefaultTab('webdav');
-              setShowSettings(true);
-            }}
-            onDataRestored={async () => {
-              // 数据恢复后重新加载
-              const savedData = await StorageService.getData();
-              const savedPlans = await StorageService.getPlans();
-              if (savedData) setData(savedData);
-              if (savedPlans) setMonthlyPlans(savedPlans);
-            }}
-          />
-        </Suspense>
-      )}
-
-      {/* Update Modal */}
-      {showUpdate && (
-        <Suspense fallback={null}>
-          <UpdateModal onClose={() => setShowUpdate(false)} />
-        </Suspense>
-      )}
-
       {/* Preview Overlay */}
       {previewWindows.length > 0 && (
         <div 
@@ -441,6 +424,7 @@ const App: React.FC = () => {
                   date={p.date}
                   data={data[format(p.date, 'yyyy-MM-dd')]}
                   onClose={() => closePreview(p.id)}
+                  scheduleConfig={scheduleConfig}
                 />
               ))}
             </div>

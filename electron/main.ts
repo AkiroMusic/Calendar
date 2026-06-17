@@ -9,6 +9,7 @@ app.setName('CalendarDiary');
 const USER_DATA_PATH = app.getPath('userData');
 const DATA_FILE = path.join(USER_DATA_PATH, 'calendar_data.json');
 const PLANS_FILE = path.join(USER_DATA_PATH, 'calendar_plans.json');
+const SCHEDULE_CONFIG_FILE = path.join(USER_DATA_PATH, 'schedule_config.json');
 
 let mainWindow: typeof BrowserWindow | null = null;
 
@@ -24,6 +25,12 @@ async function ensureDataFiles() {
     await fs.access(PLANS_FILE);
   } catch {
     await fs.writeFile(PLANS_FILE, '{}');
+  }
+
+  try {
+    await fs.access(SCHEDULE_CONFIG_FILE);
+  } catch {
+    await fs.writeFile(SCHEDULE_CONFIG_FILE, JSON.stringify({ teachers: [], courses: [] }));
   }
 }
 
@@ -160,4 +167,25 @@ ipcMain.handle('shell:openExternal', async (_event: any, url: string) => {
 // App version
 ipcMain.handle('app:getVersion', () => {
   return app.getVersion();
+});
+
+// Schedule config
+ipcMain.handle('storage:getScheduleConfig', async () => {
+  try {
+    const config = await fs.readFile(SCHEDULE_CONFIG_FILE, 'utf-8');
+    return JSON.parse(config);
+  } catch (error) {
+    console.error('Error reading schedule config:', error);
+    return { teachers: [], courses: [] };
+  }
+});
+
+ipcMain.handle('storage:setScheduleConfig', async (_: any, config: any) => {
+  try {
+    await fs.writeFile(SCHEDULE_CONFIG_FILE, JSON.stringify(config, null, 2));
+    return { success: true };
+  } catch (error) {
+    console.error('Error writing schedule config:', error);
+    return { success: false, error: String(error) };
+  }
 });

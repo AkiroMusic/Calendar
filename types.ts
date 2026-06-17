@@ -8,7 +8,7 @@ export interface DayEvent {
 
 export interface DayData {
   date: string; // YYYY-MM-DD
-  events: DayEvent[];
+  events: ScheduleEntry[];
   stickers: string[]; // Array of decorative sticker IDs
 }
 
@@ -47,6 +47,46 @@ export const STICKERS: Sticker[] = [
   { id: 's10', label: '重要', emoji: '⭐' },
 ];
 
+// ========================
+// Schedule / 排课相关类型
+// ========================
+
+export const TEACHER_COLORS = [
+  '#EF5350',
+  '#42A5F5',
+  '#66BB6A',
+  '#FFA726',
+  '#AB47BC',
+  '#26A69A',
+  '#EC407A',
+  '#8D6E63',
+];
+
+export interface Teacher {
+  id: string;
+  name: string;
+  color: string;
+}
+
+export interface Course {
+  id: string;
+  name: string;
+}
+
+export interface ScheduleEntry {
+  id: string;
+  teacherId: string;
+  courseId: string;
+  lessonNumber: string;
+  timeSlot: string;
+  notes: string;
+}
+
+export interface ScheduleConfig {
+  teachers: Teacher[];
+  courses: Course[];
+}
+
 // Electron API types
 export interface ElectronAPI {
   minimizeWindow: () => void;
@@ -56,6 +96,28 @@ export interface ElectronAPI {
   loadData: () => Promise<Record<string, DayData>>;
   savePlans: (plans: Record<string, string[]>) => Promise<void>;
   loadPlans: () => Promise<Record<string, string[]>>;
+  storage: {
+    getData: () => Promise<any>;
+    setData: (data: any) => Promise<{ success: boolean; error?: string }>;
+    getPlans: () => Promise<any>;
+    setPlans: (plans: any) => Promise<{ success: boolean; error?: string }>;
+    getDataPath: () => Promise<string>;
+    openDataFolder: () => Promise<{ success: boolean; error?: string }>;
+    getScheduleConfig: () => Promise<any>;
+    setScheduleConfig: (config: any) => Promise<{ success: boolean; error?: string }>;
+  };
+  window: {
+    minimize: () => void;
+    maximize: () => void;
+    close: () => void;
+  };
+  shell: {
+    openExternal: (url: string) => Promise<void>;
+  };
+  app: {
+    getVersion: () => Promise<string>;
+  };
+  platform: string;
 }
 
 declare global {

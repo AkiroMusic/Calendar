@@ -1,7 +1,7 @@
 
 import React, { useState, useRef, useLayoutEffect, memo, useCallback } from 'react';
 import { format, getDate, isSameMonth, isSameDay, getLunarDate, getHoliday } from '../utils/dateUtils';
-import { DayData } from '../types';
+import { DayData, ScheduleConfig } from '../types';
 
 import { StickerPicker } from './StickerPicker';
 import { getCurrentLanguage, t } from '../utils/i18n';
@@ -13,9 +13,10 @@ interface DayCellProps {
   onClick: () => void;
   highlight?: boolean;
   onContextMenu?: (day: Date) => void;
+  scheduleConfig?: ScheduleConfig;
 }
 
-const DayCellComponent: React.FC<DayCellProps> = ({ day, currentDate, data, onClick, highlight, onContextMenu }) => {
+const DayCellComponent: React.FC<DayCellProps> = ({ day, currentDate, data, onClick, highlight, onContextMenu, scheduleConfig }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [maxEllipsisCount, setMaxEllipsisCount] = useState(3);
   const eventsListRef = useRef<HTMLDivElement>(null);
@@ -116,17 +117,35 @@ const DayCellComponent: React.FC<DayCellProps> = ({ day, currentDate, data, onCl
         ref={eventsListRef}
         className="flex-1 min-h-0 h-full px-1.5 pb-1 flex flex-col gap-0.5 overflow-hidden"
       >
-        {events.slice(0, maxEllipsisCount).map((event, index) => (
-          <div
-            key={event.id}
-            ref={index === 0 ? firstItemRef : undefined}
-            className="flex items-baseline gap-1 text-[9px] leading-[1.5] text-stone-600 truncate"
-          >
-            <span className="text-text-secondary font-mono text-[8px] shrink-0">{index + 1}.</span>
-            <span className="shrink-0">{event.emoji}</span>
-            <span className="truncate">{event.summary || event.rawText}</span>
-          </div>
-        ))}
+        {events.slice(0, maxEllipsisCount).map((event, index) => {
+          const teacher = scheduleConfig?.teachers.find(t => t.id === event.teacherId);
+          const course = scheduleConfig?.courses.find(c => c.id === event.courseId);
+          const label = [teacher?.name, course?.name].filter(Boolean).join(' · ') || '未配置';
+          const color = teacher?.color || '#a8a29e';
+          return (
+            <div
+              key={event.id}
+              ref={index === 0 ? firstItemRef : undefined}
+              className="flex items-center text-[9px] leading-[1.4] truncate rounded-sm overflow-hidden"
+              style={{
+                borderLeft: `2.5px solid ${color}`,
+                paddingLeft: '3px',
+                backgroundColor: `${color}18`,
+              }}
+            >
+              <span
+                className="truncate font-medium shrink-0"
+                style={{ color }}
+              >
+                {label}
+              </span>
+              <span className="ml-0.5 text-text-secondary truncate text-[8px]">
+                {[event.lessonNumber, event.timeSlot].filter(Boolean).join(' ')}
+                {event.notes && ` ${event.notes}`}
+              </span>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
@@ -134,13 +153,13 @@ const DayCellComponent: React.FC<DayCellProps> = ({ day, currentDate, data, onCl
 
 // 使用 React.memo 包装，深比较 data 对象
 export const DayCell = memo(DayCellComponent, (prevProps, nextProps) => {
-  // 自定义比较逻辑，避免不必要的重渲染
   return (
     prevProps.day.getTime() === nextProps.day.getTime() &&
     prevProps.currentDate.getTime() === nextProps.currentDate.getTime() &&
     prevProps.highlight === nextProps.highlight &&
     prevProps.data?.events?.length === nextProps.data?.events?.length &&
     prevProps.data?.stickers?.length === nextProps.data?.stickers?.length &&
-    JSON.stringify(prevProps.data) === JSON.stringify(nextProps.data)
+    JSON.stringify(prevProps.data) === JSON.stringify(nextProps.data) &&
+    JSON.stringify(prevProps.scheduleConfig) === JSON.stringify(nextProps.scheduleConfig)
   );
 });

@@ -10,6 +10,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
     setPlans: (plans: any) => ipcRenderer.invoke('storage:setPlans', plans),
     getDataPath: () => ipcRenderer.invoke('storage:getDataPath'),
     openDataFolder: () => ipcRenderer.invoke('storage:openDataFolder'),
+    getScheduleConfig: () => ipcRenderer.invoke('storage:getScheduleConfig'),
+    setScheduleConfig: (config: any) => ipcRenderer.invoke('storage:setScheduleConfig', config),
   },
   
   // 窗口控制
@@ -42,6 +44,8 @@ export interface ElectronAPI {
     setPlans: (plans: any) => Promise<{ success: boolean; error?: string }>;
     getDataPath: () => Promise<string>;
     openDataFolder: () => Promise<{ success: boolean; error?: string }>;
+    getScheduleConfig: () => Promise<any>;
+    setScheduleConfig: (config: any) => Promise<{ success: boolean; error?: string }>;
   };
   window: {
     minimize: () => void;

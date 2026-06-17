@@ -41,7 +41,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({ onClose, data, onSelec
       const typedData = dayData as DayData;
       if (!typedData || !typedData.events || typedData.events.length === 0) return;
 
-      const allText = typedData.events.map(e => e.rawText).join(' ');
+      const allText = typedData.events.map(e => (e as any).notes || (e as any).rawText || '').join(' ');
       
       if (allText.toLowerCase().includes(query)) {
         const date = parse(dateKey, 'yyyy-MM-dd', new Date());

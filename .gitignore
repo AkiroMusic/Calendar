@@ -44,3 +44,12 @@ Thumbs.db
 # Electron builder output
 *.blockmap
 *.yml
+
+# AI/IDE config
+.opencode/
+.opencode.json
+.opencode.jsonc
+.sisyphus/
+
+# Root standalone exe (user-placed builds)
+*.exe

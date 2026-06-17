@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Github, Calendar } from 'lucide-react';
+import { X, Calendar } from 'lucide-react';
 import { t } from '../utils/i18n';
 import { getAppVersion } from '../utils/version';
 
@@ -18,23 +18,6 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
       setAppVersion(v);
     })();
   }, []);
-
-  const handleGithubClick = async () => {
-    const url = 'https://github.com/trustdev-org/calendar-diary';
-    
-    if (window.electronAPI) {
-      // Electron环境：使用shell.openExternal在系统默认浏览器中打开
-      try {
-        await window.electronAPI.shell.openExternal(url);
-      } catch (error) {
-        console.error('Failed to open URL:', error);
-        window.open(url, '_blank');
-      }
-    } else {
-      // 浏览器环境：直接在新标签页打开
-      window.open(url, '_blank');
-    }
-  };
 
   return (
     <div 
@@ -95,22 +78,9 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
             </div>
           </div>
 
-          {/* GitHub Link */}
-          <div>
-            <button
-              onClick={handleGithubClick}
-              className="w-full flex items-center justify-center gap-2 bg-ink-black hover:bg-ink-black/80 text-paper px-4 py-3 rounded-lg transition-colors shadow-sm"
-            >
-              <Github size={18} />
-              <span className="font-medium">GitHub</span>
-              <span className="text-sm opacity-75">trustdev-org/calendar-diary</span>
-            </button>
-          </div>
-
           {/* Copyright */}
           <div className="text-center text-xs text-text-secondary pt-2 border-t border-surface-border">
-            <div>© 2025 TrustDev. {t('allRightsReserved')}</div>
-            <div className="mt-1 text-stone-600">Licensed under CC BY-NC 4.0</div>
+            <div>© 2026 Akiro. {t('allRightsReserved')}</div>
           </div>
         </div>
       </div>

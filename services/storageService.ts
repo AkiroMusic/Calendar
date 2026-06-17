@@ -41,4 +41,23 @@ export class StorageService {
       localStorage.setItem('paperplan_plans', JSON.stringify(plans));
     }
   }
+
+  // 获取排课配置
+  static async getScheduleConfig(): Promise<any> {
+    if (this.isElectron()) {
+      return await window.electronAPI.storage.getScheduleConfig();
+    } else {
+      const config = localStorage.getItem('paperplan_schedule_config');
+      return config ? JSON.parse(config) : { teachers: [], courses: [] };
+    }
+  }
+
+  // 保存排课配置
+  static async setScheduleConfig(config: any): Promise<void> {
+    if (this.isElectron()) {
+      await window.electronAPI.storage.setScheduleConfig(config);
+    } else {
+      localStorage.setItem('paperplan_schedule_config', JSON.stringify(config));
+    }
+  }
 }

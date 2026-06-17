@@ -1,7 +1,7 @@
 
-import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { format, getLunarFullDate } from '../utils/dateUtils';
-import { DayData, DayEvent, STICKERS } from '../types';
+import { DayData, ScheduleEntry, ScheduleConfig, STICKERS } from '../types';
 import { X, Plus, Trash2, Save } from 'lucide-react';
 import { t } from '../utils/i18n';
 
@@ -9,114 +9,80 @@ interface DayEditorProps {
   date: Date;
   initialData?: DayData;
   onClose: () => void;
-  onSave: (date: string, events: DayEvent[], stickers: string[]) => void;
+  onSave: (date: string, events: ScheduleEntry[], stickers: string[]) => void;
+  scheduleConfig: ScheduleConfig;
 }
 
-// Emoji 列表移到组件外，避免每次渲染重建
-const EVENT_EMOJIS = [
-  '📝', '✅', '⭐', '🎯', '💡', '📌', '🔥', '⚡', 
-  '🎨', '📚', '💼', '🏃', '🎵', '🍔', '☕', '👍',
-  '❤️', '🎉', '🚀', '🌟', '👑', '🏆', '🎓', '💯',
-  '⏰', '📅', '💬', '👀', '🧠', '✨', '🌈', '🌺'
-];
-
-// 自动调整 textarea 高度的工具函数
-const adjustTextareaHeight = (textarea: HTMLTextAreaElement) => {
-  textarea.style.height = 'auto';
-  const newHeight = Math.min(textarea.scrollHeight, 150);
-  textarea.style.height = newHeight + 'px';
-  // 当内容超过最大高度时显示滚动条
-  textarea.style.overflowY = textarea.scrollHeight > 150 ? 'auto' : 'hidden';
-};
-
-export const DayEditor: React.FC<DayEditorProps> = ({ date, initialData, onClose, onSave }) => {
-  const [events, setEvents] = useState<DayEvent[]>(() => initialData?.events || []);
+export const DayEditor: React.FC<DayEditorProps> = ({ date, initialData, onClose, onSave, scheduleConfig }) => {
+  const [entries, setEntries] = useState<ScheduleEntry[]>(() => initialData?.events || []);
   const [stickers, setStickers] = useState<string[]>(() => initialData?.stickers || []);
-  const [emojiPickerOpen, setEmojiPickerOpen] = useState<string | null>(null);
-  const [emojiPickerPosition, setEmojiPickerPosition] = useState({ top: 0, left: 0 });
   const [isVisible, setIsVisible] = useState(false);
 
-  // 入场动画
   useEffect(() => {
     requestAnimationFrame(() => setIsVisible(true));
   }, []);
 
-  // 初始化空事件
-  useEffect(() => {
-    if (events.length === 0) {
-      setEvents([{ id: Date.now().toString(), rawText: '', summary: '', emoji: '📝' }]);
-    }
+  const handleAddEntry = useCallback(() => {
+    const newEntry: ScheduleEntry = {
+      id: Date.now().toString(),
+      teacherId: scheduleConfig.teachers[0]?.id || '',
+      courseId: scheduleConfig.courses[0]?.id || '',
+      lessonNumber: '',
+      timeSlot: '',
+      notes: '',
+    };
+    setEntries(prev => [...prev, newEntry]);
+  }, [scheduleConfig]);
+
+  const handleEntryChange = useCallback((id: string, field: keyof ScheduleEntry, value: string) => {
+    setEntries(prev => prev.map(e => e.id === id ? { ...e, [field]: value } : e));
   }, []);
 
-  const handleAddEvent = useCallback(() => {
-    setEvents(prev => [...prev, { id: Date.now().toString(), rawText: '', summary: '', emoji: '📝' }]);
+  const handleDeleteEntry = useCallback((id: string) => {
+    setEntries(prev => prev.filter(e => e.id !== id));
   }, []);
-
-  const handleEventChange = useCallback((id: string, text: string) => {
-    setEvents(prev => prev.map(e => e.id === id ? { ...e, rawText: text, summary: text } : e));
-  }, []);
-
-  const handleDeleteEvent = useCallback((id: string) => {
-    setEvents(prev => prev.filter(e => e.id !== id));
-  }, []);
-
-  const handleEmojiButtonClick = useCallback((id: string, event: React.MouseEvent) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-    setEmojiPickerPosition({
-      top: rect.bottom + 5,
-      left: rect.left - 80
-    });
-    setEmojiPickerOpen(prev => prev === id ? null : id);
-  }, []);
-  
-  const handleSelectEmoji = useCallback((id: string, emoji: string) => {
-    setEvents(prev => prev.map(e => e.id === id ? { ...e, emoji } : e));
-    setEmojiPickerOpen(null);
-  }, []);
-
-  const closeEmojiPicker = useCallback(() => setEmojiPickerOpen(null), []);
 
   const handleSave = useCallback(() => {
-    const cleanEvents = events.filter(e => e.rawText.trim() !== '');
-    onSave(format(date, 'yyyy-MM-dd'), cleanEvents, stickers);
+    const validEntries = entries.filter(e => e.teacherId !== '' || e.courseId !== '' || e.notes.trim() !== '');
+    onSave(format(date, 'yyyy-MM-dd'), validEntries, stickers);
     onClose();
-  }, [events, stickers, date, onSave, onClose]);
+  }, [entries, stickers, date, onSave, onClose]);
 
   const toggleSticker = useCallback((emoji: string) => {
-    setStickers(prev => 
+    setStickers(prev =>
       prev.includes(emoji) ? prev.filter(s => s !== emoji) : [...prev, emoji]
     );
   }, []);
 
-  // 缓存日期格式化
   const dateFormatted = useMemo(() => format(date, 'yyyy/MM/dd'), [date]);
   const lunarDate = useMemo(() => getLunarFullDate(date), [date]);
 
-  // 动画样式
   const backdropStyle = useMemo(() => ({
     backgroundColor: isVisible ? 'rgba(0, 0, 0, 0.2)' : 'rgba(0, 0, 0, 0)',
-    opacity: isVisible ? 1 : 0
+    opacity: isVisible ? 1 : 0,
   }), [isVisible]);
 
   const modalStyle = useMemo(() => ({
     transform: isVisible ? 'translateY(0) scale(1)' : 'translateY(20px) scale(0.95)',
-    opacity: isVisible ? 1 : 0
+    opacity: isVisible ? 1 : 0,
   }), [isVisible]);
 
+  const hasNoConfig = scheduleConfig.teachers.length === 0 || scheduleConfig.courses.length === 0;
+
   return (
-    <div 
+    <div
       className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm transition-all duration-200"
       style={backdropStyle}
     >
-      <div 
-        className="bg-surface w-[480px] rounded-lg shadow-2xl overflow-hidden flex flex-col max-h-[80vh] transition-all duration-200 ease-out"
+      <div
+        className="bg-surface w-[640px] rounded-lg shadow-2xl overflow-hidden flex flex-col max-h-[80vh] transition-all duration-200 ease-out"
         style={modalStyle}
       >
         {/* Header */}
         <div className="bg-paper-dark px-4 py-3 border-b border-surface-border flex justify-between items-center">
           <div>
-             <h2 className="font-serif font-bold text-xl text-ink-black">{dateFormatted}</h2>
-             <p className="text-xs text-text-secondary uppercase tracking-wide">{lunarDate}</p>
+            <h2 className="font-serif font-bold text-xl text-ink-black">{dateFormatted}</h2>
+            <p className="text-xs text-text-secondary uppercase tracking-wide">{lunarDate}</p>
           </div>
           <button onClick={onClose} className="text-text-secondary hover:text-ink-black transition-colors" title="Close">
             <X size={20} />
@@ -125,72 +91,118 @@ export const DayEditor: React.FC<DayEditorProps> = ({ date, initialData, onClose
 
         {/* Content */}
         <div className="p-4 overflow-y-auto flex-1">
-          {/* Events Section */}
+          {/* Schedule Entries Section */}
           <div className="mb-6">
             <div className="flex justify-between items-center mb-2">
-               <label className="text-xs font-bold text-text-secondary uppercase">{t('todoEvents')}</label>
+              <label className="text-xs font-bold text-text-secondary uppercase">课程安排</label>
             </div>
-            
+
+            {hasNoConfig && (
+              <div className="bg-amber-900/30 border border-amber-700/50 rounded p-3 mb-3">
+                <p className="text-xs text-amber-300">
+                  请先在「设置 → 排课管理」中添加教师和课程，再录入课表。
+                </p>
+              </div>
+            )}
+
             <div className="space-y-2">
-              {events.map((event, index) => (
-                <div key={event.id} className="flex items-start gap-2 group">
-                  <span className="text-text-secondary font-mono text-xs w-4 pt-1.5">{index + 1}.</span>
-                  <textarea
-                    ref={(el) => {
-                      // 初始渲染时自动调整高度
-                      if (el && event.rawText) {
-                        requestAnimationFrame(() => adjustTextareaHeight(el));
-                      }
-                    }}
-                    value={event.rawText}
-                    onChange={(e) => handleEventChange(event.id, e.target.value)}
-                    placeholder={t('writeTask')}
-                    className="flex-1 bg-input-bg border border-transparent focus:border-surface-border focus:bg-surface-hover rounded px-2 py-1.5 text-sm outline-none transition-all resize-none min-h-[36px] max-h-[150px] overflow-hidden leading-relaxed text-ink-black placeholder-stone-500"
-                    autoFocus={index === events.length - 1 && event.rawText === ''}
-                    rows={1}
-                    onInput={(e) => {
-                      adjustTextareaHeight(e.target as HTMLTextAreaElement);
-                    }}
-                  />
-                  <div className="relative">
-                    <button
-                      onClick={(e) => handleEmojiButtonClick(event.id, e)}
-                      className="w-6 text-center text-lg pt-0.5 hover:scale-110 transition-transform cursor-pointer hover:bg-surface-hover rounded"
-                      title="点击选择表情"
+              {entries.map((entry, index) => {
+                const teacher = scheduleConfig.teachers.find(t => t.id === entry.teacherId);
+                return (
+                  <div key={entry.id} className="flex items-center gap-1.5 group flex-wrap">
+                    <span className="text-text-secondary font-mono text-xs w-4 shrink-0">{index + 1}.</span>
+
+                    {/* Teacher selector */}
+                    <div className="relative flex items-center">
+                      {teacher && (
+                        <span
+                          className="absolute left-2 w-2.5 h-2.5 rounded-full pointer-events-none"
+                          style={{ backgroundColor: teacher.color }}
+                        />
+                      )}
+                      <select
+                        value={entry.teacherId}
+                        onChange={e => handleEntryChange(entry.id, 'teacherId', e.target.value)}
+                        className="pl-6 pr-2 py-1.5 border border-surface-border rounded text-sm bg-input-bg focus:outline-none focus:ring-1 focus:ring-stone-500 focus:bg-input-bg text-ink-black appearance-none min-w-[90px]"
+                      >
+                        <option value="">选择教师</option>
+                        {scheduleConfig.teachers.map(t => (
+                          <option key={t.id} value={t.id}>{t.name}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Course selector */}
+                    <select
+                      value={entry.courseId}
+                      onChange={e => handleEntryChange(entry.id, 'courseId', e.target.value)}
+                      className="flex-1 min-w-[100px] px-2 py-1.5 border border-surface-border rounded text-sm bg-input-bg focus:outline-none focus:ring-1 focus:ring-stone-500 focus:bg-input-bg text-ink-black"
                     >
-                      {event.emoji}
+                      <option value="">选择课程</option>
+                      {scheduleConfig.courses.map(c => (
+                        <option key={c.id} value={c.id}>{c.name}</option>
+                      ))}
+                    </select>
+
+                    {/* Lesson number */}
+                    <input
+                      type="text"
+                      value={entry.lessonNumber}
+                      onChange={e => handleEntryChange(entry.id, 'lessonNumber', e.target.value)}
+                      placeholder="第几节"
+                      className="w-16 px-1.5 py-1.5 border border-surface-border rounded text-sm bg-input-bg focus:outline-none focus:ring-1 focus:ring-stone-500 focus:bg-input-bg text-ink-black placeholder-text-secondary text-center"
+                    />
+
+                    {/* Time slot */}
+                    <input
+                      type="text"
+                      value={entry.timeSlot}
+                      onChange={e => handleEntryChange(entry.id, 'timeSlot', e.target.value)}
+                      placeholder="时间"
+                      className="w-20 px-1.5 py-1.5 border border-surface-border rounded text-sm bg-input-bg focus:outline-none focus:ring-1 focus:ring-stone-500 focus:bg-input-bg text-ink-black placeholder-text-secondary text-center"
+                    />
+
+                    {/* Notes */}
+                    <input
+                      type="text"
+                      value={entry.notes}
+                      onChange={e => handleEntryChange(entry.id, 'notes', e.target.value)}
+                      placeholder="备注"
+                      className="w-20 px-1.5 py-1.5 border border-surface-border rounded text-sm bg-input-bg focus:outline-none focus:ring-1 focus:ring-stone-500 focus:bg-input-bg text-ink-black placeholder-text-secondary"
+                    />
+
+                    <button
+                      onClick={() => handleDeleteEntry(entry.id)}
+                      className="opacity-0 group-hover:opacity-100 text-text-secondary hover:text-red-400 transition-opacity shrink-0"
+                      title="删除"
+                    >
+                      <Trash2 size={14} />
                     </button>
                   </div>
-                  <button 
-                    onClick={() => handleDeleteEvent(event.id)}
-                    className="opacity-0 group-hover:opacity-100 text-stone-600 hover:text-red-400 transition-opacity pt-1"
-                    title="Delete"
-                  >
-                    <Trash2 size={14} />
-                  </button>
-                </div>
-              ))}
+                );
+              })}
             </div>
-            
-            <button 
-              onClick={handleAddEvent}
-              className="mt-3 flex items-center gap-1 text-text-secondary hover:text-ink-black text-xs font-medium transition-colors"
+
+            <button
+              onClick={handleAddEntry}
+              disabled={hasNoConfig}
+              className="mt-3 flex items-center gap-1 text-text-secondary hover:text-ink-black text-xs font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-40"
             >
-              <Plus size={14} /> {t('addItem')}
+              <Plus size={14} /> 添加课程记录
             </button>
           </div>
 
           {/* Stickers Section */}
           <div>
             <label className="text-xs font-bold text-text-secondary uppercase mb-2 block">{t('moodStickers')}</label>
-            <div className="flex flex-wrap gap-2 bg-input-bg p-3 rounded-lg border border-surface-border">
+            <div className="flex flex-wrap gap-2 bg-paper-dark p-3 rounded-lg border border-surface-border">
               {STICKERS.map(s => (
                 <button
                   key={s.id}
                   onClick={() => toggleSticker(s.emoji)}
                   className={`
                     text-2xl p-1.5 rounded transition-all hover:scale-110
-                    ${stickers.includes(s.emoji) ? 'bg-paper-dark shadow-sm ring-1 ring-surface-border' : 'opacity-60 hover:opacity-100'}
+                    ${stickers.includes(s.emoji) ? 'bg-surface shadow-sm ring-1 ring-surface-border' : 'opacity-60 hover:opacity-100'}
                   `}
                   title={s.label}
                 >
@@ -203,13 +215,13 @@ export const DayEditor: React.FC<DayEditorProps> = ({ date, initialData, onClose
 
         {/* Footer */}
         <div className="bg-paper-dark px-4 py-3 border-t border-surface-border flex justify-end gap-2">
-          <button 
+          <button
             onClick={onClose}
             className="px-4 py-1.5 rounded text-sm font-medium text-text-secondary hover:bg-surface-hover transition-colors"
           >
             {t('cancel')}
           </button>
-          <button 
+          <button
             onClick={handleSave}
             className="flex items-center gap-2 px-4 py-1.5 rounded text-sm font-medium bg-ink-black text-paper hover:bg-ink-black/80 transition-colors shadow-sm"
           >
@@ -217,36 +229,6 @@ export const DayEditor: React.FC<DayEditorProps> = ({ date, initialData, onClose
           </button>
         </div>
       </div>
-
-      {/* Emoji Picker Popup */}
-      {emojiPickerOpen && (
-        <>
-          <div 
-            className="fixed inset-0 z-50" 
-            onClick={closeEmojiPicker}
-          />
-          <div 
-            className="fixed z-50 bg-surface rounded-lg shadow-2xl border border-surface-border p-2 w-[200px]"
-            style={{
-              top: `${emojiPickerPosition.top}px`,
-              left: `${emojiPickerPosition.left}px`
-            }}
-          >
-            <div className="grid grid-cols-6 gap-1">
-              {EVENT_EMOJIS.map((emoji, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleSelectEmoji(emojiPickerOpen, emoji)}
-                  className="text-xl hover:bg-surface-hover rounded p-1 transition-colors hover:scale-110"
-                  title={emoji}
-                >
-                  {emoji}
-                </button>
-              ))}
-            </div>
-          </div>
-        </>
-      )}
     </div>
   );
 };

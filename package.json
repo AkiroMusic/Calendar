@@ -1,18 +1,12 @@
 {
   "name": "calendar-diary",
   "private": true,
-  "version": "0.2.0-beta",
+  "version": "1.0.0",
   "description": "一款简洁优雅的日历日记应用",
   "author": {
-    "name": "TrustDev",
-    "email": "admin@trustdev.org"
+    "name": "Akiro"
   },
   "license": "CC-BY-NC-4.0",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/trustdev-org/calendar-diary.git"
-  },
-  "homepage": "https://github.com/trustdev-org/calendar-diary",
   "main": "dist-electron/main.cjs",
   "scripts": {
     "dev": "vite",
@@ -30,8 +24,7 @@
     "otpauth": "^9.4.1",
     "qrcode": "^1.5.4",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "webdav": "^5.8.0"
+    "react-dom": "^19.2.0"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
@@ -60,13 +53,6 @@
       "dist/**/*",
       "dist-electron/**/*",
       "package.json"
-    ],
-    "publish": [
-      {
-        "provider": "github",
-        "owner": "trustdev-org",
-        "repo": "calendar-diary"
-      }
     ],
     "mac": {
       "category": "public.app-category.productivity",

@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { format } from '../utils/dateUtils';
-import { DayData } from '../types';
+import { DayData, ScheduleConfig } from '../types';
 import { X } from 'lucide-react';
 
 interface DayPreviewProps {
   date: Date;
   data?: DayData;
   onClose: () => void;
+  scheduleConfig?: ScheduleConfig;
 }
 
-export const DayPreview: React.FC<DayPreviewProps> = ({ date, data, onClose }) => {
+export const DayPreview: React.FC<DayPreviewProps> = ({ date, data, onClose, scheduleConfig }) => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -48,13 +49,35 @@ export const DayPreview: React.FC<DayPreviewProps> = ({ date, data, onClose }) =
           {events.length === 0 ? (
             <p className="text-xs text-text-secondary">暂无内容</p>
           ) : (
-            events.map((event, index) => (
-              <div key={event.id} className="flex items-start gap-2 text-sm leading-relaxed text-ink-black min-w-0">
-                <span className="text-text-secondary font-mono text-xs shrink-0 pt-0.5">{index + 1}.</span>
-                <span className="shrink-0 text-base pt-0.5">{event.emoji}</span>
-                <div className="flex-1 whitespace-pre-wrap break-words min-w-0">{event.summary || event.rawText}</div>
-              </div>
-            ))
+            events.map((event, index) => {
+              const teacher = scheduleConfig?.teachers.find(t => t.id === event.teacherId);
+              const course = scheduleConfig?.courses.find(c => c.id === event.courseId);
+              const teacherName = teacher?.name || event.teacherId || '';
+              const courseName = course?.name || event.courseId || '';
+              const label = [teacherName, courseName].filter(Boolean).join(' · ');
+              const color = teacher?.color || '#a8a29e';
+              return (
+                <div key={event.id} className="flex items-start gap-2 text-sm leading-relaxed text-ink-black min-w-0">
+                  <span className="text-text-secondary font-mono text-xs shrink-0 pt-0.5">{index + 1}.</span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      {label && (
+                        <span className="font-medium truncate" style={{ color }}>{label}</span>
+                      )}
+                      {event.lessonNumber && (
+                        <span className="text-text-secondary text-xs shrink-0">{event.lessonNumber}</span>
+                      )}
+                      {event.timeSlot && (
+                        <span className="text-text-secondary text-xs shrink-0">{event.timeSlot}</span>
+                      )}
+                    </div>
+                    {event.notes && (
+                      <p className="text-text-secondary text-xs mt-0.5">{event.notes}</p>
+                    )}
+                  </div>
+                </div>
+              );
+            })
           )}
         </div>
 

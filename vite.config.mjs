@@ -12,18 +12,12 @@ export default defineConfig(({ mode }) => {
       server: {
         port: 5173,
         host: '0.0.0.0',
-        strictPort: true,
       },
       plugins: [
         react(),
         electron([
           {
             entry: 'electron/main.ts',
-            onstart(options) {
-              if (isDev) {
-                options.startup();
-              }
-            },
             vite: {
               build: {
                 outDir: 'dist-electron',
