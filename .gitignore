@@ -45,6 +45,9 @@ Thumbs.db
 *.blockmap
 *.yml
 
+# GitHub Actions workflows (don't ignore these)
+!.github/workflows/*
+
 # AI/IDE config
 .opencode/
 .opencode.json
