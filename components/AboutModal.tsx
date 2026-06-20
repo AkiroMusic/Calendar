@@ -80,7 +80,7 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
 
           {/* Copyright */}
           <div className="text-center text-xs text-text-secondary pt-2 border-t border-surface-border">
-            <div>© 2026 Akiro. {t('allRightsReserved')}</div>
+            <div>© 2026 Akiro · {t('allRightsReserved')}</div>
           </div>
         </div>
       </div>

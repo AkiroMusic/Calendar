@@ -2,10 +2,10 @@
 
 **简体中文** | [English](README_EN.md)
 
-# 📅 Akiro Calendar - 日历日程
+# 📅 Calendar - 日历日程
 
 <p align="center">
-  <img src="logo.png" alt="Akiro Calendar Logo" width="120" height="120">
+  <img src="logo.png" alt="Calendar Logo" width="120" height="120">
 </p>
 
 **一款简洁优雅的日历日程应用，支持排课管理和每日记录**
@@ -22,9 +22,11 @@
 
 ## 📖 软件介绍
 
-Akiro Calendar 是一款跨平台的桌面日历日程应用，采用现代化设计理念，为用户提供简洁直观的记录与排课管理体验。
+Calendar 是一款跨平台的桌面日历日程应用，采用现代化设计理念，为用户提供简洁直观的记录与排课管理体验。
 
 ### ✨ 核心特色
+
+> **👤 二次开发 / Modifier**: [Akiro](https://github.com/sglwsjxh) · 在原有项目基础上进行功能增强与维护
 
 - **🎯 简洁设计** - 极简界面，专注于内容本身
 - **📚 排课管理** - 支持教师管理（姓名+颜色标识）、课程管理，结构化录入课程安排
@@ -170,9 +172,9 @@ npm run electron:build:linux
 | 排课配置 | `schedule_config.json` | 教师和课程列表 |
 
 存储位置：
-- **Windows**: `%APPDATA%\CalendarDiary\`
-- **macOS**: `~/Library/Application Support/CalendarDiary/`
-- **Linux**: `~/.config/CalendarDiary/`
+- **Windows**: `%APPDATA%\Calendar\`
+- **macOS**: `~/Library/Application Support/Calendar/`
+- **Linux**: `~/.config/Calendar/`
 
 ## 📝 更新日志
 
@@ -196,6 +198,6 @@ npm run electron:build:linux
 
 **如果这个项目对你有帮助，请给个 ⭐ Star！**
 
-Made with ❤️ by Akiro
+© 2026 Akiro · 二次开发 / Modifier
 
 </div>

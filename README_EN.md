@@ -2,10 +2,10 @@
 
 [简体中文](README.md) | **English**
 
-# 📅 Akiro Calendar
+# 📅 Calendar
 
 <p align="center">
-  <img src="logo.png" alt="Akiro Calendar Logo" width="120" height="120">
+  <img src="logo.png" alt="Calendar Logo" width="120" height="120">
 </p>
 
 **A simple and elegant calendar & scheduling app with class scheduling support**
@@ -22,9 +22,11 @@
 
 ## 📖 Introduction
 
-Akiro Calendar is a cross-platform desktop calendar & scheduling application with a modern design philosophy, providing users with a simple and intuitive experience for daily recording and class schedule management.
+Calendar is a cross-platform desktop calendar & scheduling application with a modern design philosophy, providing users with a simple and intuitive experience for daily recording and class schedule management.
 
 ### ✨ Key Features
+
+> **👤 Modifier**: [Akiro](https://github.com/sglwsjxh) · Feature enhancements and maintenance based on the original project
 
 - **🎯 Clean Design** - Minimalist interface focused on content
 - **📚 Schedule Management** - Teacher management (name + color), course management, structured schedule entries
@@ -170,9 +172,9 @@ Build output goes to `release/` directory.
 | Schedule Config | `schedule_config.json` | Teacher and course lists |
 
 Storage locations:
-- **Windows**: `%APPDATA%\CalendarDiary\`
-- **macOS**: `~/Library/Application Support/CalendarDiary/`
-- **Linux**: `~/.config/CalendarDiary/`
+- **Windows**: `%APPDATA%\Calendar\`
+- **macOS**: `~/Library/Application Support/Calendar/`
+- **Linux**: `~/.config/Calendar/`
 
 ## 📄 License
 
@@ -192,6 +194,6 @@ This project is licensed under [CC-BY-NC-4.0](LICENSE).
 
 **If this project helps you, please give it a ⭐ Star!**
 
-Made with ❤️ by Akiro
+© 2026 Akiro · Modifier
 
 </div>

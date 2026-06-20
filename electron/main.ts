@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs/promises');
 
 // Set app name for proper data storage path
-app.setName('CalendarDiary');
+app.setName('Calendar');
 
 // 数据存储路径
 const USER_DATA_PATH = app.getPath('userData');

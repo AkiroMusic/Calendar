@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "一款简洁优雅的日历日记应用",
   "author": {
-    "name": "Akiro"
+    "name": "Akiro (modifier)"
   },
   "license": "CC-BY-NC-4.0",
   "main": "dist-electron/main.cjs",
@@ -43,8 +43,8 @@
     "wait-on": "^7.2.0"
   },
   "build": {
-    "appId": "com.calendardiary.app",
-    "productName": "CalendarDiary",
+    "appId": "com.calendar.app",
+    "productName": "Calendar",
     "directories": {
       "output": "release",
       "buildResources": "build"
@@ -92,7 +92,7 @@
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-      "shortcutName": "日历日记"
+      "shortcutName": "Calendar"
     }
   }
 }

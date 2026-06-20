@@ -29,6 +29,7 @@ const DayCellComponent: React.FC<DayCellProps> = ({ day, currentDate, data, onCl
   const holiday = getHoliday(day, getCurrentLanguage());
   const stickers = data?.stickers || [];
   const events = data?.events || [];
+  const quickNotes = data?.quickNotes || [];
 
   // 动态测量首条日记项高度
   useLayoutEffect(() => {
@@ -48,7 +49,7 @@ const DayCellComponent: React.FC<DayCellProps> = ({ day, currentDate, data, onCl
     const ro = new window.ResizeObserver(resize);
     ro.observe(el);
     return () => ro.disconnect();
-  }, [events.length]);
+  }, [events.length, quickNotes.length]);
 
   // 优化事件处理
   const handleMouseEnter = useCallback(() => setIsHovered(true), []);
@@ -105,9 +106,9 @@ const DayCellComponent: React.FC<DayCellProps> = ({ day, currentDate, data, onCl
         </div>
         {/* Decorative Stickers (Top Right) */}
         {stickers.length > 0 && (
-          <div className="absolute top-1 right-1 flex flex-wrap justify-end gap-0.5 max-w-[40%] shrink-0 pointer-events-none">
+          <div className="absolute top-1 right-1 flex flex-wrap justify-end gap-0 max-w-[45%] shrink-0 pointer-events-none">
             {stickers.slice(0, 3).map((s, i) => (
-              <span key={i} className="text-[10px] leading-none">{s}</span>
+              <span key={i} className="text-xl leading-none">{s}</span>
             ))}
           </div>
         )}
@@ -146,6 +147,20 @@ const DayCellComponent: React.FC<DayCellProps> = ({ day, currentDate, data, onCl
             </div>
           );
         })}
+        {/* Quick Notes */}
+        {quickNotes.length > 0 && events.length <= maxEllipsisCount && (
+          <>
+            {quickNotes.slice(0, Math.max(1, maxEllipsisCount - events.length)).map((note, index) => (
+              <div
+                key={`qn-${index}`}
+                className="flex items-center text-[9px] leading-[1.4] truncate border-l-2 border-dashed border-stone-500 pl-[5px] text-stone-400"
+              >
+                <span className="text-[8px] shrink-0 mr-1">📝</span>
+                <span className="truncate">{note}</span>
+              </div>
+            ))}
+          </>
+        )}
       </div>
     </div>
   );
@@ -159,6 +174,7 @@ export const DayCell = memo(DayCellComponent, (prevProps, nextProps) => {
     prevProps.highlight === nextProps.highlight &&
     prevProps.data?.events?.length === nextProps.data?.events?.length &&
     prevProps.data?.stickers?.length === nextProps.data?.stickers?.length &&
+    prevProps.data?.quickNotes?.length === nextProps.data?.quickNotes?.length &&
     JSON.stringify(prevProps.data) === JSON.stringify(nextProps.data) &&
     JSON.stringify(prevProps.scheduleConfig) === JSON.stringify(nextProps.scheduleConfig)
   );

@@ -9,13 +9,14 @@ interface DayEditorProps {
   date: Date;
   initialData?: DayData;
   onClose: () => void;
-  onSave: (date: string, events: ScheduleEntry[], stickers: string[]) => void;
+  onSave: (date: string, events: ScheduleEntry[], stickers: string[], quickNotes: string[]) => void;
   scheduleConfig: ScheduleConfig;
 }
 
 export const DayEditor: React.FC<DayEditorProps> = ({ date, initialData, onClose, onSave, scheduleConfig }) => {
   const [entries, setEntries] = useState<ScheduleEntry[]>(() => initialData?.events || []);
   const [stickers, setStickers] = useState<string[]>(() => initialData?.stickers || []);
+  const [quickNotesText, setQuickNotesText] = useState<string>(() => (initialData?.quickNotes || []).join('\n'));
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -44,9 +45,10 @@ export const DayEditor: React.FC<DayEditorProps> = ({ date, initialData, onClose
 
   const handleSave = useCallback(() => {
     const validEntries = entries.filter(e => e.teacherId !== '' || e.courseId !== '' || e.notes.trim() !== '');
-    onSave(format(date, 'yyyy-MM-dd'), validEntries, stickers);
+    const quickNotes = quickNotesText.split('\n').filter(n => n.trim() !== '');
+    onSave(format(date, 'yyyy-MM-dd'), validEntries, stickers, quickNotes);
     onClose();
-  }, [entries, stickers, date, onSave, onClose]);
+  }, [entries, stickers, quickNotesText, date, onSave, onClose]);
 
   const toggleSticker = useCallback((emoji: string) => {
     setStickers(prev =>
@@ -190,6 +192,19 @@ export const DayEditor: React.FC<DayEditorProps> = ({ date, initialData, onClose
             >
               <Plus size={14} /> 添加课程记录
             </button>
+          </div>
+
+          {/* Quick Notes Section */}
+          <div className="mb-6">
+            <label className="text-xs font-bold text-text-secondary uppercase mb-2 block">{t('quickNotes')}</label>
+            <textarea
+              value={quickNotesText}
+              onChange={e => setQuickNotesText(e.target.value)}
+              placeholder={t('quickNotes') + '...'}
+              rows={4}
+              className="w-full px-3 py-2 border border-surface-border rounded text-sm bg-input-bg focus:outline-none focus:ring-1 focus:ring-stone-500 focus:bg-input-bg text-ink-black placeholder-text-secondary resize-none"
+            />
+            <p className="text-[10px] text-text-secondary mt-1">每行保存为一条笔记</p>
           </div>
 
           {/* Stickers Section */}

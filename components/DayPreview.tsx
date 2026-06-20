@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { format } from '../utils/dateUtils';
 import { DayData, ScheduleConfig } from '../types';
 import { X } from 'lucide-react';
+import { t } from '../utils/i18n';
 
 interface DayPreviewProps {
   date: Date;
@@ -19,6 +20,7 @@ export const DayPreview: React.FC<DayPreviewProps> = ({ date, data, onClose, sch
 
   const events = data?.events || [];
   const stickers = data?.stickers || [];
+  const quickNotes = data?.quickNotes || [];
 
   const maxHeight = Math.floor(window.innerHeight * 0.7);
 
@@ -80,6 +82,20 @@ export const DayPreview: React.FC<DayPreviewProps> = ({ date, data, onClose, sch
             })
           )}
         </div>
+
+        {quickNotes.length > 0 && (
+          <div className="mt-4 pt-3 border-t border-surface-border">
+            <div className="text-xs font-bold text-text-secondary uppercase mb-2">{t('quickNotes')}</div>
+            <div className="space-y-1">
+              {quickNotes.map((note, index) => (
+                <div key={index} className="flex items-start gap-2 text-sm text-stone-400">
+                  <span className="text-[10px] shrink-0 mt-0.5">📝</span>
+                  <span className="text-ink-black">{note}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {stickers.length > 0 && (
           <div className="mt-3">

@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { X, Folder, Download, Upload, HardDrive, Globe, Lock, KeyRound, Smartphone, Copy, Check, CalendarDays, Plus, Trash2 } from 'lucide-react';
+import { X, Folder, Download, Upload, HardDrive, Globe, Lock, KeyRound, Smartphone, Copy, Check, CalendarDays, Plus, Trash2, ChevronUp, ChevronDown, Pencil } from 'lucide-react';
 import { ScheduleConfig, Teacher, Course, TEACHER_COLORS } from '../types';
 import { t, setLanguage, getCurrentLanguage, languageNames, type Language } from '../utils/i18n';
 import * as OTPAuth from 'otpauth';
@@ -48,6 +48,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
   const [newTeacherName, setNewTeacherName] = useState('');
   const [newTeacherColor, setNewTeacherColor] = useState(TEACHER_COLORS[0]);
   const [newCourseName, setNewCourseName] = useState('');
+  const [editingTeacherId, setEditingTeacherId] = useState<string | null>(null);
+  const [editingTeacherName, setEditingTeacherName] = useState('');
+  const [editingCourseId, setEditingCourseId] = useState<string | null>(null);
+  const [editingCourseName, setEditingCourseName] = useState('');
 
   const generateQRCode = async (secret: string) => {
     try {
@@ -202,6 +206,40 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
     });
   };
 
+  const handleMoveTeacherUp = (index: number) => {
+    if (index <= 0) return;
+    const newTeachers = [...scheduleConfig.teachers];
+    [newTeachers[index - 1], newTeachers[index]] = [newTeachers[index], newTeachers[index - 1]];
+    onScheduleConfigChange({ ...scheduleConfig, teachers: newTeachers });
+  };
+
+  const handleMoveTeacherDown = (index: number) => {
+    if (index >= scheduleConfig.teachers.length - 1) return;
+    const newTeachers = [...scheduleConfig.teachers];
+    [newTeachers[index], newTeachers[index + 1]] = [newTeachers[index + 1], newTeachers[index]];
+    onScheduleConfigChange({ ...scheduleConfig, teachers: newTeachers });
+  };
+
+  const handleStartEditTeacher = (teacher: Teacher) => {
+    setEditingTeacherId(teacher.id);
+    setEditingTeacherName(teacher.name);
+  };
+
+  const handleSaveEditTeacher = () => {
+    if (!editingTeacherId || !editingTeacherName.trim()) return;
+    const newTeachers = scheduleConfig.teachers.map(t =>
+      t.id === editingTeacherId ? { ...t, name: editingTeacherName.trim() } : t
+    );
+    onScheduleConfigChange({ ...scheduleConfig, teachers: newTeachers });
+    setEditingTeacherId(null);
+    setEditingTeacherName('');
+  };
+
+  const handleCancelEditTeacher = () => {
+    setEditingTeacherId(null);
+    setEditingTeacherName('');
+  };
+
   const handleAddCourse = () => {
     const name = newCourseName.trim();
     if (!name) return;
@@ -221,6 +259,40 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
       ...scheduleConfig,
       courses: scheduleConfig.courses.filter(c => c.id !== id),
     });
+  };
+
+  const handleMoveCourseUp = (index: number) => {
+    if (index <= 0) return;
+    const newCourses = [...scheduleConfig.courses];
+    [newCourses[index - 1], newCourses[index]] = [newCourses[index], newCourses[index - 1]];
+    onScheduleConfigChange({ ...scheduleConfig, courses: newCourses });
+  };
+
+  const handleMoveCourseDown = (index: number) => {
+    if (index >= scheduleConfig.courses.length - 1) return;
+    const newCourses = [...scheduleConfig.courses];
+    [newCourses[index], newCourses[index + 1]] = [newCourses[index + 1], newCourses[index]];
+    onScheduleConfigChange({ ...scheduleConfig, courses: newCourses });
+  };
+
+  const handleStartEditCourse = (course: Course) => {
+    setEditingCourseId(course.id);
+    setEditingCourseName(course.name);
+  };
+
+  const handleSaveEditCourse = () => {
+    if (!editingCourseId || !editingCourseName.trim()) return;
+    const newCourses = scheduleConfig.courses.map(c =>
+      c.id === editingCourseId ? { ...c, name: editingCourseName.trim() } : c
+    );
+    onScheduleConfigChange({ ...scheduleConfig, courses: newCourses });
+    setEditingCourseId(null);
+    setEditingCourseName('');
+  };
+
+  const handleCancelEditCourse = () => {
+    setEditingCourseId(null);
+    setEditingCourseName('');
   };
 
   const handleSaveSecurity = () => {
@@ -728,13 +800,55 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
                     {scheduleConfig.teachers.length === 0 && (
                       <p className="text-xs text-text-secondary text-center py-2">暂无教师，请在下方添加</p>
                     )}
-                    {scheduleConfig.teachers.map(teacher => (
+                    {scheduleConfig.teachers.map((teacher, index) => (
                       <div key={teacher.id} className="flex items-center gap-2 bg-paper-dark border border-surface-border rounded px-3 py-2">
-                        <span
-                          className="w-4 h-4 rounded-full shrink-0"
-                          style={{ backgroundColor: teacher.color }}
-                        />
-                        <span className="flex-1 text-sm text-ink-black">{teacher.name}</span>
+                        <span className="w-4 h-4 rounded-full shrink-0" style={{ backgroundColor: teacher.color }} />
+                        
+                        <div className="flex flex-col gap-0.5 shrink-0">
+                          <button
+                            onClick={() => handleMoveTeacherUp(index)}
+                            disabled={index === 0}
+                            className="text-text-secondary hover:text-ink-black disabled:opacity-20 disabled:cursor-not-allowed transition-colors leading-none"
+                            title="上移"
+                          >
+                            <ChevronUp size={12} />
+                          </button>
+                          <button
+                            onClick={() => handleMoveTeacherDown(index)}
+                            disabled={index === scheduleConfig.teachers.length - 1}
+                            className="text-text-secondary hover:text-ink-black disabled:opacity-20 disabled:cursor-not-allowed transition-colors leading-none"
+                            title="下移"
+                          >
+                            <ChevronDown size={12} />
+                          </button>
+                        </div>
+                        
+                        {editingTeacherId === teacher.id ? (
+                          <input
+                            type="text"
+                            value={editingTeacherName}
+                            onChange={e => setEditingTeacherName(e.target.value)}
+                            onKeyDown={e => {
+                              if (e.key === 'Enter') handleSaveEditTeacher();
+                              if (e.key === 'Escape') handleCancelEditTeacher();
+                            }}
+                            onBlur={handleSaveEditTeacher}
+                            className="flex-1 px-2 py-0.5 border border-surface-border rounded text-sm bg-input-bg focus:outline-none focus:ring-1 focus:ring-stone-500 text-ink-black"
+                            autoFocus
+                          />
+                        ) : (
+                          <>
+                            <span className="flex-1 text-sm text-ink-black">{teacher.name}</span>
+                            <button
+                              onClick={() => handleStartEditTeacher(teacher)}
+                              className="text-text-secondary hover:text-ink-black transition-colors"
+                              title="编辑"
+                            >
+                              <Pencil size={12} />
+                            </button>
+                          </>
+                        )}
+                        
                         <button
                           onClick={() => handleDeleteTeacher(teacher.id)}
                           className="text-text-secondary hover:text-red-400 transition-colors"
@@ -788,9 +902,53 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
                     {scheduleConfig.courses.length === 0 && (
                       <p className="text-xs text-text-secondary text-center py-2">暂无课程，请在下方添加</p>
                     )}
-                    {scheduleConfig.courses.map(course => (
+                    {scheduleConfig.courses.map((course, index) => (
                       <div key={course.id} className="flex items-center gap-2 bg-paper-dark border border-surface-border rounded px-3 py-2">
-                        <span className="flex-1 text-sm text-ink-black">{course.name}</span>
+                        <div className="flex flex-col gap-0.5 shrink-0">
+                          <button
+                            onClick={() => handleMoveCourseUp(index)}
+                            disabled={index === 0}
+                            className="text-text-secondary hover:text-ink-black disabled:opacity-20 disabled:cursor-not-allowed transition-colors leading-none"
+                            title="上移"
+                          >
+                            <ChevronUp size={12} />
+                          </button>
+                          <button
+                            onClick={() => handleMoveCourseDown(index)}
+                            disabled={index === scheduleConfig.courses.length - 1}
+                            className="text-text-secondary hover:text-ink-black disabled:opacity-20 disabled:cursor-not-allowed transition-colors leading-none"
+                            title="下移"
+                          >
+                            <ChevronDown size={12} />
+                          </button>
+                        </div>
+                        
+                        {editingCourseId === course.id ? (
+                          <input
+                            type="text"
+                            value={editingCourseName}
+                            onChange={e => setEditingCourseName(e.target.value)}
+                            onKeyDown={e => {
+                              if (e.key === 'Enter') handleSaveEditCourse();
+                              if (e.key === 'Escape') handleCancelEditCourse();
+                            }}
+                            onBlur={handleSaveEditCourse}
+                            className="flex-1 px-2 py-0.5 border border-surface-border rounded text-sm bg-input-bg focus:outline-none focus:ring-1 focus:ring-stone-500 text-ink-black"
+                            autoFocus
+                          />
+                        ) : (
+                          <>
+                            <span className="flex-1 text-sm text-ink-black">{course.name}</span>
+                            <button
+                              onClick={() => handleStartEditCourse(course)}
+                              className="text-text-secondary hover:text-ink-black transition-colors"
+                              title="编辑"
+                            >
+                              <Pencil size={12} />
+                            </button>
+                          </>
+                        )}
+                        
                         <button
                           onClick={() => handleDeleteCourse(course.id)}
                           className="text-text-secondary hover:text-red-400 transition-colors"

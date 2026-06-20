@@ -100,11 +100,11 @@ const App: React.FC = () => {
     localStorage.setItem('calendar-diary-data-updated-at', new Date().toISOString());
   }, []);
 
-  const handleDaySave = useCallback((dateKey: string, events: ScheduleEntry[], stickers: string[]) => {
+  const handleDaySave = useCallback((dateKey: string, events: ScheduleEntry[], stickers: string[], quickNotes: string[]) => {
     setData(prevData => {
       const newData = {
         ...prevData,
-        [dateKey]: { date: dateKey, events, stickers }
+        [dateKey]: { date: dateKey, events, stickers, quickNotes }
       };
       StorageService.setData(newData);
       localStorage.setItem('calendar-diary-data-updated-at', new Date().toISOString());

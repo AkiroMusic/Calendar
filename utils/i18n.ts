@@ -1,7 +1,7 @@
 
 export const translations = {
   'zh-CN': {
-    appTitle: "Akiro Calendar",
+    appTitle: "Calendar",
     monthlyPlan: "月度计划",
     dailyEditor: "每日记录",
     todoEvents: "待办事项 / 日记",
@@ -105,11 +105,12 @@ export const translations = {
     scheduleConfigHint: "请先在「设置 → 排课管理」中添加教师和课程，再录入课表。",
     scheduleEntries: "课程安排",
     color: "颜色",
+    quickNotes: "快速笔记",
     darkMode: "深色模式",
     lightMode: "浅色模式"
   },
   'en': {
-    appTitle: "Akiro Calendar",
+    appTitle: "Calendar",
     monthlyPlan: "Monthly Plan",
     dailyEditor: "Daily Editor",
     todoEvents: "To-Do / Diary",
@@ -213,6 +214,7 @@ export const translations = {
     scheduleConfigHint: "Please add teachers and courses in Settings > Schedule first.",
     scheduleEntries: "Schedule",
     color: "Color",
+    quickNotes: "Quick Notes",
     darkMode: "Dark Mode",
     lightMode: "Light Mode"
   }

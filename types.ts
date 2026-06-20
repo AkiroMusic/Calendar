@@ -10,6 +10,7 @@ export interface DayData {
   date: string; // YYYY-MM-DD
   events: ScheduleEntry[];
   stickers: string[]; // Array of decorative sticker IDs
+  quickNotes: string[]; // Array of quick note texts
 }
 
 export interface CalendarState {
