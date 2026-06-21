@@ -34,7 +34,6 @@
     "concurrently": "^8.2.2",
     "electron": "^39.2.3",
     "electron-builder": "^24.9.1",
-    "electron-packager": "^17.1.2",
     "png2icons": "^2.0.1",
     "tsx": "^4.7.0",
     "typescript": "~5.8.2",
