@@ -33,6 +33,13 @@ jobs:
           path: release/Calendar*.exe
           if-no-files-found: error
 
+      - name: Upload to Release (tag push only)
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release upload "${{ github.ref_name }}" release/Calendar*.exe --clobber
+
   build-macos:
     runs-on: macos-latest
     steps:
@@ -62,3 +69,10 @@ jobs:
           name: Calendar-macOS-zip
           path: release/Calendar*.zip
           if-no-files-found: warn
+
+      - name: Upload to Release (tag push only)
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release upload "${{ github.ref_name }}" release/Calendar*.dmg release/Calendar*.zip --clobber
