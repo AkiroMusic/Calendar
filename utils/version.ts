@@ -1,8 +1,8 @@
 export const getAppVersion = async (): Promise<string> => {
   try {
-    if (typeof window !== 'undefined' && (window as any).electronAPI?.app?.getVersion) {
-      const v = await (window as any).electronAPI.app.getVersion();
-      if (v) return v as string;
+    if (typeof window !== 'undefined' && window.electronAPI?.app?.getVersion) {
+      const v = await window.electronAPI.app.getVersion();
+      if (v) return v;
     }
   } catch {}
 

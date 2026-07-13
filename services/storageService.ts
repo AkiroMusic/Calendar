@@ -1,3 +1,5 @@
+import { DayData, ScheduleConfig } from '../types';
+
 // 存储服务 - 兼容浏览器和 Electron 环境
 export class StorageService {
   private static isElectron(): boolean {
@@ -5,7 +7,7 @@ export class StorageService {
   }
 
   // 获取日历数据
-  static async getData(): Promise<any> {
+  static async getData(): Promise<Record<string, DayData>> {
     if (this.isElectron()) {
       return await window.electronAPI.storage.getData();
     } else {
@@ -15,7 +17,7 @@ export class StorageService {
   }
 
   // 保存日历数据
-  static async setData(data: any): Promise<void> {
+  static async setData(data: Record<string, DayData>): Promise<void> {
     if (this.isElectron()) {
       await window.electronAPI.storage.setData(data);
     } else {
@@ -24,7 +26,7 @@ export class StorageService {
   }
 
   // 获取月度计划
-  static async getPlans(): Promise<any> {
+  static async getPlans(): Promise<Record<string, string[]>> {
     if (this.isElectron()) {
       return await window.electronAPI.storage.getPlans();
     } else {
@@ -34,7 +36,7 @@ export class StorageService {
   }
 
   // 保存月度计划
-  static async setPlans(plans: any): Promise<void> {
+  static async setPlans(plans: Record<string, string[]>): Promise<void> {
     if (this.isElectron()) {
       await window.electronAPI.storage.setPlans(plans);
     } else {
@@ -43,7 +45,7 @@ export class StorageService {
   }
 
   // 获取排课配置
-  static async getScheduleConfig(): Promise<any> {
+  static async getScheduleConfig(): Promise<ScheduleConfig> {
     if (this.isElectron()) {
       return await window.electronAPI.storage.getScheduleConfig();
     } else {
@@ -53,7 +55,7 @@ export class StorageService {
   }
 
   // 保存排课配置
-  static async setScheduleConfig(config: any): Promise<void> {
+  static async setScheduleConfig(config: ScheduleConfig): Promise<void> {
     if (this.isElectron()) {
       await window.electronAPI.storage.setScheduleConfig(config);
     } else {

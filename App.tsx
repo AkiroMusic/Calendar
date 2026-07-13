@@ -181,6 +181,7 @@ const App: React.FC = () => {
     reader.onload = (event) => {
       try {
         const parsed = JSON.parse(event.target?.result as string);
+        if (!parsed || typeof parsed !== 'object') throw new Error('Invalid format');
         if (parsed.data) saveData(parsed.data);
         if (parsed.monthlyPlans) savePlans(parsed.monthlyPlans);
         if (parsed.scheduleConfig) {

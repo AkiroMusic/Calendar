@@ -45,7 +45,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({ onClose, data, onSelec
       if (dayEvents.length === 0 && dayNotes.length === 0) return;
 
       const notesText = dayNotes.join(' ');
-      const allText = [...dayEvents.map(e => (e as any).notes || (e as any).rawText || ''), notesText].join(' ');
+      const allText = [...dayEvents.map(e => e.notes), notesText].join(' ');
       
       if (allText.toLowerCase().includes(query)) {
         const date = parse(dateKey, 'yyyy-MM-dd', new Date());
