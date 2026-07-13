@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { X, Folder, Download, Upload, HardDrive, Globe, Lock, KeyRound, Smartphone, Copy, Check, CalendarDays, Plus, Trash2, ChevronUp, ChevronDown, Pencil } from 'lucide-react';
+import { X, Folder, Download, Upload, HardDrive, Globe, Lock, KeyRound, Smartphone, Copy, Check, CalendarDays, Plus, Trash2, ChevronUp, ChevronDown, Pencil, Users } from 'lucide-react';
 import { ScheduleConfig, Teacher, Course, TEACHER_COLORS } from '../types';
 import { t, setLanguage, getCurrentLanguage, languageNames, type Language } from '../utils/i18n';
 import * as OTPAuth from 'otpauth';
@@ -14,11 +14,13 @@ interface SettingsModalProps {
   onDisplaySettingsChange?: (mode: 'ellipsis' | 'scroll') => void;
   scheduleConfig: ScheduleConfig;
   onScheduleConfigChange: (config: ScheduleConfig) => void;
+  filterTeacherId?: string | null;
+  onFilterTeacherChange?: (teacherId: string | null) => void;
 }
 
 type TabType = 'general' | 'security' | 'schedule';
 
-export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport, onImport, onDisplaySettingsChange, scheduleConfig, onScheduleConfigChange }) => {
+export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport, onImport, onDisplaySettingsChange, scheduleConfig, onScheduleConfigChange, filterTeacherId, onFilterTeacherChange }) => {
   const [dataPath, setDataPath] = useState('LocalStorage (Browser)');
   const [isElectron, setIsElectron] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState<Language>(getCurrentLanguage());
@@ -978,6 +980,44 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
                         </button>
                       </div>
                     </div>
+                  </div>
+                </section>
+
+                {/* Teacher Filter Section */}
+                <section>
+                  <h3 className="text-sm font-bold text-ink-black mb-3 flex items-center gap-2">
+                    <Users size={16} /> {t('filterTeacher')}
+                  </h3>
+                  <div className="bg-paper-dark p-4 rounded-md border border-surface-border space-y-1">
+                    <button
+                      onClick={() => onFilterTeacherChange?.(null)}
+                      className={`w-full flex items-center gap-3 px-3 py-2 text-xs rounded transition-colors hover:bg-surface-hover ${
+                        !filterTeacherId ? 'text-ink-black bg-surface font-medium' : 'text-text-secondary'
+                      }`}
+                    >
+                      <span className="w-4 flex justify-center">
+                        {!filterTeacherId && <Check size={14} />}
+                      </span>
+                      {t('allTeachers')}
+                    </button>
+                    {scheduleConfig.teachers.map(teacher => (
+                      <button
+                        key={teacher.id}
+                        onClick={() => onFilterTeacherChange?.(teacher.id)}
+                        className={`w-full flex items-center gap-3 px-3 py-2 text-xs rounded transition-colors hover:bg-surface-hover ${
+                          filterTeacherId === teacher.id ? 'text-ink-black bg-surface font-medium' : 'text-text-secondary'
+                        }`}
+                      >
+                        <span className="w-4 flex justify-center">
+                          {filterTeacherId === teacher.id && <Check size={14} />}
+                        </span>
+                        <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: teacher.color }} />
+                        <span className="truncate">{teacher.name}</span>
+                      </button>
+                    ))}
+                    {scheduleConfig.teachers.length === 0 && (
+                      <p className="text-xs text-text-secondary text-center py-4">{t('noTeacher')}</p>
+                    )}
                   </div>
                 </section>
               </>

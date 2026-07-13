@@ -10,7 +10,7 @@ const AuthModal = React.lazy(() => import('./components/AuthModal').then(m => ({
 const SearchModal = React.lazy(() => import('./components/SearchModal').then(m => ({ default: m.SearchModal })));
 import { DayData, WEEK_DAYS, ScheduleEntry, ScheduleConfig } from './types';
 import { StorageService } from './services/storageService';
-import { Settings, Minus, Square, X, Search, Info, Sun, Moon, Users, Check } from 'lucide-react';
+import { Settings, Minus, Square, X, Search, Info, Sun, Moon } from 'lucide-react';
 import { t, getWeekDay } from './utils/i18n';
 
 const App: React.FC = () => {
@@ -36,8 +36,6 @@ const App: React.FC = () => {
   const [filterTeacherId, setFilterTeacherId] = useState<string | null>(() => {
     return localStorage.getItem('calendar-diary-filter-teacher') || null;
   });
-  const [showTeacherFilter, setShowTeacherFilter] = useState(false);
-
   // --- Lifecycle ---
   useEffect(() => {
     // 检查是否需要验证
@@ -152,7 +150,6 @@ const App: React.FC = () => {
 
   const handleFilterTeacherChange = useCallback((teacherId: string | null) => {
     setFilterTeacherId(teacherId);
-    setShowTeacherFilter(false);
     if (teacherId) {
       localStorage.setItem('calendar-diary-filter-teacher', teacherId);
     } else {
@@ -269,55 +266,6 @@ const App: React.FC = () => {
             >
               {darkMode ? <Sun size={16} /> : <Moon size={16} />}
             </button>
-            {/* Teacher Filter */}
-            <div className="relative">
-              <button 
-                onClick={() => setShowTeacherFilter(prev => !prev)} 
-                className={`p-1.5 rounded-md transition-all ${
-                  filterTeacherId 
-                    ? 'text-ink-black bg-surface-hover ring-1 ring-ink-black/30' 
-                    : 'text-text-secondary hover:bg-surface-hover hover:text-ink-black'
-                }`}
-                title={t('filterTeacher')}
-              >
-                <Users size={16} />
-              </button>
-              {showTeacherFilter && (
-                <>
-                  <div className="fixed inset-0 z-40" onClick={() => setShowTeacherFilter(false)} />
-                  <div className="absolute right-0 top-full mt-1 z-50 bg-surface border border-surface-border shadow-xl rounded-lg py-1 min-w-[180px] animate-in fade-in zoom-in-95 origin-top-right">
-                    <button
-                      onClick={() => handleFilterTeacherChange(null)}
-                      className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors hover:bg-surface-hover ${
-                        !filterTeacherId ? 'text-ink-black font-medium' : 'text-text-secondary'
-                      }`}
-                    >
-                      <span className="w-4 flex justify-center">
-                        {!filterTeacherId && <Check size={14} className="text-ink-black" />}
-                      </span>
-                      <span>{t('allTeachers')}</span>
-                    </button>
-                    <div className="border-t border-surface-border my-1" />
-                    {scheduleConfig.teachers.map(teacher => (
-                      <button
-                        key={teacher.id}
-                        onClick={() => handleFilterTeacherChange(teacher.id)}
-                        className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-colors hover:bg-surface-hover ${
-                          filterTeacherId === teacher.id ? 'text-ink-black font-medium' : 'text-text-secondary'
-                        }`}
-                      >
-                        <span className="w-4 flex justify-center">
-                          {filterTeacherId === teacher.id && <Check size={14} className="text-ink-black" />}
-                        </span>
-                        <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: teacher.color }} />
-                        <span className="truncate">{teacher.name}</span>
-                      </button>
-                    ))}
-                  </div>
-                </>
-              )}
-            </div>
-
             <button 
               onClick={() => setShowSearch(true)} 
               className="p-1.5 text-text-secondary hover:bg-surface-hover hover:text-ink-black rounded-md transition-all"
@@ -436,6 +384,8 @@ const App: React.FC = () => {
               defaultTab={settingsDefaultTab}
               scheduleConfig={scheduleConfig}
               onScheduleConfigChange={handleScheduleConfigUpdate}
+              filterTeacherId={filterTeacherId}
+              onFilterTeacherChange={handleFilterTeacherChange}
           />
         </Suspense>
       )}
