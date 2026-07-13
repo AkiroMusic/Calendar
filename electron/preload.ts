@@ -35,7 +35,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   platform: process.platform,
 });
 
-// 类型定义
+// 类型定义（由 types.ts 中的全局声明覆盖，此处仅供 preload 自身引用）
 export interface ElectronAPI {
   storage: {
     getData: () => Promise<any>;
@@ -59,10 +59,4 @@ export interface ElectronAPI {
     getVersion: () => Promise<string>; 
   }; 
   platform: string;
-}
-
-declare global {
-  interface Window {
-    electronAPI: ElectronAPI;
-  }
 }

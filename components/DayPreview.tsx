@@ -9,16 +9,20 @@ interface DayPreviewProps {
   data?: DayData;
   onClose: () => void;
   scheduleConfig?: ScheduleConfig;
+  filterTeacherId?: string | null;
 }
 
-export const DayPreview: React.FC<DayPreviewProps> = ({ date, data, onClose, scheduleConfig }) => {
+export const DayPreview: React.FC<DayPreviewProps> = ({ date, data, onClose, scheduleConfig, filterTeacherId }) => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     setIsVisible(true);
   }, []);
 
-  const events = data?.events || [];
+  // 如果设置了教师筛选，只显示该教师的课程
+  const events = (data?.events || []).filter(e =>
+    !filterTeacherId || e.teacherId === filterTeacherId
+  );
   const stickers = data?.stickers || [];
   const quickNotes = data?.quickNotes || [];
 

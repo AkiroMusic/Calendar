@@ -14,9 +14,10 @@ interface DayCellProps {
   highlight?: boolean;
   onContextMenu?: (day: Date) => void;
   scheduleConfig?: ScheduleConfig;
+  filterTeacherId?: string | null;
 }
 
-const DayCellComponent: React.FC<DayCellProps> = ({ day, currentDate, data, onClick, highlight, onContextMenu, scheduleConfig }) => {
+const DayCellComponent: React.FC<DayCellProps> = ({ day, currentDate, data, onClick, highlight, onContextMenu, scheduleConfig, filterTeacherId }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [maxEllipsisCount, setMaxEllipsisCount] = useState(3);
   const eventsListRef = useRef<HTMLDivElement>(null);
@@ -28,8 +29,11 @@ const DayCellComponent: React.FC<DayCellProps> = ({ day, currentDate, data, onCl
   const lunar = getLunarDate(day);
   const holiday = getHoliday(day, getCurrentLanguage());
   const stickers = data?.stickers || [];
-  const events = data?.events || [];
   const quickNotes = data?.quickNotes || [];
+  // 如果设置了教师筛选，只显示该教师的课程
+  const events = (data?.events || []).filter(e =>
+    !filterTeacherId || e.teacherId === filterTeacherId
+  );
 
   // 动态测量首条日记项高度
   useLayoutEffect(() => {
@@ -172,6 +176,7 @@ export const DayCell = memo(DayCellComponent, (prevProps, nextProps) => {
     prevProps.day.getTime() === nextProps.day.getTime() &&
     prevProps.currentDate.getTime() === nextProps.currentDate.getTime() &&
     prevProps.highlight === nextProps.highlight &&
+    prevProps.filterTeacherId === nextProps.filterTeacherId &&
     prevProps.data?.events?.length === nextProps.data?.events?.length &&
     prevProps.data?.stickers?.length === nextProps.data?.stickers?.length &&
     prevProps.data?.quickNotes?.length === nextProps.data?.quickNotes?.length &&

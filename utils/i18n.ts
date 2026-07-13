@@ -107,7 +107,9 @@ export const translations = {
     color: "颜色",
     quickNotes: "快速笔记",
     darkMode: "深色模式",
-    lightMode: "浅色模式"
+    lightMode: "浅色模式",
+    filterTeacher: "筛选教师课程",
+    allTeachers: "所有教师"
   },
   'en': {
     appTitle: "Calendar",
@@ -216,7 +218,9 @@ export const translations = {
     color: "Color",
     quickNotes: "Quick Notes",
     darkMode: "Dark Mode",
-    lightMode: "Light Mode"
+    lightMode: "Light Mode",
+    filterTeacher: "Filter by Teacher",
+    allTeachers: "All Teachers"
   }
 };
 
