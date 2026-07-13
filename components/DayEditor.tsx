@@ -96,13 +96,13 @@ export const DayEditor: React.FC<DayEditorProps> = ({ date, initialData, onClose
           {/* Schedule Entries Section */}
           <div className="mb-6">
             <div className="flex justify-between items-center mb-2">
-              <label className="text-xs font-bold text-text-secondary uppercase">课程安排</label>
+              <label className="text-xs font-bold text-text-secondary uppercase">{t('scheduleEntries')}</label>
             </div>
 
             {hasNoConfig && (
               <div className="bg-amber-900/30 border border-amber-700/50 rounded p-3 mb-3">
                 <p className="text-xs text-amber-300">
-                  请先在「设置 → 排课管理」中添加教师和课程，再录入课表。
+                  {t('scheduleConfigHint')}
                 </p>
               </div>
             )}
@@ -127,7 +127,7 @@ export const DayEditor: React.FC<DayEditorProps> = ({ date, initialData, onClose
                         onChange={e => handleEntryChange(entry.id, 'teacherId', e.target.value)}
                         className="pl-6 pr-2 py-1.5 border border-surface-border rounded text-sm bg-input-bg focus:outline-none focus:ring-1 focus:ring-stone-500 focus:bg-input-bg text-ink-black appearance-none min-w-[90px]"
                       >
-                        <option value="">选择教师</option>
+                        <option value="">{t('selectTeacher')}</option>
                         {scheduleConfig.teachers.map(t => (
                           <option key={t.id} value={t.id}>{t.name}</option>
                         ))}
@@ -140,7 +140,7 @@ export const DayEditor: React.FC<DayEditorProps> = ({ date, initialData, onClose
                       onChange={e => handleEntryChange(entry.id, 'courseId', e.target.value)}
                       className="flex-1 min-w-[100px] px-2 py-1.5 border border-surface-border rounded text-sm bg-input-bg focus:outline-none focus:ring-1 focus:ring-stone-500 focus:bg-input-bg text-ink-black"
                     >
-                      <option value="">选择课程</option>
+                      <option value="">{t('selectCourse')}</option>
                       {scheduleConfig.courses.map(c => (
                         <option key={c.id} value={c.id}>{c.name}</option>
                       ))}
@@ -151,7 +151,7 @@ export const DayEditor: React.FC<DayEditorProps> = ({ date, initialData, onClose
                       type="text"
                       value={entry.lessonNumber}
                       onChange={e => handleEntryChange(entry.id, 'lessonNumber', e.target.value)}
-                      placeholder="第几节"
+                      placeholder={t('lessonNumber')}
                       className="w-16 px-1.5 py-1.5 border border-surface-border rounded text-sm bg-input-bg focus:outline-none focus:ring-1 focus:ring-stone-500 focus:bg-input-bg text-ink-black placeholder-text-secondary text-center"
                     />
 
@@ -190,7 +190,7 @@ export const DayEditor: React.FC<DayEditorProps> = ({ date, initialData, onClose
               disabled={hasNoConfig}
               className="mt-3 flex items-center gap-1 text-text-secondary hover:text-ink-black text-xs font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-40"
             >
-              <Plus size={14} /> 添加课程记录
+              <Plus size={14} /> {t('addScheduleEntry')}
             </button>
           </div>
 
@@ -204,7 +204,7 @@ export const DayEditor: React.FC<DayEditorProps> = ({ date, initialData, onClose
               rows={4}
               className="w-full px-3 py-2 border border-surface-border rounded text-sm bg-input-bg focus:outline-none focus:ring-1 focus:ring-stone-500 focus:bg-input-bg text-ink-black placeholder-text-secondary resize-none"
             />
-            <p className="text-[10px] text-text-secondary mt-1">每行保存为一条笔记</p>
+            <p className="text-[10px] text-text-secondary mt-1">{t('notesPerLine')}</p>
           </div>
 
           {/* Stickers Section */}

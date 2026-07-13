@@ -11,7 +11,6 @@ interface SettingsModalProps {
   onClose: () => void;
   onExport: () => void;
   onImport: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onDisplaySettingsChange?: (mode: 'ellipsis' | 'scroll') => void;
   scheduleConfig: ScheduleConfig;
   onScheduleConfigChange: (config: ScheduleConfig) => void;
   filterTeacherId?: string | null;
@@ -20,7 +19,7 @@ interface SettingsModalProps {
 
 type TabType = 'general' | 'security' | 'schedule';
 
-export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport, onImport, onDisplaySettingsChange, scheduleConfig, onScheduleConfigChange, filterTeacherId, onFilterTeacherChange }) => {
+export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport, onImport, scheduleConfig, onScheduleConfigChange, filterTeacherId, onFilterTeacherChange }) => {
   const [dataPath, setDataPath] = useState('LocalStorage (Browser)');
   const [isElectron, setIsElectron] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState<Language>(getCurrentLanguage());
@@ -425,8 +424,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
             }`}
           >
             <CalendarDays size={16} />
-            排课管理
-          </button>
+             {t('scheduleManage')}
+           </button>
           <button
             onClick={() => setActiveTab('security')}
             className={`flex items-center gap-2 px-6 py-3 text-sm font-medium transition-all ${
@@ -796,31 +795,31 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
                 {/* Teachers Section */}
                 <section>
                   <h3 className="text-sm font-bold text-ink-black mb-3 flex items-center gap-2">
-                    <CalendarDays size={16} /> 教师管理
+                    <CalendarDays size={16} /> {t('teacherManage')}
                   </h3>
                   <div className="bg-paper-dark p-4 rounded-md border border-surface-border space-y-3">
                     {scheduleConfig.teachers.length === 0 && (
-                      <p className="text-xs text-text-secondary text-center py-2">暂无教师，请在下方添加</p>
+                       <p className="text-xs text-text-secondary text-center py-2">{t('noTeacher')}</p>
                     )}
                     {scheduleConfig.teachers.map((teacher, index) => (
                       <div key={teacher.id} className="flex items-center gap-2 bg-paper-dark border border-surface-border rounded px-3 py-2">
                         <span className="w-4 h-4 rounded-full shrink-0" style={{ backgroundColor: teacher.color }} />
                         
                         <div className="flex flex-col gap-0.5 shrink-0">
-                          <button
-                            onClick={() => handleMoveTeacherUp(index)}
-                            disabled={index === 0}
-                            className="text-text-secondary hover:text-ink-black disabled:opacity-20 disabled:cursor-not-allowed transition-colors leading-none"
-                            title="上移"
-                          >
-                            <ChevronUp size={12} />
-                          </button>
-                          <button
-                            onClick={() => handleMoveTeacherDown(index)}
-                            disabled={index === scheduleConfig.teachers.length - 1}
-                            className="text-text-secondary hover:text-ink-black disabled:opacity-20 disabled:cursor-not-allowed transition-colors leading-none"
-                            title="下移"
-                          >
+                           <button
+                             onClick={() => handleMoveTeacherUp(index)}
+                             disabled={index === 0}
+                             className="text-text-secondary hover:text-ink-black disabled:opacity-20 disabled:cursor-not-allowed transition-colors leading-none"
+                             title={t('moveUp')}
+                           >
+                             <ChevronUp size={12} />
+                           </button>
+                           <button
+                             onClick={() => handleMoveTeacherDown(index)}
+                             disabled={index === scheduleConfig.teachers.length - 1}
+                             className="text-text-secondary hover:text-ink-black disabled:opacity-20 disabled:cursor-not-allowed transition-colors leading-none"
+                             title={t('moveDown')}
+                           >
                             <ChevronDown size={12} />
                           </button>
                         </div>
@@ -841,37 +840,37 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
                         ) : (
                           <>
                             <span className="flex-1 text-sm text-ink-black">{teacher.name}</span>
-                            <button
-                              onClick={() => handleStartEditTeacher(teacher)}
-                              className="text-text-secondary hover:text-ink-black transition-colors"
-                              title="编辑"
-                            >
-                              <Pencil size={12} />
-                            </button>
+                          <button
+                               onClick={() => handleStartEditTeacher(teacher)}
+                               className="text-text-secondary hover:text-ink-black transition-colors"
+                               title={t('edit')}
+                             >
+                               <Pencil size={12} />
+                             </button>
                           </>
                         )}
                         
                         <button
-                          onClick={() => handleDeleteTeacher(teacher.id)}
-                          className="text-text-secondary hover:text-red-400 transition-colors"
-                          title="删除教师"
-                        >
-                          <Trash2 size={14} />
-                        </button>
+                           onClick={() => handleDeleteTeacher(teacher.id)}
+                           className="text-text-secondary hover:text-red-400 transition-colors"
+                           title={t('deleteTeacher')}
+                         >
+                           <Trash2 size={14} />
+                         </button>
                       </div>
                     ))}
                     <div className="pt-2 border-t border-surface-border space-y-2">
-                      <p className="text-xs font-medium text-text-secondary">添加教师</p>
+                      <p className="text-xs font-medium text-text-secondary">{t('addTeacher')}</p>
                       <input
                         type="text"
                         value={newTeacherName}
                         onChange={e => setNewTeacherName(e.target.value)}
                         onKeyDown={e => e.key === 'Enter' && handleAddTeacher()}
-                        placeholder="输入姓名，如：张老师"
+                        placeholder={t('teacherPlaceholder')}
                         className="w-full px-3 py-1.5 border border-surface-border rounded text-sm bg-input-bg focus:outline-none focus:ring-2 focus:ring-stone-500 text-ink-black placeholder-stone-500"
                       />
                       <div className="flex items-center gap-2">
-                        <span className="text-xs text-text-secondary shrink-0">颜色：</span>
+                        <span className="text-xs text-text-secondary shrink-0">{t('color')}：</span>
                         <div className="flex gap-1.5 flex-wrap">
                           {TEACHER_COLORS.map(color => (
                             <button
@@ -888,39 +887,39 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
                           disabled={!newTeacherName.trim()}
                           className="ml-auto flex items-center gap-1 px-3 py-1 bg-ink-black text-paper text-xs rounded hover:bg-ink-black/80 disabled:bg-stone-600 disabled:cursor-not-allowed transition-colors"
                         >
-                          <Plus size={12} /> 添加
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </section>
+                           <Plus size={12} /> {t('add')}
+                         </button>
+                       </div>
+                     </div>
+                   </div>
+                 </section>
 
-                {/* Courses Section */}
-                <section>
-                  <h3 className="text-sm font-bold text-ink-black mb-3 flex items-center gap-2">
-                    <HardDrive size={16} /> 课程管理
+                 {/* Courses Section */}
+                 <section>
+                   <h3 className="text-sm font-bold text-ink-black mb-3 flex items-center gap-2">
+                     <HardDrive size={16} /> {t('courseManage')}
                   </h3>
                   <div className="bg-paper-dark p-4 rounded-md border border-surface-border space-y-3">
                     {scheduleConfig.courses.length === 0 && (
-                      <p className="text-xs text-text-secondary text-center py-2">暂无课程，请在下方添加</p>
+                       <p className="text-xs text-text-secondary text-center py-2">{t('noCourse')}</p>
                     )}
                     {scheduleConfig.courses.map((course, index) => (
                       <div key={course.id} className="flex items-center gap-2 bg-paper-dark border border-surface-border rounded px-3 py-2">
                         <div className="flex flex-col gap-0.5 shrink-0">
                           <button
-                            onClick={() => handleMoveCourseUp(index)}
-                            disabled={index === 0}
-                            className="text-text-secondary hover:text-ink-black disabled:opacity-20 disabled:cursor-not-allowed transition-colors leading-none"
-                            title="上移"
-                          >
-                            <ChevronUp size={12} />
-                          </button>
-                          <button
-                            onClick={() => handleMoveCourseDown(index)}
-                            disabled={index === scheduleConfig.courses.length - 1}
-                            className="text-text-secondary hover:text-ink-black disabled:opacity-20 disabled:cursor-not-allowed transition-colors leading-none"
-                            title="下移"
-                          >
+                             onClick={() => handleMoveCourseUp(index)}
+                             disabled={index === 0}
+                             className="text-text-secondary hover:text-ink-black disabled:opacity-20 disabled:cursor-not-allowed transition-colors leading-none"
+                             title={t('moveUp')}
+                           >
+                             <ChevronUp size={12} />
+                           </button>
+                           <button
+                             onClick={() => handleMoveCourseDown(index)}
+                             disabled={index === scheduleConfig.courses.length - 1}
+                             className="text-text-secondary hover:text-ink-black disabled:opacity-20 disabled:cursor-not-allowed transition-colors leading-none"
+                             title={t('moveDown')}
+                           >
                             <ChevronDown size={12} />
                           </button>
                         </div>
@@ -942,12 +941,12 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
                           <>
                             <span className="flex-1 text-sm text-ink-black">{course.name}</span>
                             <button
-                              onClick={() => handleStartEditCourse(course)}
-                              className="text-text-secondary hover:text-ink-black transition-colors"
-                              title="编辑"
-                            >
-                              <Pencil size={12} />
-                            </button>
+                               onClick={() => handleStartEditCourse(course)}
+                               className="text-text-secondary hover:text-ink-black transition-colors"
+                               title={t('edit')}
+                             >
+                               <Pencil size={12} />
+                             </button>
                           </>
                         )}
                         
@@ -961,14 +960,14 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
                       </div>
                     ))}
                     <div className="pt-2 border-t border-surface-border space-y-2">
-                      <p className="text-xs font-medium text-text-secondary">添加课程</p>
+                      <p className="text-xs font-medium text-text-secondary">{t('addCourse')}</p>
                       <div className="flex gap-2">
                         <input
                           type="text"
                           value={newCourseName}
                           onChange={e => setNewCourseName(e.target.value)}
                           onKeyDown={e => e.key === 'Enter' && handleAddCourse()}
-                          placeholder="输入课程名，如：第3课 音阶练习"
+                          placeholder={t('coursePlaceholder')}
                           className="flex-1 px-3 py-1.5 border border-surface-border rounded text-sm bg-input-bg focus:outline-none focus:ring-2 focus:ring-stone-500 text-ink-black placeholder-stone-500"
                         />
                         <button
@@ -976,14 +975,14 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
                           disabled={!newCourseName.trim()}
                           className="flex items-center gap-1 px-3 py-1.5 bg-ink-black text-paper text-xs rounded hover:bg-ink-black/80 disabled:bg-stone-600 disabled:cursor-not-allowed transition-colors"
                         >
-                          <Plus size={12} /> 添加
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </section>
+                           <Plus size={12} /> {t('add')}
+                         </button>
+                       </div>
+                     </div>
+                   </div>
+                 </section>
 
-                {/* Teacher Filter Section */}
+                 {/* Teacher Filter Section */}
                 <section>
                   <h3 className="text-sm font-bold text-ink-black mb-3 flex items-center gap-2">
                     <Users size={16} /> {t('filterTeacher')}
