@@ -1,155 +1,179 @@
 <div align="center">
 
-**简体中文** | [English](README_EN.md)
+English | [绠€浣撲腑鏂嘳(#-chinese-version)
 
-# 📅 Calendar - 日历日程
+# 馃搮 Calendar - 鏃ュ巻鏃ョ▼
 
 <p align="center">
   <img src="logo.png" alt="Calendar Logo" width="120" height="120">
 </p>
 
-**一款简洁优雅的日历日程应用，支持排课管理和每日记录**
+**A cross-platform desktop calendar & scheduling app with class scheduling support**
 
-[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)]()
+**璺ㄥ钩鍙扮殑妗岄潰鏃ュ巻鏃ョ▼搴旂敤锛屾敮鎸佹帓璇剧鐞嗗拰姣忔棩璁板綍**
+
+[![Version](https://img.shields.io/badge/version-1.1.0-blue.svg)]()
 [![License](https://img.shields.io/badge/license-CC--BY--NC--4.0-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)]()
 
-[📥 下载应用](#-下载安装) • [✨ 使用方法](#-使用方法) • [🚀 开发指南](#-开发指南) • [📝 更新日志](CHANGELOG.md)
+[馃摜 Download / 涓嬭浇](#-installation--涓嬭浇瀹夎) 鈥?[鉁?Usage / 浣跨敤](#-usage--浣跨敤鏂规硶) 鈥?[馃殌 Development / 寮€鍙慮(#-development-guide--寮€鍙戞寚鍗? 鈥?[馃摑 Changelog](CHANGELOG.md)
 
 </div>
 
 ---
 
-## 📖 软件介绍
+## 馃摉 Introduction / 杞欢浠嬬粛
 
-Calendar 是一款跨平台的桌面日历日程应用，采用现代化设计理念，为用户提供简洁直观的记录与排课管理体验。
+Calendar is a cross-platform desktop calendar & scheduling application with a modern design philosophy, providing users with simple and intuitive daily recording and class schedule management.
 
-### ✨ 核心特色
+Calendar 鏄竴娆捐法骞冲彴鐨勬闈㈡棩鍘嗘棩绋嬪簲鐢紝閲囩敤鐜颁唬鍖栬璁＄悊蹇碉紝涓虹敤鎴锋彁渚涚畝娲佺洿瑙傜殑璁板綍涓庢帓璇剧鐞嗕綋楠屻€?
+> **馃懁 Modifier / 浜屾寮€鍙?*: [Akiro](https://github.com/sglwsjxh)
 
-> **👤 二次开发 / Modifier**: [Akiro](https://github.com/sglwsjxh) · 在原有项目基础上进行功能增强与维护
+---
 
-- **🎯 简洁设计** - 极简界面，专注于内容本身
-- **📚 排课管理** - 支持教师管理（姓名+颜色标识）、课程管理，结构化录入课程安排
-- **🎨 彩色标签** - 日历格内用教师专属颜色显示彩色课程标签，一目了然
-- **🎭 心情贴纸** - 丰富的表情符号，记录每日心情
-- **📊 月度视图** - 清晰的月历布局，一览全月安排
-- **🔒 隐私保护** - 支持 PIN 码和 TOTP 验证保护
-- **💾 本地存储** - 数据完全本地化，保护隐私安全
-- **🌍 多语言支持** - 支持简体中文、English
-- **📦 数据导入导出** - 完整数据迁移，包含排课配置
+## 鉁?Key Features / 鏍稿績鐗硅壊
 
-## 🛠️ 技术栈
+| English | 涓枃 |
+|---------|------|
+| **馃幆 Clean Design** 鈥?Minimalist interface focused on content | **馃幆 绠€娲佽璁?* 鈥?鏋佺畝鐣岄潰锛屼笓娉ㄤ簬鍐呭鏈韩 |
+| **馃摎 Schedule Management** 鈥?Teacher management (name + color), course management, structured entries | **馃摎 鎺掕绠＄悊** 鈥?鏀寔鏁欏笀绠＄悊锛堝鍚?棰滆壊鏍囪瘑锛夈€佽绋嬬鐞嗭紝缁撴瀯鍖栧綍鍏ヨ绋嬪畨鎺?|
+| **馃帹 Color Labels** 鈥?Color-coded course tags by teacher in calendar cells | **馃帹 褰╄壊鏍囩** 鈥?鏃ュ巻鏍煎唴鐢ㄦ暀甯堜笓灞為鑹叉樉绀哄僵鑹茶绋嬫爣绛撅紝涓€鐩簡鐒?|
+| **馃幁 Mood Stickers** 鈥?Rich emoji to record daily moods | **馃幁 蹇冩儏璐寸焊** 鈥?涓板瘜鐨勮〃鎯呯鍙凤紝璁板綍姣忔棩蹇冩儏 |
+| **馃懃 Teacher Filter** 鈥?Filter calendar by teacher in settings | **馃懃 鏁欏笀绛涢€?* 鈥?鍦ㄨ缃腑閫夋嫨鏁欏笀锛屾棩鍘嗗彧鏄剧ず璇ユ暀甯堢殑璇剧▼ |
+| **馃搳 Monthly View** 鈥?Clear monthly layout for full overview | **馃搳 鏈堝害瑙嗗浘** 鈥?娓呮櫚鐨勬湀鍘嗗竷灞€锛屼竴瑙堝叏鏈堝畨鎺?|
+| **馃攼 Privacy Protection** 鈥?PIN code and TOTP authentication | **馃敀 闅愮淇濇姢** 鈥?鏀寔 PIN 鐮佸拰 TOTP 楠岃瘉淇濇姢 |
+| **馃捑 Local Storage** 鈥?Fully local, privacy secured | **馃捑 鏈湴瀛樺偍** 鈥?鏁版嵁瀹屽叏鏈湴鍖栵紝淇濇姢闅愮瀹夊叏 |
+| **馃實 Multi-language** 鈥?Simplified Chinese & English | **馃實 澶氳瑷€鏀寔** 鈥?鏀寔绠€浣撲腑鏂囥€丒nglish |
+| **馃摝 Data Import/Export** 鈥?Full data migration including schedule config | **馃摝 鏁版嵁瀵煎叆瀵煎嚭** 鈥?瀹屾暣鏁版嵁杩佺Щ锛屽寘鍚帓璇鹃厤缃?|
 
-| 技术 | 版本 | 用途 |
-|------|------|------|
-| **React** | 19.2.0 | UI 框架 |
-| **TypeScript** | 5.8.2 | 类型安全 |
-| **Electron** | 39.2.3 | 桌面应用框架 |
-| **Vite** | 6.4.1 | 构建工具 |
-| **Tailwind CSS** | 4.1.8 | 样式框架 |
-| **date-fns** | 4.1.0 | 日期处理 |
-| **lunar-javascript** | 1.7.7 | 农历日期计算 |
-| **Lucide React** | 0.554.0 | 图标库 |
+---
 
-## 📥 下载安装
+## 馃洜锔?Tech Stack / 鎶€鏈爤
 
-### 最新版本：v1.0.0
+| Technology / 鎶€鏈?| Version / 鐗堟湰 | Purpose / 鐢ㄩ€?|
+|-------------------|----------------|----------------|
+| **React** | 19.2.0 | UI Framework / UI 妗嗘灦 |
+| **TypeScript** | 5.8.2 | Type Safety / 绫诲瀷瀹夊叏 |
+| **Electron** | 39.2.3 | Desktop Framework / 妗岄潰搴旂敤妗嗘灦 |
+| **Vite** | 6.4.1 | Build Tool / 鏋勫缓宸ュ叿 |
+| **Tailwind CSS** | 4.1.8 | Styling / 鏍峰紡妗嗘灦 |
+| **date-fns** | 4.1.0 | Date Handling / 鏃ユ湡澶勭悊 |
+| **lunar-javascript** | 1.7.7 | Lunar Calendar / 鍐滃巻鏃ユ湡璁＄畻 |
+| **Lucide React** | 0.554.0 | Icon Library / 鍥炬爣搴?|
 
-下载适合你系统的安装包：
+---
 
-| 平台 | 文件类型 | 说明 |
+## 馃摜 Installation / 涓嬭浇瀹夎
+
+### English
+
+**Latest version: v1.1.0** 鈥?[Download from GitHub Releases](https://github.com/AkiroMusic/Calendar/releases/tag/v1.1.0)
+
+| Platform | File | Description |
+|----------|------|-------------|
+| 馃獰 **Windows** | `.exe` (NSIS Installer) | Custom install path supported |
+| 馃獰 **Windows** | `.exe` (Portable) | No installation needed, run directly |
+| 馃崕 **macOS** | `.dmg` | For Intel & Apple Silicon |
+| 馃崕 **macOS** | `.zip` | Portable Mac app |
+
+### 涓枃
+
+**鏈€鏂扮増鏈細v1.1.0** 鈥?[浠?GitHub Releases 涓嬭浇](https://github.com/AkiroMusic/Calendar/releases/tag/v1.1.0)
+
+| 骞冲彴 | 鏂囦欢绫诲瀷 | 璇存槑 |
 |------|----------|------|
-| 🪟 **Windows** | `.exe` (NSIS 安装器) | 支持自定义安装路径 |
-| 🪟 **Windows** | `.exe` (便携版) | 无需安装，解压即用 |
-| 🍎 **macOS** | `.dmg` | 适用于 Apple Silicon (M1/M2/M3) |
-| 🐧 **Linux** | `.AppImage` | 通用 Linux 应用格式 |
-| 🐧 **Linux** | `.deb` | Debian/Ubuntu 系统 |
+| 馃獰 **Windows** | `.exe` (NSIS 瀹夎鍣? | 鏀寔鑷畾涔夊畨瑁呰矾寰?|
+| 馃獰 **Windows** | `.exe` (渚挎惡鐗? | 鏃犻渶瀹夎锛岃В鍘嬪嵆鐢?|
+| 馃崕 **macOS** | `.dmg` | 閫傜敤浜?Intel 鍜?Apple Silicon |
+| 馃崕 **macOS** | `.zip` | Mac 渚挎惡鐗?|
 
-## 📖 使用方法
+---
 
-### 基本操作
+## 馃摉 Usage / 浣跨敤鏂规硶
 
-#### 1️⃣ 排课管理
-1. 点击右上角设置图标 ⚙️
-2. 切换到「排课管理」标签页
-3. **添加教师**：输入姓名，选择颜色，点击添加
-4. **添加课程**：输入课程名称，点击添加
-5. 教师和课程添加后，即可在日期编辑器中录入课程安排
+### Basic Operations / 鍩烘湰鎿嶄綔
 
-#### 2️⃣ 录入课程安排
-1. 点击任意日期格子
-2. 在弹出的编辑器中，选择教师和课程
-3. 可选填写备注信息
-4. 点击「添加课程记录」可添加多条
-5. 点击「保存更改」完成记录
+#### 1锔忊儯 Schedule Management / 鎺掕绠＄悊
 
-#### 3️⃣ 查看排课
-- 日历格内会显示带教师颜色的课程标签
-- 颜色与教师设置的颜色一致
-- 显示格式：「教师名 · 课程名」
+**English:**
+1. Click settings icon 鈿欙笍 in top right
+2. Switch to **Schedule Settings** tab
+3. **Add Teacher**: Enter name, select color, click add
+4. **Add Course**: Enter course name, click add
+5. Select teacher to filter calendar (optional)
 
-#### 4️⃣ 记录心情贴纸
-- 在日期编辑器底部选择心情贴纸
-- 支持多个贴纸同时添加
+**涓枃锛?*
+1. 鐐瑰嚮鍙充笂瑙掕缃浘鏍?鈿欙笍
+2. 鍒囨崲鍒般€屾帓璇剧鐞嗐€嶆爣绛鹃〉
+3. **娣诲姞鏁欏笀**锛氳緭鍏ュ鍚嶏紝閫夋嫨棰滆壊锛岀偣鍑绘坊鍔?4. **娣诲姞璇剧▼**锛氳緭鍏ヨ绋嬪悕绉帮紝鐐瑰嚮娣诲姞
+5. 鍙€夋嫨鏁欏笀绛涢€夋棩鍘嗚鍥?
+#### 2锔忊儯 Record Schedule / 褰曞叆璇剧▼瀹夋帓
 
-#### 5️⃣ 月度计划
-- 在日历顶部区域记录本月目标
-- 支持 3 条独立的计划条目
+**English:**
+1. Click any date cell
+2. Select teacher and course in the editor popup
+3. Optionally fill in notes
+4. Click "Add Schedule Entry" for multiple entries
+5. Click "Save Changes"
 
-### 高级功能
+**涓枃锛?*
+1. 鐐瑰嚮浠绘剰鏃ユ湡鏍煎瓙
+2. 鍦ㄥ脊鍑虹殑缂栬緫鍣ㄤ腑閫夋嫨鏁欏笀鍜岃绋?3. 鍙€夊～鍐欏娉ㄤ俊鎭?4. 鐐瑰嚮銆屾坊鍔犺绋嬭褰曘€嶅彲娣诲姞澶氭潯
+5. 鐐瑰嚮銆屼繚瀛樻洿鏀广€嶅畬鎴愯褰?
+#### 3锔忊儯 View Schedule / 鏌ョ湅鎺掕
 
-#### 📦 数据备份与恢复
+**English:**
+- Color-coded course labels in calendar cells
+- Colors match teacher settings
+- Format: **Teacher 路 Course**
 
-**导出备份：**
-1. 点击右上角设置图标 ⚙️
-2. 选择「导出备份」
-3. 选择保存位置，文件名格式：`schedule_backup_YYYY-MM-DD.json`
+**涓枃锛?*
+- 鏃ュ巻鏍煎唴鏄剧ず甯︽暀甯堥鑹茬殑璇剧▼鏍囩
+- 棰滆壊涓庢暀甯堣缃殑棰滆壊涓€鑷?- 鏄剧ず鏍煎紡锛?*鏁欏笀鍚?路 璇剧▼鍚?*
 
-**导入备份：**
-1. 点击右上角设置图标 ⚙️
-2. 选择「导入备份」
-3. 选择之前导出的 JSON 文件
-4. 数据将完整恢复（包括排课配置）
+#### 4锔忊儯 Mood Stickers / 蹇冩儏璐寸焊
 
-#### 🔍 搜索功能
-- 快捷键 `Ctrl+F`（Windows/Linux）或 `⌘F`（macOS）
-- 支持全文搜索所有课程备注和记录
+**English:** Select mood stickers at the bottom of the date editor. Multiple stickers can be added.
 
-#### 🌍 切换语言
-1. 点击设置图标 ⚙️
-2. 在「语言」区域选择
-3. 语言会立即切换
+**涓枃锛?* 鍦ㄦ棩鏈熺紪杈戝櫒搴曢儴閫夋嫨蹇冩儏璐寸焊锛屾敮鎸佸涓创绾稿悓鏃舵坊鍔犮€?
+#### 5锔忊儯 Monthly Plan / 鏈堝害璁″垝
 
-#### 🔒 安全保护
-- 支持 PIN 码和 TOTP 验证器双重认证
-- 应用启动时验证身份
+**English:** Record monthly goals at the top of the calendar. Supports 3 plan entries.
 
-## 🚀 开发指南
+**涓枃锛?* 鍦ㄦ棩鍘嗛《閮ㄥ尯鍩熻褰曟湰鏈堢洰鏍囷紝鏀寔 3 鏉＄嫭绔嬬殑璁″垝鏉＄洰銆?
+### Advanced Features / 楂樼骇鍔熻兘
 
-### 环境要求
+| Feature / 鍔熻兘 | English | 涓枃 |
+|----------------|---------|------|
+| **馃摝 Backup & Restore / 鏁版嵁澶囦唤涓庢仮澶?* | Export/import full data including schedule config via settings | 鍦ㄨ缃腑瀵煎嚭/瀵煎叆瀹屾暣鏁版嵁锛屽惈鎺掕閰嶇疆 |
+| **馃攳 Search / 鎼滅储** | `Ctrl+F` (Win/Linux) or `鈱楩` (macOS) | 蹇嵎閿?`Ctrl+F` 鎴?`鈱楩`锛屽叏鏂囨悳绱㈡墍鏈夎褰?|
+| **馃實 Switch Language / 鍒囨崲璇█** | Settings 鈫?Language section | 璁剧疆 鈫?璇█鍖哄煙閫夋嫨 |
+| **馃敀 Security / 瀹夊叏淇濇姢** | PIN code + TOTP authenticator, startup verification | PIN 鐮佸拰 TOTP 楠岃瘉鍣ㄥ弻閲嶈璇侊紝鍚姩鏃堕獙璇佽韩浠?|
 
-- **Node.js**: 18.x 或更高版本
-- **npm**: Node.js 自带的包管理器
+---
 
-### 安装依赖
+## 馃殌 Development Guide / 寮€鍙戞寚鍗?
+### Requirements / 鐜瑕佹眰
+
+- **Node.js**: 18.x or higher / 鎴栨洿楂樼増鏈?- **npm**: Bundled with Node.js / Node.js 鑷甫
+
+### Install Dependencies / 瀹夎渚濊禆
 
 ```bash
 npm install
 ```
 
-### 开发模式
-
+### Development Mode / 寮€鍙戞ā寮?
 ```bash
 npm run dev
 ```
 
-这将启动 Vite 开发服务器并自动启动 Electron 应用，支持热重载。
-
-### 构建打包
+Starts Vite dev server and auto-launches Electron with HMR support.
+鍚姩 Vite 寮€鍙戞湇鍔″櫒骞惰嚜鍔ㄥ惎鍔?Electron 搴旂敤锛屾敮鎸佺儹閲嶈浇銆?
+### Build / 鏋勫缓鎵撳寘
 
 ```bash
-# 构建所有平台
-npm run electron:build
+# All platforms / 鎵€鏈夊钩鍙?npm run electron:build
 
 # macOS
 npm run electron:build:mac
@@ -161,43 +185,51 @@ npm run electron:build:win
 npm run electron:build:linux
 ```
 
-构建产物输出到 `release/` 目录。
+Output goes to `release/` directory. / 鏋勫缓浜х墿杈撳嚭鍒?`release/` 鐩綍銆?
+### Data Storage / 鏁版嵁瀛樺偍
 
-### 数据存储
+| Data / 鏁版嵁 | File / 鏂囦欢 | English | 涓枃 |
+|-------------|-------------|---------|------|
+| Calendar Data / 鏃ュ巻鏁版嵁 | `calendar_data.json` | All schedule entries and stickers | 鎵€鏈夎绋嬭褰曞拰璐寸焊 |
+| Monthly Plans / 鏈堝害璁″垝 | `calendar_plans.json` | Monthly goal plans | 鏈堝害鐩爣璁″垝 |
+| Schedule Config / 鎺掕閰嶇疆 | `schedule_config.json` | Teacher and course lists | 鏁欏笀鍜岃绋嬪垪琛?|
 
-| 数据 | 文件 | 说明 |
-|------|------|------|
-| 日历数据 | `calendar_data.json` | 所有课程记录和贴纸 |
-| 月度计划 | `calendar_plans.json` | 月度目标计划 |
-| 排课配置 | `schedule_config.json` | 教师和课程列表 |
-
-存储位置：
+**Storage locations / 瀛樺偍浣嶇疆锛?*
 - **Windows**: `%APPDATA%\Calendar\`
 - **macOS**: `~/Library/Application Support/Calendar/`
 - **Linux**: `~/.config/Calendar/`
 
-## 📝 更新日志
+---
 
-详见 [CHANGELOG.md](CHANGELOG.md)
+## 馃摑 Changelog / 鏇存柊鏃ュ織
 
-## 📄 许可证
+See [CHANGELOG.md](CHANGELOG.md) for full release history.
+瀹屾暣鏇存柊鍘嗗彶璇锋煡鐪?[CHANGELOG.md](CHANGELOG.md)銆?
+---
 
-本项目采用 [CC-BY-NC-4.0](LICENSE) 许可证。
+## 馃搫 License / 璁稿彲璇?
+This project is licensed under [CC-BY-NC-4.0](LICENSE).
 
-**您可以：**
-- ✅ 分享 - 复制和再分发
-- ✅ 修改 - 重新混合、转换和基于此构建
-
-**条件：**
-- 📝 署名 - 必须给出适当的署名（Akiro）
-- 🚫 非商业性使用 - 不得用于商业目的
+鏈」鐩噰鐢?[CC-BY-NC-4.0](LICENSE) 璁稿彲璇併€?
+| | English | 涓枃 |
+|-|---------|------|
+| 鉁?**You may / 鎮ㄥ彲浠?* | Share and adapt | 鍒嗕韩鍜屼慨鏀?|
+| 馃摑 **Attribution / 缃插悕** | Must credit Akiro | 蹇呴』缁欏嚭閫傚綋缃插悕锛圓kiro锛?|
+| 馃毇 **NonCommercial / 闈炲晢涓氭€т娇鐢?* | Not for commercial purposes | 涓嶅緱鐢ㄤ簬鍟嗕笟鐩殑 |
 
 ---
 
 <div align="center">
 
-**如果这个项目对你有帮助，请给个 ⭐ Star！**
+**If this project helps you, please give it a 猸?Star!**
 
-© 2026 Akiro · 二次开发 / Modifier
+**濡傛灉杩欎釜椤圭洰瀵逛綘鏈夊府鍔╋紝璇风粰涓?猸?Star锛?*
 
+漏 2026 Akiro 路 Modifier / 浜屾寮€鍙?
 </div>
+
+---
+
+## 馃搶 Chinese Version
+
+濡傛灉鎮ㄥ彧鎯抽槄璇讳腑鏂囷紝璇风洿鎺ヤ粠涓婃柟鐨勫悇涓珷鑺備腑鎵惧埌銆屼腑鏂囥€嶉儴鍒嗗嵆鍙€傛湰 README 閲囩敤鑻变腑鍙岃瀵圭収鏍煎紡锛屾瘡涓€鑺傞兘鍖呭惈鑻辨枃鍜屼腑鏂囧唴瀹广€?
