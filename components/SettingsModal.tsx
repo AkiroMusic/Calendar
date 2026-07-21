@@ -478,11 +478,11 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onExport,
                             onClick={onExport}
                             className="flex flex-col items-center justify-center gap-2 bg-paper-dark border border-surface-border p-3 rounded hover:border-text-secondary hover:bg-surface-hover transition-all"
                         >
-                            <Download size={20} className="text-ink-black" />
+                            <Upload size={20} className="text-ink-black" />
                             <span className="text-xs font-medium text-ink-black">{t('exportBackup')}</span>
                          </button>
                          <label className="flex flex-col items-center justify-center gap-2 bg-paper-dark border border-surface-border p-3 rounded hover:border-text-secondary hover:bg-surface-hover transition-all cursor-pointer">
-                            <Upload size={20} className="text-ink-black" />
+                            <Download size={20} className="text-ink-black" />
                             <span className="text-xs font-medium text-ink-black">{t('importBackup')}</span>
                             <input type="file" onChange={onImport} className="hidden" accept=".json" />
                          </label>
