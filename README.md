@@ -1,6 +1,6 @@
 <div align="center">
 
-# 📅 Calendar
+# 馃搮 Calendar
 
 <p align="center">
   <img src="logo.png" alt="Calendar Logo" width="120" height="120">
@@ -12,36 +12,36 @@
 [![License](https://img.shields.io/badge/license-CC--BY--NC--4.0-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)]()
 
-[📥 Download](#-installation) • [✨ Features](#-features) • [🚀 Usage](#-usage) • [🛠️ Development](#-development) • [📝 Changelog](CHANGELOG.md)
+[馃摜 Download](#-installation) 鈥?[鉁?Features](#-features) 鈥?[馃殌 Usage](#-usage) 鈥?[馃洜锔?Development](#-development) 鈥?[馃摑 Changelog](CHANGELOG.md)
 
 </div>
 
 ---
 
-## 📖 Introduction
+## 馃摉 Introduction
 
 Calendar is a cross-platform desktop calendar & scheduling application built with Electron and React. It provides a clean, intuitive interface for daily notes, mood tracking, and class schedule management.
 
-> **👤 Modifier**: [Akiro](https://github.com/sglwsjxh) · Feature enhancements and maintenance
+> **馃懁 Modifier**: [Akiro](https://github.com/sglwsjxh) 路 Feature enhancements and maintenance
 
 ---
 
-## ✨ Features
+## 鉁?Features
 
-- **🎯 Clean Design** — Minimalist interface focused on content
-- **📚 Schedule Management** — Teacher management (name + color), course management, structured entries
-- **🎨 Color Labels** — Color-coded course tags by teacher in calendar cells
-- **👥 Teacher Filter** — Filter calendar by teacher in settings
-- **🎭 Mood Stickers** — Rich emoji to record daily moods
-- **📊 Monthly View** — Clear monthly layout for a full overview
-- **🔐 Privacy Protection** — PIN code and TOTP authentication
-- **💾 Local Storage** — Fully local, privacy secured
-- **🌍 Multi-language** — Simplified Chinese & English
-- **📦 Data Import/Export** — Full data migration including schedule config
+- **馃幆 Clean Design** 鈥?Minimalist interface focused on content
+- **馃摎 Schedule Management** 鈥?Teacher management (name + color), course management, structured entries
+- **馃帹 Color Labels** 鈥?Color-coded course tags by teacher in calendar cells
+- **馃懃 Teacher Filter** 鈥?Filter calendar by teacher in settings
+- **馃幁 Mood Stickers** 鈥?Rich emoji to record daily moods
+- **馃搳 Monthly View** 鈥?Clear monthly layout for a full overview
+- **馃攼 Privacy Protection** 鈥?PIN code and TOTP authentication
+- **馃捑 Local Storage** 鈥?Fully local, privacy secured
+- **馃實 Multi-language** 鈥?Simplified Chinese & English
+- **馃摝 Data Import/Export** 鈥?Full data migration including schedule config
 
 ---
 
-## 🛠️ Tech Stack
+## 馃洜锔?Tech Stack
 
 | Technology | Version | Purpose |
 |------------|---------|---------|
@@ -56,24 +56,24 @@ Calendar is a cross-platform desktop calendar & scheduling application built wit
 
 ---
 
-## 📥 Installation
+## 馃摜 Installation
 
 **Latest version: v1.1.1** — [Download from GitHub Releases](https://github.com/AkiroMusic/Calendar/releases/tag/v1.1.1)
 
 | Platform | File | Description |
 |----------|------|-------------|
-| 🪟 **Windows** | `.exe` (NSIS Installer) | Custom install path supported |
-| 🪟 **Windows** | `.exe` (Portable) | No installation needed, run directly |
-| 🍎 **macOS** | `.dmg` | For Intel & Apple Silicon |
-| 🍎 **macOS** | `.zip` | Portable Mac app |
+| 馃獰 **Windows** | `.exe` (NSIS Installer) | Custom install path supported |
+| 馃獰 **Windows** | `.exe` (Portable) | No installation needed, run directly |
+| 馃崕 **macOS** | `.dmg` | For Intel & Apple Silicon |
+| 馃崕 **macOS** | `.zip` | Portable Mac app |
 
 ---
 
-## 📖 Usage
+## 馃摉 Usage
 
 ### Schedule Management
 
-1. Click the settings icon ⚙️ in the top right
+1. Click the settings icon 鈿欙笍 in the top right
 2. Switch to the **Schedule Settings** tab
 3. **Add Teacher**: Enter name, select color, click add
 4. **Add Course**: Enter course name, click add
@@ -91,7 +91,7 @@ Calendar is a cross-platform desktop calendar & scheduling application built wit
 
 - Calendar cells display color-coded course labels
 - Colors match the teacher color settings
-- Format: **Teacher · Course**
+- Format: **Teacher 路 Course**
 
 ### Mood Stickers
 
@@ -105,14 +105,14 @@ Record monthly goals at the top of the calendar. Supports up to 3 plan entries.
 
 | Feature | How to Use |
 |---------|------------|
-| **📦 Backup & Restore** | Settings → Export/Import Backup — exports full data including schedule config |
-| **🔍 Search** | `Ctrl+F` (Windows/Linux) or `⌘F` (macOS) — full-text search across all entries |
-| **🌍 Switch Language** | Settings → Language section — switches immediately |
-| **🔒 Security** | PIN code + TOTP authenticator — app startup verification |
+| **馃摝 Backup & Restore** | Settings 鈫?Export/Import Backup 鈥?exports full data including schedule config |
+| **馃攳 Search** | `Ctrl+F` (Windows/Linux) or `鈱楩` (macOS) 鈥?full-text search across all entries |
+| **馃實 Switch Language** | Settings 鈫?Language section 鈥?switches immediately |
+| **馃敀 Security** | PIN code + TOTP authenticator 鈥?app startup verification |
 
 ---
 
-## 🚀 Development
+## 馃殌 Development
 
 ### Requirements
 
@@ -166,28 +166,28 @@ Output goes to the `release/` directory.
 
 ---
 
-## 📝 Changelog
+## 馃摑 Changelog
 
 See [CHANGELOG.md](CHANGELOG.md) for the full release history.
 
 ---
 
-## 📄 License
+## 馃搫 License
 
 This project is licensed under [CC-BY-NC-4.0](LICENSE).
 
 | | |
 |-|-|
-| ✅ **You may** | Share and adapt |
-| 📝 **Attribution** | Must credit Akiro |
-| 🚫 **NonCommercial** | Not for commercial purposes |
+| 鉁?**You may** | Share and adapt |
+| 馃摑 **Attribution** | Must credit Akiro |
+| 馃毇 **NonCommercial** | Not for commercial purposes |
 
 ---
 
 <div align="center">
 
-**If this project helps you, please give it a ⭐ Star!**
+**If this project helps you, please give it a 猸?Star!**
 
-© 2026 Akiro · Modifier
+漏 2026 Akiro 路 Modifier
 
 </div>

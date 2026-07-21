@@ -1,7 +1,7 @@
-⚠️ **README.md now contains the full English documentation.** This file is a redirect.
+鈿狅笍 **README.md now contains the full English documentation.** This file is a redirect.
 
-→ [**View README.md**](README.md)
+鈫?[**View README.md**](README.md)
 
 ---
 
-<div align="center">© 2026 Akiro · Modifier</div>
+<div align="center">漏 2026 Akiro 路 Modifier</div>
